@@ -1,0 +1,91 @@
+.main {
+    width: 50%;
+    margin: 50px auto;
+}
+
+body {
+    background-color: #e7fffe !important;
+    margin: 0;
+}
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: fixed;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.top-section .input-group {
+    max-width: 800px;
+    flex: 1;
+}
+
+.top-section {
+    background-color: #0cc7ca;
+    color: #000000;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+.delivery-details {
+    text-align: center;
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.user-actions a {
+    color: #000000;
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right: 25px;
+}
+
+.categories-section {
+    background-color: #cdf9fa;
+    padding: 10px;
+    text-align: center;
+}
+
+.categories-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.categories-list li {
+    display: inline-block;
+    margin-right: 5%;
+    margin-left: 5%;
+}
+
+.categories-list a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 50px;
+}
