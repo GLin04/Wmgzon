@@ -13,7 +13,9 @@
 
         <div class="top-section">
             <div class="logo">
-                <img src="../static/images/wmgzon.png">
+                <a href="/">
+                    <img src="../static/images/wmgzon.png">
+                </a>
             </div>
             <div class="delivery-details">
                 <p>Deliver to:</p>
@@ -29,24 +31,26 @@
                 </div>
             </div>
             <div class="user-actions">
-                <a href="#">Sign In</a>
-                <a href="#">Basket</a>
+                <a href="/register">Sign up</a>
+                <a href="/basket">Basket</a>
             </div>
         </div>
 
 
-    
+        
         <div class="categories-section">
             <ul class="categories-list">
-                <li><a href="#">Movies</a></li>
-                <li><a href="#">Groceries</a></li>
-                <li><a href="#">Books</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Clothing</a></li>
-                <li><a href="#">Music</a></li>
+                <li><a href="/coming_soon">Movies</a></li>
+                <li><a href="/coming_soon">Groceries</a></li>
+                <li><a href="/coming_soon">Books</a></li>
+                <li><a href="/electronics">Electronics</a></li>
+                <li><a href="/coming_soon">Clothing</a></li>
+                <li><a href="/coming_soon">Music</a></li>
             </ul>
         </div>
-    
+        {% block test %}
+
+        {% endblock %}
     
     </body>
 </html>

@@ -14,4 +14,12 @@ def login():
 def register():
     return render_template("register.html")
 
+@views.route('/coming_soon')
+def coming_soon():
+    return render_template("coming_soon.html")
+
+@views.route('/basket')
+def basket():
+    return render_template("basket.html")
+
 
