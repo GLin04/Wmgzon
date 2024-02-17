@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request
-
 import sqlite3
 
 views = Blueprint('views', __name__)
@@ -28,6 +27,10 @@ def basket():
 def add_product():
     if request.method=='POST':
 
+        # Connect to the database
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
         # Get the data from the HTML form
         name = str(request.form['name'])
         stock = int(request.form['stock'])
@@ -37,10 +40,6 @@ def add_product():
         brand = str(request.form['brand'])
         specifications = str(request.form['specifications'])
         description = str(request.form['description'])
-
-        # Connect to the database
-        conn = sqlite3.connect('wmgzon.db')
-        cursor = conn.cursor()
 
         # Insert the data into the database
         cursor.execute('''
@@ -54,3 +53,44 @@ def add_product():
 
     return render_template("add_product.html")
 
+@views.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
+def edit_product(product_id):
+    if request.method == 'POST':
+        # Get the data from the HTML form
+        name = str(request.form['name'])
+        stock = int(request.form['stock'])
+        product_type = str(request.form['productType'])
+        price = float(request.form['price'])
+        delivery_time = int(request.form['deliveryTime'])
+        brand = str(request.form['brand'])
+        specifications = str(request.form['specifications'])
+        description = str(request.form['description'])
+
+        # Update the product in the database
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+        update_sql = '''
+            UPDATE products 
+            SET name=?, 
+                stock=?, 
+                productType=?, 
+                price=?, 
+                deliveryTime=?, 
+                brand=?, 
+                specifications=?, 
+                description=? 
+            WHERE id=?
+        '''
+        cursor.execute(update_sql, (
+            name, stock, product_type, price, delivery_time, brand, specifications, description, product_id))
+        conn.commit()
+        conn.close()
+
+    # Fetch the product data from the database
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products WHERE id=?', (product_id,))
+    product = cursor.fetchone()
+    conn.close()
+
+    return render_template("edit_product.html", product=product)

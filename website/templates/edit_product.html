@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Product</title>
+</head>
+
+<body>
+    <h1>Edit Product</h1>
+    <form method="POST" action="/edit_product/{{ product[0] }}">
+
+        <h1>Product ID: = {{ product[0] }}</h1>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ product[1] }}"><br>
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" value="{{ product[2] }}"><br>
+
+        <label for="productType">Product Type:</label>
+        <input type="text" id="productType" name="productType" value="{{ product[3]}}"><br>
+
+        <label for="price">Price:</label>
+        <input type="float" id="price" name="price" value="{{ product[4] }}"><br>
+
+        <label for="deliveryTime">Delivery Time:</label>
+        <input type="number" id="deliveryTime" name="deliveryTime" value="{{ product[5] }}"><br>
+
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" name="brand" value="{{ product[6] }}"><br>
+
+        <label for="specifications">Specifications:</label>
+        <textarea id="specifications" name="specifications">{{ product[7] }}</textarea><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description">{{ product[8] }}</textarea><br>
+
+        <input type="submit" value="Save Product">
+    </form>
+</body>
+</html>
