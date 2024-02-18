@@ -1,4 +1,4 @@
-function deleteProduct(productId) {
+ function deleteProduct(productId) {
     fetch(`/delete_product/${productId}`, {
         method: 'DELETE',
     })
@@ -7,6 +7,6 @@ function deleteProduct(productId) {
     })
 }
 
-document.getElementById('deleteProductButton').addEventListener('click', function() {
-    deleteProduct(productId);
-});
+function redirectElectronics() {
+    window.location.href = '/electronics';
+}

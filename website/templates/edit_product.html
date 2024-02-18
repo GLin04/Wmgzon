@@ -37,7 +37,9 @@
 
         <input type="submit" value="Save Product">
 
-        <button  id="deleteProductButton" type="button">Delete Product</button>
+        <button  id="deleteProductButton" type="button" onclick="deleteProduct({{ product[0] }})">Delete Product</button>
+        <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
+        
         
         <script>
             var productId = {{ product[0] }};
