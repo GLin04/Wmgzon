@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 
 {% block test %}
-<h1>electronics</h1>
+    <h1>electronics</h1>
 {% endblock %}
 
 {% block product_list %}
-{% for product in products %}
-<li>{{ product[0] }}</li>
-{% endfor %}
+    <h1>
+        <a href="/add_product">Add a new product</a><br>
+    </h1>
+
+    {% for product in products %}
+        <li>{{ product[1] }} 
+            <a href="/edit_product/{{ product[0] }}">(edit)</a>
+        </li>
+    {% endfor %}
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request,redirect, url_for
 import sqlite3
 
 views = Blueprint('views', __name__)
@@ -86,6 +86,8 @@ def edit_product(product_id):
         conn.commit()
         conn.close()
 
+        return redirect(url_for('electronics.products'))
+
     # Fetch the product data from the database
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
@@ -94,3 +96,15 @@ def edit_product(product_id):
     conn.close()
 
     return render_template("edit_product.html", product=product)
+
+@views.route('/delete_product/<int:product_id>' , methods=['DELETE'])
+def delete_product(product_id):
+    if request.method == 'DELETE':
+        # Delete the product from the database
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM products WHERE id=?', (product_id,))
+        conn.commit()
+        conn.close()
+
+        return

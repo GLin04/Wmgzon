@@ -9,7 +9,7 @@ def products():
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT name FROM products")
+    cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
 
     # close the connection

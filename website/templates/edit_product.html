@@ -36,6 +36,14 @@
         <textarea id="description" name="description">{{ product[8] }}</textarea><br>
 
         <input type="submit" value="Save Product">
+
+        <button  id="deleteProductButton" type="button">Delete Product</button>
+        
+        <script>
+            var productId = {{ product[0] }};
+        </script>
+
     </form>
+    <script src=../static/js/product-management.js></script>
 </body>
 </html>
