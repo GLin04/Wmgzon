@@ -13,7 +13,7 @@
 
         <div class="top-section">
             <div class="logo">
-                <a href="/">
+                <a href="/add_product">
                     <img src="../static/images/wmgzon.png">
                 </a>
             </div>
@@ -51,6 +51,14 @@
         {% block test %}
 
         {% endblock %}
-    
+
+        <div class="product-section">
+            <h2>Products</h2>
+            <ul class="product-list">
+                {% block product_list %}
+
+                {% endblock %}
+            </ul>
+        </div>
     </body>
 </html>
