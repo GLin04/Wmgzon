@@ -14,5 +14,9 @@
             <button type="submit">Login</button>
             <button onclick="window.location.href='/register'">Register</button>
         </form>
+
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
     </body>
 </html>
