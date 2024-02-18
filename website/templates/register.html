@@ -4,7 +4,7 @@
 
     </head>
     <body>
-        <form method="POST">
+        <form method="POST" onsubmit="return checkPassEqual()">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name"><br><br>
             
@@ -21,6 +21,6 @@
         </form>          
 
         <button onclick="window.location.href='/login'">Login</button>
-        
+        <script src=../static/js/user-management.js></script>
     </body>
 </html>
