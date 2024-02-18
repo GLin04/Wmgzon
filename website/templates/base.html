@@ -31,8 +31,14 @@
                 </div>
             </div>
             <div class="user-actions">
-                <a href="/register">Sign up</a>
-                <a href="/basket">Basket</a>
+                {% if 'user' in session %}
+                <a href="/logout"
+                    <span>{{ session['user_name'] }}</span>
+                </a>
+                {% else %}
+                    <a href="/register">Sign up</a>
+                {% endif %}
+                    <a href="/basket">Basket</a>
             </div>
         </div>
 

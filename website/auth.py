@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request,redirect, url_for
+from flask import Blueprint, render_template, request,redirect, session
 import sqlite3
 
 auth = Blueprint('auth', __name__)
@@ -38,9 +38,19 @@ def login():
         user = cursor.fetchone()
 
         if user and user[2] == password:
+            session['user'] = user
+            session['user_email'] = user[0]
+            session['user_name'] = user[1]
             return redirect('/')
         else:
             # If the user doesn't exist, show an error message
             return render_template('login.html', error='Invalid email or password')
 
     return render_template('login.html')
+
+@auth.route('/logout')
+def logout():
+    session.pop('user', None)
+    session.pop('user_email', None)
+    session.pop('user_name', None)
+    return redirect('/login')
