@@ -19,7 +19,7 @@ def register():
 def coming_soon():
     return render_template("coming_soon.html")
 
-@views.route('/basket')
+@views.route('/basket', methods=['GET', 'POST'])
 def basket():
     return render_template("basket.html")
 

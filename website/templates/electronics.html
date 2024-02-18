@@ -10,7 +10,8 @@
     </h1>
 
     {% for product in products %}
-        <li>{{ product[1] }} 
+        <li>
+            <a href="/electronics/product/{{ product[0] }}">{{ product[1] }}</a> 
             <a href="/edit_product/{{ product[0] }}">(edit)</a>
         </li>
     {% endfor %}

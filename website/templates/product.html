@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block test %}
+<link href="../../static/css/home-styles.css" rel="stylesheet" />
+{% endblock %}
+
+{% block product_page %}
+<div class="product-page">
+    <div class="product-details">
+        <h1>{{product[1]}}</h1>
+        <p>{{product[2]}} left!</p>
+        <p>Category: {{product[3]}}</p>
+        <p>Price: ${{product[4]}}</p>
+        <p>{{product[5]}} day delivery </p>
+        <p>Brand: {{product[6]}}</p>
+        <p>Specification: {{product[7]}}</p>
+        <p>Description: {{product[8]}}</p>
+        <form action="/basket" method="post">
+            <input type="number" name="quantity" value="quantity" placeholder="Quantity" />
+            <input type="submit" value="Add to Cart" />
+        </form>
+    </div>
+</div>
+{% endblock %}
