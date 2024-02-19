@@ -31,8 +31,14 @@
                 </div>
             </div>
             <div class="user-actions">
-                <a href="/register">Sign up</a>
-                <a href="/basket">Basket</a>
+                {% if 'user' in session %}
+                <a href="/account"
+                    <span>{{ session['user_name'] }}</span>
+                </a>
+                {% else %}
+                    <a href="/register">Sign up</a>
+                {% endif %}
+                    <a href="/basket">Basket</a>
             </div>
         </div>
 
@@ -52,8 +58,11 @@
 
         {% endblock %}
 
+        {% block content %}
+
+        {% endblock %}
+
         <div class="product-section">
-            <h2>Products</h2>
             <ul class="product-list">
                 {% block product_list %}
 
