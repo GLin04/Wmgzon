@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
-{% block test %}
-<h1>basket</h1>
+{% block product_list %}
+
+    <ul>
+        {% for products in products %}
+            <li>{{ products[1] }} £{{ products[4] }} x {{ products[11] }}     proffesionsalasall installation = {{ products[13] }}</li>
+        {% endfor %}
+    </ul>
+
 {% endblock %}

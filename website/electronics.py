@@ -23,7 +23,7 @@ def product(product_id):
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM products WHERE id=?", (product_id,))
+    cursor.execute("SELECT * FROM products WHERE product_id=?", (product_id,))
     product = cursor.fetchone()
 
     # close the connection

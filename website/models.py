@@ -7,7 +7,7 @@ cursor = conn.cursor()
 # Create the products table
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        product_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         stock INTEGER NOT NULL,
         productType TEXT NOT NULL,
@@ -21,15 +21,14 @@ cursor.execute('''
 ''')
 
 # In case i need to edit a table
-# cursor.execute('''
-#     ALTER TABLE products
-#     ADD COLUMN professional_installation BOOLEAN NOT NULL DEFAULT FALSE
-#                ''')
+cursor.execute('''
+    
+''')
 
 # Create the register form table
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS login_details (
-        email TEXT NOT NULL PRIMARY KEY,               
+        user_email TEXT NOT NULL PRIMARY KEY,               
         name TEXT NOT NULL,
         password TEXT NOT NULL,
         admin BOOLEAN NOT NULL DEFAULT FALSE
@@ -39,12 +38,17 @@ cursor.execute('''
 # Create the basket table
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS basket (
-        email TEXT NOT NULL PRIMARY KEY,               
-        productid INTEGER NOT NULL,
+        user_email TEXT NOT NULL,               
+        product_id INTEGER NOT NULL,
         product_quantity INTEGER NOT NULL,
-        professional_installation BOOLEAN NOT NULL DEFAULT FALSE
+        professional_installation BOOLEAN NOT NULL DEFAULT FALSE,
+               
+        FOREIGN KEY (user_email) REFERENCES login_details(user_email) ON DELETE CASCADE,
+        FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+        UNIQUE (product_id, user_email)
     )
 ''')
+
 
 # Commit the changes and close the connection
 conn.commit()

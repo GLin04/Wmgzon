@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request,redirect, url_for
+from flask import Blueprint, render_template, request,redirect, session, url_for
 import sqlite3
 
 views = Blueprint('views', __name__)
@@ -17,7 +17,29 @@ def coming_soon():
 
 @views.route('/basket', methods=['GET', 'POST'])
 def basket():
-    return render_template("basket.html")
+    
+    user_email = session['user_email']
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+
+    cursor.execute(
+        "SELECT products.*, basket.* "
+        "FROM basket "
+        "JOIN products ON basket.product_id = products.product_id "
+        "WHERE basket.user_email = ?",
+        (user_email,)
+    )
+
+    products = cursor.fetchall()
+    print (products)
+    
+    conn.close()
+
+
+
+    return render_template("basket.html", products=products)
 
 @views.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -75,7 +97,7 @@ def edit_product(product_id):
                 brand=?, 
                 specifications=?, 
                 description=? 
-            WHERE id=?
+            WHERE product_id=?
         '''
         cursor.execute(update_sql, (
             name, stock, product_type, price, delivery_time, brand, specifications, description, product_id))
@@ -87,7 +109,7 @@ def edit_product(product_id):
     # Fetch the product data from the database
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM products WHERE id=?', (product_id,))
+    cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
     product = cursor.fetchone()
     conn.close()
 
@@ -99,8 +121,29 @@ def delete_product(product_id):
         # Delete the product from the database
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM products WHERE id=?', (product_id,))
+        cursor.execute('DELETE FROM products WHERE product_id=?', (product_id,))
         conn.commit()
         conn.close()
 
         return
+
+@views.route('/add_to_basket', methods=['POST'])
+def add_to_basket():
+    if request.method == 'POST':
+        product_id = request.form.get('product_id')
+        quantity = request.form.get('quantity')
+        prof_installation = request.form.get('prof_installation_hidden')
+        user_email = session['user_email']
+
+        # Insert the data into the database
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            INSERT INTO basket (user_email, product_id, product_quantity, professional_installation)
+            VALUES (?, ?, ?, ?)
+        ''', (user_email, product_id, quantity, prof_installation))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('views.basket'))
