@@ -22,8 +22,8 @@ cursor.execute('''
 
 # In case i need to edit a table
 cursor.execute('''
+               ''')
     
-''')
 
 # Create the register form table
 cursor.execute('''
@@ -42,6 +42,7 @@ cursor.execute('''
         product_id INTEGER NOT NULL,
         product_quantity INTEGER NOT NULL,
         professional_installation BOOLEAN NOT NULL DEFAULT FALSE,
+        total_price REAL NOT NULL,
                
         FOREIGN KEY (user_email) REFERENCES login_details(user_email) ON DELETE CASCADE,
         FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,

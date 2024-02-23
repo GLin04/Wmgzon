@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block test %}
+{% block css %}
 <link href="../../static/css/home-styles.css" rel="stylesheet" />
 {% endblock %}
 
-{% block product_page %}
+{% block content %}
 <div class="product-page">
     <div class="product-details">
         <h1>{{product[1]}}</h1>
@@ -26,6 +26,7 @@
 
                 <input type="hidden" id="prof_installation_hidden" name="prof_installation_hidden">          
                 <input type="submit" value="Add to Cart"></input>
+                <input type="hidden" id="total_hidden" name="total_hidden" value="0.0">
                 <span id="total">TOTAL = £{{product[4]}}</span>
         </form>
         <script>

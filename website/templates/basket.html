@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
-{% block product_list %}
+{% block content %}
 
     <ul>
         {% for products in products %}
-            <li>{{ products[1] }} £{{ products[4] }} x {{ products[11] }}     proffesionsalasall installation = {{ products[13] }}</li>
+            <li>{{ products[1] }} £{{ products[4] }} x {{ products[12] }} = {{ products[14] }}    proffesionsalasall installation = {{ products[13] }}</li>
         {% endfor %}
+        
     </ul>
 
+    Basket total = {{ total_basket_price }}
+
+{% endblock %}
+
+{% block js %}
+    <script src=../../static/js/product-management.js></script>   
 {% endblock %}

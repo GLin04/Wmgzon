@@ -33,13 +33,19 @@ def basket():
     )
 
     products = cursor.fetchall()
-    print (products)
+    
+    cursor.execute('SELECT SUM(total_price) FROM basket')
+
+    total_basket_price = cursor.fetchone()[0]
+
+    print(total_basket_price)
+    print(products[0][14])
     
     conn.close()
 
 
 
-    return render_template("basket.html", products=products)
+    return render_template("basket.html", products=products, total_basket_price=total_basket_price)
 
 @views.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -134,15 +140,16 @@ def add_to_basket():
         quantity = request.form.get('quantity')
         prof_installation = request.form.get('prof_installation_hidden')
         user_email = session['user_email']
+        total_price = request.form.get('total_hidden')
 
         # Insert the data into the database
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
         
         cursor.execute('''
-            INSERT INTO basket (user_email, product_id, product_quantity, professional_installation)
-            VALUES (?, ?, ?, ?)
-        ''', (user_email, product_id, quantity, prof_installation))
+            INSERT INTO basket (user_email, product_id, product_quantity, professional_installation, total_price)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (user_email, product_id, quantity, prof_installation, total_price))
         conn.commit()
         conn.close()
 
