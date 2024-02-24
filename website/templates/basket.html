@@ -7,7 +7,9 @@
             <li>
                 <a href="/electronics/product/{{products[0]}}">
                     {{ products[1] }}
-                </a>
+                </a><br>
+                <img src="{{ url_for('static', filename='images/' + products[10]) }}" width="100" height="100"/><br>
+                {{ products[3] }}<br>
 
                 <p id="original_quantity_{{ products[0] }}" hidden>{{ products[12] }}<p>
 
