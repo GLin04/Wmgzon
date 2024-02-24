@@ -6,7 +6,11 @@
 
     <body>
         <h1>Add Product</h1>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data" action="/add_product">
+                    <label for="image">Image:</label>
+                    <input type="file" id="inputFile" name="inputFile" onchange="resizeAndPreview(this)"><br>
+                    <img id="preview" ><br>
+
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name"><br>
 

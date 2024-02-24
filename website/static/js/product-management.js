@@ -85,7 +85,41 @@ function deleteBasket(productId) {
     })
 }
 
-
+function resizeAndPreview(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      const img = new Image();
+      
+      reader.onload = function (e) {
+        img.src = e.target.result;
+      };
+      
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set the width and height to your desired values
+        canvas.width = 250;
+        canvas.height = 250;
+        
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+        // Set the preview image src to the data URL of the canvas
+        document.getElementById('preview').src = canvas.toDataURL('image/jpeg');
+        
+        // Set the value of the input file to the data URL of the canvas
+        input.value = canvas.toDataURL('image/jpeg');
+        
+        // Set the value of the hidden input field to the URL
+        document.getElementById('image_url').value = input.value;
+        alert(input.value);
+      };
+  
+      reader.readAsDataURL(input.files[0]);
+      
+    }
+  }
+  
 function warn() {
     alert('This product is currently out of stock');
 }

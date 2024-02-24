@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request,redirect, session, url_for
+import os
+from flask import Blueprint, app, render_template, request,redirect, session, url_for
 import sqlite3
 
 views = Blueprint('views', __name__)
@@ -61,12 +62,23 @@ def add_product():
         brand = str(request.form['brand'])
         specifications = str(request.form['specifications'])
         description = str(request.form['description'])
+        image = request.files['inputFile']
+
+        UPLOAD_PATH = 'website/static/images'
+        
+        if os.path.exists(f'{UPLOAD_PATH}/{image.filename}'):
+            print(f'{UPLOAD_PATH}/{image.filename} already exists in the folder.')
+        else:
+            print(f'{image.filename} uploaded successfully')
+            image.save(f"{UPLOAD_PATH}/{image.filename}")
+
+
 
         # Insert the data into the database
         cursor.execute('''
-            INSERT INTO products (name, stock, productType, price, deliveryTime, brand, specifications, description)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (name, stock, product_type, price, delivery_time, brand, specifications, description))
+            INSERT INTO products (name, stock, productType, price, deliveryTime, brand, specifications, description, product_image)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (name, stock, product_type, price, delivery_time, brand, specifications, description, image.filename))
 
         # Commit changes and close the connection
         conn.commit()
@@ -192,3 +204,5 @@ def delete_from_basket():
         conn.close()
 
         return redirect(url_for('views.basket'))
+    
+        
