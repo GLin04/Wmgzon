@@ -1,5 +1,36 @@
 {% extends "base.html" %}
 
-{% block test %}
-<h1>basket</h1>
+{% block content %}
+
+    <ul>
+        {% for products in products %}
+            <li>
+                <a href="/electronics/product/{{products[0]}}">
+                    {{ products[1] }}
+                </a>
+
+                <p id="original_quantity_{{ products[0] }}" hidden>{{ products[12] }}<p>
+
+                £{{ products[4] }} x 
+                <span id="current_quantity_{{ products[0] }}" value="{{ products[12] }}">{{ products[12] }}</span> and installations = 
+                <span id="current_total_{{ products[0] }}"> {{ products[14] }}</span>
+                P.installation = {{ products[13] }}
+                <input type="number" id="quantity_{{ products[0] }}" name="quantity" value="{{ products[12] }}" oninput="updateQuantity({{ products[0] }})"/>
+                <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
+                <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
+                <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+                <input id="update_button_{{ products[0] }}" type="button" value="Update" onclick="updateBasket({{ products[0] }})" style="display: none;" />
+                <input id="delete_button_{{ products[0] }}" type="button" value="Delete" onclick="deleteBasket({{ products[0] }})" />
+                 
+            </li>
+        {% endfor %}
+        
+    </ul>
+
+    Basket total = £{{ total_basket_price }}
+
+{% endblock %}
+
+{% block js %}
+    <script src=../../static/js/product-management.js></script>   
 {% endblock %}

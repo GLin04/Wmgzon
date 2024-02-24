@@ -6,6 +6,8 @@
         <meta name="author" content="" />
         <!--link to css file-->
         <link href="../static/css/home-styles.css" rel="stylesheet" />
+        {% block css %}        
+        {% endblock %}
         <!--Bootstrap link-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
@@ -32,7 +34,7 @@
             </div>
             <div class="user-actions">
                 {% if 'user' in session %}
-                <a href="/account"
+                <a href="/account">
                     <span>{{ session['user_name'] }}</span>
                 </a>
                 {% else %}
@@ -54,24 +56,12 @@
                 <li><a href="/coming_soon">Music</a></li>
             </ul>
         </div>
-        {% block test %}
-
-        {% endblock %}
 
         {% block content %}
 
         {% endblock %}
-
-        <div class="product-section">
-            <ul class="product-list">
-                {% block product_list %}
-
-                {% endblock %}
-            </ul>
-        </div>
-
-        {% block product_page %}
-            
-        {% endblock %}
     </body>
+    {% block js %}
+            
+    {% endblock %}
 </html>

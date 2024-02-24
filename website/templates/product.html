@@ -1,24 +1,42 @@
 {% extends "base.html" %}
 
-{% block test %}
+{% block css %}
 <link href="../../static/css/home-styles.css" rel="stylesheet" />
 {% endblock %}
 
-{% block product_page %}
+{% block content %}
 <div class="product-page">
     <div class="product-details">
         <h1>{{product[1]}}</h1>
         <p>{{product[2]}} left!</p>
         <p>Category: {{product[3]}}</p>
-        <p>Price: ${{product[4]}}</p>
+        <p>Price: £{{product[4]}}</p>
         <p>{{product[5]}} day delivery </p>
         <p>Brand: {{product[6]}}</p>
         <p>Specification: {{product[7]}}</p>
         <p>Description: {{product[8]}}</p>
-        <form action="/basket" method="post">
-            <input type="number" name="quantity" value="quantity" placeholder="Quantity" />
-            <input type="submit" value="Add to Cart" />
+
+        <form action='/add_to_basket' method="post">
+            <input type="hidden" id="product_id" name="product_id" value="{{product[0]}}">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="1" placeholder="Quantity" oninput="calculateTotal()"/><br>
+                <p>Professional installation (+£40)
+                    <input id="prof_installation" type="checkbox" name="prof_installation" oninput="calculateTotal()" >
+                </p>
+
+                <input type="hidden" id="prof_installation_hidden" name="prof_installation_hidden">          
+                <input type="submit" value="Add to Cart"></input>
+                <input type="hidden" id="total_hidden" name="total_hidden" value="0.0">
+                <span id="total">TOTAL = £{{product[4]}}</span>
         </form>
+        <script>
+            var price = {{product[4]}};
+            var product_id = {{product[0]}};
+        </script>
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script src=../../static/js/product-management.js></script>       
 {% endblock %}
