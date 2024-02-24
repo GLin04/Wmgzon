@@ -4,12 +4,26 @@
 
     <ul>
         {% for products in products %}
-            <li>{{ products[1] }} £{{ products[4] }} x {{ products[12] }} = {{ products[14] }}    proffesionsalasall installation = {{ products[13] }}</li>
+            <li>
+                <a href="/electronics/product/{{products[0]}}">
+                    {{ products[1] }}
+                </a>
+                    £{{ products[4] }} x 
+                    <span id="current_quantity_{{ products[0] }}">{{ products[12] }}</span> and installations = 
+                    <span id="current_total_{{ products[0] }}"> {{ products[14] }}</span>
+                        P.installation = {{ products[13] }}
+                     <input type="number" id="quantity_{{ products[0] }}" name="quantity" value="{{ products[12] }}" oninput="updateQuantity({{ products[0] }})"/>
+                     <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
+                     <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
+                     <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+                     <input type="button" value="Update" onclick="updateBasket({{ products[0] }})"/>
+                 
+            </li>
         {% endfor %}
         
     </ul>
 
-    Basket total = {{ total_basket_price }}
+    Basket total = £{{ total_basket_price }}
 
 {% endblock %}
 

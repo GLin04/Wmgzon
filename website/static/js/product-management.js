@@ -34,6 +34,41 @@ function calculateTotal() {
 
 }
 
+function updateQuantity(productId) {
+    var quantity = document.getElementById('quantity_' + productId).value;
+    var price = document.getElementById('price_hidden_' + productId).value;
+    var prof_installation = document.getElementById('prof_installation_hidden_' + productId).value;
+
+
+    prof_installation = (prof_installation === 'true');
+
+    if (prof_installation) {
+        prof_installation = 40;
+    } else {
+        prof_installation = 0; 
+    }
+
+    var total = ((parseInt(prof_installation) + parseFloat(price)) * parseInt(quantity)).toFixed(2);
+
+    document.getElementById('current_total_' + productId).innerHTML = total;
+    document.getElementById('current_quantity_' + productId).innerHTML = quantity;
+}
+
+function updateBasket(productId) {
+    var quantity = document.getElementById('quantity_' + productId).value;
+    var prof_installation = document.getElementById('prof_installation_hidden_' + productId).value;
+    var total = document.getElementById('current_total_' + productId).innerHTML;
+    
+
+    fetch(`/update_basket?productId=${productId}&quantity=${quantity}&total=${total}`, {
+        method: 'PUT',
+    })
+    .then(response => {
+        alert('Product updated');
+        window.location.href = '/basket'
+    })
+    
+}
 
 
 function warn() {

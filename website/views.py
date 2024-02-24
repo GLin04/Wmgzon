@@ -15,7 +15,7 @@ def account():
 def coming_soon():
     return render_template("coming_soon.html")
 
-@views.route('/basket', methods=['GET', 'POST'])
+@views.route('/basket', methods=['GET', 'POST', 'PUT'])
 def basket():
     
     user_email = session['user_email']
@@ -150,6 +150,31 @@ def add_to_basket():
             INSERT INTO basket (user_email, product_id, product_quantity, professional_installation, total_price)
             VALUES (?, ?, ?, ?, ?)
         ''', (user_email, product_id, quantity, prof_installation, total_price))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('views.basket'))
+    
+@views.route('/update_basket', methods=['PUT'])
+def update_basket():
+    if request.method == 'PUT':
+        print("Updating")
+        product_id = request.args.get('productId')
+        quantity = request.args.get('quantity')
+        total_price = request.args.get('total')
+        user_email = session['user_email']
+        print(product_id, quantity, total_price, user_email)
+
+        # Update the data in the database
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            UPDATE basket
+            SET product_quantity=?, total_price=?
+            WHERE user_email=? AND product_id=?
+        ''', (quantity, total_price, user_email, product_id))
+        print("Updated")
         conn.commit()
         conn.close()
 
