@@ -8,8 +8,8 @@
         <h1>Add Product</h1>
                 <form method="POST" enctype="multipart/form-data" action="/add_product">
                     <label for="image">Image:</label>
-                    <input type="file" id="inputFile" name="inputFile" onchange="resizeAndPreview(this)"><br>
-                    <img id="preview" ><br>
+                    <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this)"><br>
+                    <img id="preview"  width="200" height="150" ><br>
 
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name"><br>

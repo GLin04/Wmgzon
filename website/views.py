@@ -76,7 +76,16 @@ def add_product():
 
         # Insert the data into the database
         cursor.execute('''
-            INSERT INTO products (name, stock, productType, price, deliveryTime, brand, specifications, description, product_image)
+            INSERT INTO products (
+                       name, 
+                       stock, 
+                       productType, 
+                       price, 
+                       deliveryTime, 
+                       brand, 
+                       specifications, 
+                       description, 
+                       product_image)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (name, stock, product_type, price, delivery_time, brand, specifications, description, image.filename))
 
@@ -98,6 +107,15 @@ def edit_product(product_id):
         brand = str(request.form['brand'])
         specifications = str(request.form['specifications'])
         description = str(request.form['description'])
+        image = request.files['inputFile']
+
+        UPLOAD_PATH = 'website/static/images'
+        
+        if os.path.exists(f'{UPLOAD_PATH}/{image.filename}'):
+            print(f'{UPLOAD_PATH}/{image.filename} already exists in the folder.')
+        else:
+            print(f'{image.filename} uploaded successfully')
+            image.save(f"{UPLOAD_PATH}/{image.filename}")
 
         # Update the product in the database
         conn = sqlite3.connect('wmgzon.db')
@@ -111,11 +129,12 @@ def edit_product(product_id):
                 deliveryTime=?, 
                 brand=?, 
                 specifications=?, 
-                description=? 
+                description=?, 
+                product_image=?
             WHERE product_id=?
         '''
         cursor.execute(update_sql, (
-            name, stock, product_type, price, delivery_time, brand, specifications, description, product_id))
+            name, stock, product_type, price, delivery_time, brand, specifications, description, image.filename, product_id))
         conn.commit()
         conn.close()
 

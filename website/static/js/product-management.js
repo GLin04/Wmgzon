@@ -85,7 +85,7 @@ function deleteBasket(productId) {
     })
 }
 
-function resizeAndPreview(input) {
+function preview_image(input) {
     if (input.files && input.files[0]) {
       const reader = new FileReader();
       const img = new Image();
