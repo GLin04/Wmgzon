@@ -20,6 +20,7 @@
                 <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
                 <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
                 <input id="update_button_{{ products[0] }}" type="button" value="Update" onclick="updateBasket({{ products[0] }})" style="display: none;" />
+                <input id="delete_button_{{ products[0] }}" type="button" value="Delete" onclick="deleteBasket({{ products[0] }})" />
                  
             </li>
         {% endfor %}

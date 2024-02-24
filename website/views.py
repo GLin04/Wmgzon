@@ -15,7 +15,7 @@ def account():
 def coming_soon():
     return render_template("coming_soon.html")
 
-@views.route('/basket', methods=['GET', 'POST', 'PUT'])
+@views.route('/basket', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def basket():
     
     user_email = session['user_email']
@@ -169,6 +169,25 @@ def update_basket():
             SET product_quantity=?, total_price=?
             WHERE user_email=? AND product_id=?
         ''', (quantity, total_price, user_email, product_id))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('views.basket'))
+    
+@views.route('/delete_basket', methods=['DELETE'])
+def delete_from_basket():
+    if request.method == 'DELETE':
+        productId = request.args.get('productId')
+        user_email = session['user_email']
+
+        # Delete the data from the database
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            DELETE FROM basket
+            WHERE user_email=? AND product_id=?
+        ''', (user_email, productId))
         conn.commit()
         conn.close()
 

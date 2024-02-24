@@ -76,6 +76,15 @@ function updateBasket(productId) {
     
 }
 
+function deleteBasket(productId) {
+    fetch(`/delete_basket?productId=${productId}`, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        window.location.href = '/basket'
+    })
+}
+
 
 function warn() {
     alert('This product is currently out of stock');
