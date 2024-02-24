@@ -22,7 +22,28 @@
         <input type="number" id="stock" name="stock" value="{{ product[2] }}"><br>
 
         <label for="productType">Product Type:</label>
-        <input type="text" id="productType" name="productType" value="{{ product[3]}}"><br>
+        <select name="productType" id="productType">
+
+            <option value="accessories">Accessories</option>
+            <option value="data_storage">Data Storage</option>
+            <option value="desktops">Desktops</option>
+            <option value="laptops">Laptops</option>
+            <option value="monitors">Monitors</option>
+            <option value="phones">Phones</option>
+            <option value="printers">Printers</option>
+            <option value="tvs">TVs</option>
+
+        </select><br>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                const selectElement = document.getElementById('productType');
+                const selectedOption = "{{ product[3] }}";
+                selectElement.value = selectedOption;
+            });
+          </script>
 
         <label for="price">Price:</label>
         <input type="float" id="price" name="price" value="{{ product[4] }}"><br>
