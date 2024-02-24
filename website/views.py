@@ -37,9 +37,6 @@ def basket():
     cursor.execute('SELECT SUM(total_price) FROM basket')
 
     total_basket_price = cursor.fetchone()[0]
-
-    print(total_basket_price)
-    print(products[0][14])
     
     conn.close()
 
@@ -158,12 +155,10 @@ def add_to_basket():
 @views.route('/update_basket', methods=['PUT'])
 def update_basket():
     if request.method == 'PUT':
-        print("Updating")
         product_id = request.args.get('productId')
         quantity = request.args.get('quantity')
         total_price = request.args.get('total')
         user_email = session['user_email']
-        print(product_id, quantity, total_price, user_email)
 
         # Update the data in the database
         conn = sqlite3.connect('wmgzon.db')
@@ -174,7 +169,6 @@ def update_basket():
             SET product_quantity=?, total_price=?
             WHERE user_email=? AND product_id=?
         ''', (quantity, total_price, user_email, product_id))
-        print("Updated")
         conn.commit()
         conn.close()
 
