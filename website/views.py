@@ -120,6 +120,16 @@ def edit_product(product_id):
         # Update the product in the database
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
+
+        cursor.execute('SELECT product_image FROM products WHERE product_id=?', (product_id,))
+        product_image = cursor.fetchone()
+
+        if product_image[0] == 'default.jpg':
+            print('Default image detected. No need to delete')
+        else:
+            os.remove(f"{UPLOAD_PATH}/{product_image[0]}")
+            print(f'File {UPLOAD_PATH}/{product_image[0]} deleted successfully')
+
         update_sql = '''
             UPDATE products 
             SET name=?, 

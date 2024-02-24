@@ -13,7 +13,7 @@
 
         <label for="image">Image:</label>
         <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this)"><br>
-        <img id="preview"  width="200" height="150" ><br>
+        <img id="preview"  width="200" height="150" src="{{ url_for('static', filename='images/' + product[10]) }}"/><br>
 
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="{{ product[1] }}"><br>
