@@ -8,6 +8,7 @@
 <div class="product-page">
     <div class="product-details">
         <h1>{{product[1]}}</h1>
+        <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="300" height="300"/>
         <p>{{product[2]}} left!</p>
         <p>Category: {{product[3]}}</p>
         <p>Price: £{{product[4]}}</p>
