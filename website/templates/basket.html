@@ -7,15 +7,18 @@
             <li>
                 <a href="/electronics/product/{{products[0]}}">
                     {{ products[1] }}
-                </a>
+                </a><br>
+                <img src="{{ url_for('static', filename='images/' + products[10]) }}" width="100" height="100"/><br>
+                {{ products[3] }}<br>
 
                 <p id="original_quantity_{{ products[0] }}" hidden>{{ products[12] }}<p>
 
                 £{{ products[4] }} x 
-                <span id="current_quantity_{{ products[0] }}" value="{{ products[12] }}">{{ products[12] }}</span> and installations = 
+                <span id="current_quantity_{{ products[0] }}" value="{{ products[13] }}">{{ products[13] }}</span> and installations = 
                 <span id="current_total_{{ products[0] }}"> {{ products[14] }}</span>
-                P.installation = {{ products[13] }}
-                <input type="number" id="quantity_{{ products[0] }}" name="quantity" value="{{ products[12] }}" oninput="updateQuantity({{ products[0] }})"/>
+                P.installation = 
+                <label>{{ products[15] }}</label>
+                <input type="number" id="quantity_{{ products[0] }}" name="quantity" value="{{ products[13] }}" oninput="updateQuantity({{ products[0] }})"/>
                 <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
                 <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
                 <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>

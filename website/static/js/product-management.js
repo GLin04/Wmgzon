@@ -86,6 +86,88 @@ function deleteBasket(productId) {
 }
 
 
+
+function preview_image(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      const img = new Image();
+      
+      reader.onload = function (e) {
+        img.src = e.target.result;
+      };
+      
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set the width and height to your desired values
+        canvas.width = 250;
+        canvas.height = 250;
+        
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+        // Set the preview image src to the data URL of the canvas
+        document.getElementById('preview').src = canvas.toDataURL('image/jpeg');
+
+        
+      };
+  
+      reader.readAsDataURL(input.files[0]);
+      
+    }
+  }
+
+function check_image_exists(product_image_array) {
+
+    var image = document.getElementById('inputFile').files[0].name;
+    for (i in product_image_array) {
+        if (image === product_image_array[i]){
+            alert(image +' image name already exists, please choose another image');
+            submit.disabled = true;
+            document.getElementById('inputFile').value = ''; // remove the input file
+            break;
+        }
+        else {
+            submit.disabled = false;
+        }
+    }
+}
+
+
+
+
+function check_fields_filled() {
+    const name = document.getElementById('name').value;
+    const stock = document.getElementById('stock').value;
+    const productType = document.getElementById('productType').value;
+    const price = document.getElementById('price').value;
+    const deliveryTime = document.getElementById('deliveryTime').value;
+    const brand = document.getElementById('brand').value;
+    const specifications = document.getElementById('specifications').value;
+    const description = document.getElementById('description').value;
+
+    const inputFile = document.getElementById('inputFile').value;
+
+    alert(name + " " + stock + " " + productType + " " + price + " " + deliveryTime + " " + brand + " " + specifications + " " + description)
+  
+    // Check if all fields are filled
+    const allFieldsFilled = (
+      name && stock && productType && price &&
+      deliveryTime && brand && specifications &&
+      description
+    );
+  
+    // Get the submit button
+    const submitButton = document.getElementById('submit');
+  
+    // Enable or disable the submit button based on the check
+    if (allFieldsFilled && (inputFile || product_image)) {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+  }
+  
 function warn() {
     alert('This product is currently out of stock');
 }

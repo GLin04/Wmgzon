@@ -16,7 +16,8 @@ cursor.execute('''
         brand TEXT NOT NULL,
         specifications TEXT NOT NULL,
         description TEXT NOT NULL,
-        professional_installation BOOLEAN NOT NULL DEFAULT FALSE
+        professional_installation BOOLEAN NOT NULL DEFAULT FALSE,
+        product_image TEXT NOT NULL
     )
 ''')
 

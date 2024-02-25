@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, request,redirect, session, url_for
+import os
+from flask import Blueprint, app, render_template, request,redirect, session, url_for
 import sqlite3
+
 
 views = Blueprint('views', __name__)
 
@@ -46,11 +48,22 @@ def basket():
 
 @views.route('/add_product', methods=['GET', 'POST'])
 def add_product():
-    if request.method=='POST':
 
-        # Connect to the database
-        conn = sqlite3.connect('wmgzon.db')
-        cursor = conn.cursor()
+    # Connect to the database
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    
+    if request.method == 'GET':
+        cursor.execute('SELECT product_image FROM products')
+        product_image_tuple = cursor.fetchall()
+        conn.close()
+
+        product_image_array = [item[0] for item in product_image_tuple]
+        print(product_image_array)
+        return render_template("add_product.html", product_image_array=product_image_array)
+
+    
+    elif request.method=='POST':
 
         # Get the data from the HTML form
         name = str(request.form['name'])
@@ -61,21 +74,59 @@ def add_product():
         brand = str(request.form['brand'])
         specifications = str(request.form['specifications'])
         description = str(request.form['description'])
+        image = request.files['inputFile']
+
+        UPLOAD_PATH = 'website/static/images'
+        
+        if os.path.exists(f'{UPLOAD_PATH}/{image.filename}'):
+            print(f'{UPLOAD_PATH}/{image.filename} already exists in the folder.')
+        else:
+            print(f'{image.filename} uploaded successfully')
+            image.save(f"{UPLOAD_PATH}/{image.filename}")
+
+
 
         # Insert the data into the database
         cursor.execute('''
-            INSERT INTO products (name, stock, productType, price, deliveryTime, brand, specifications, description)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (name, stock, product_type, price, delivery_time, brand, specifications, description))
+            INSERT INTO products (
+                       name, 
+                       stock, 
+                       productType, 
+                       price, 
+                       deliveryTime, 
+                       brand, 
+                       specifications, 
+                       description, 
+                       product_image)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (name, stock, product_type, price, delivery_time, brand, specifications, description, image.filename))
 
         # Commit changes and close the connection
         conn.commit()
         conn.close()
 
-    return render_template("add_product.html")
+        return redirect('/electronics')
+
+
 
 @views.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
+
+    # Connect to the database
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
+    product = cursor.fetchone()
+    
+    if request.method == 'GET':
+        cursor.execute('SELECT product_image FROM products')
+        product_image_tuple = cursor.fetchall()
+        conn.close()
+
+        product_image_array = [item[0] for item in product_image_tuple] 
+        return render_template("edit_product.html", product_image_array=product_image_array, product=product)
+    
     if request.method == 'POST':
         # Get the data from the HTML form
         name = str(request.form['name'])
@@ -86,10 +137,25 @@ def edit_product(product_id):
         brand = str(request.form['brand'])
         specifications = str(request.form['specifications'])
         description = str(request.form['description'])
+        image = request.files['inputFile']
+        UPLOAD_PATH = 'website/static/images'
 
-        # Update the product in the database
-        conn = sqlite3.connect('wmgzon.db')
-        cursor = conn.cursor()
+        if os.path.exists(f'{UPLOAD_PATH}/{image.filename}'):
+            print(f'{UPLOAD_PATH}/{image.filename} already exists in the folder.')
+        else:
+            print(f'{image.filename} uploaded successfully')
+            image.save(f"{UPLOAD_PATH}/{image.filename}")
+
+        cursor.execute('SELECT product_image FROM products WHERE product_id=?', (product_id,))
+        product_image = cursor.fetchone()
+
+        if product_image[0] == 'default.jpg' or image.filename == '':
+            print('Default image or no change detected. No need to delete')
+            image.filename = product_image[0]
+        else:
+            os.remove(f"{UPLOAD_PATH}/{product_image[0]}")
+            print(f'File {UPLOAD_PATH}/{product_image[0]} deleted successfully')
+
         update_sql = '''
             UPDATE products 
             SET name=?, 
@@ -99,21 +165,17 @@ def edit_product(product_id):
                 deliveryTime=?, 
                 brand=?, 
                 specifications=?, 
-                description=? 
+                description=?, 
+                product_image=?
             WHERE product_id=?
         '''
         cursor.execute(update_sql, (
-            name, stock, product_type, price, delivery_time, brand, specifications, description, product_id))
+            name, stock, product_type, price, delivery_time, brand, specifications, description, image.filename, product_id))
         conn.commit()
         conn.close()
 
-        return redirect(url_for('electronics.products'))
+        return redirect('/electronics')
 
-    # Fetch the product data from the database
-    conn = sqlite3.connect('wmgzon.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
-    product = cursor.fetchone()
     conn.close()
 
     return render_template("edit_product.html", product=product)
@@ -121,14 +183,25 @@ def edit_product(product_id):
 @views.route('/delete_product/<int:product_id>' , methods=['DELETE'])
 def delete_product(product_id):
     if request.method == 'DELETE':
+        UPLOAD_PATH = 'website/static/images'
         # Delete the product from the database
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
+
+        
+        cursor.execute('SELECT product_image FROM products WHERE product_id=?', (product_id,))
+        product_image = cursor.fetchone()
+
+        # Delete the product from the database
         cursor.execute('DELETE FROM products WHERE product_id=?', (product_id,))
         conn.commit()
+
+
+        os.remove(f"{UPLOAD_PATH}/{product_image[0]}")
+
         conn.close()
 
-        return
+        return redirect('/electronics')
 
 @views.route('/add_to_basket', methods=['POST'])
 def add_to_basket():
@@ -192,3 +265,5 @@ def delete_from_basket():
         conn.close()
 
         return redirect(url_for('views.basket'))
+    
+        

@@ -12,8 +12,11 @@
 
     {% for product in products %}
         <li>
+
             <a href="/electronics/product/{{ product[0] }}">{{ product[1] }}</a> 
-            <a href="/edit_product/{{ product[0] }}">(edit)</a>
+            <a href="/edit_product/{{ product[0] }}">(edit)</a><br>
+            <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="200" height="150"/>
+            <br><br>
         </li>
     {% endfor %}
 {% endblock %}
