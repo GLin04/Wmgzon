@@ -5,10 +5,11 @@
     </head>
 
     <body>
-        <h1>Add Product</h1>
+
+        <h1>Add Product </h1>
                 <form method="POST" enctype="multipart/form-data" action="/add_product">
                     <label for="image">Image:</label>
-                    <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this)"><br>
+                    <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }});"><br>
                     <img id="preview"  width="200" height="150" ><br>
 
                     <label for="name">Name:</label>
@@ -47,7 +48,7 @@
                     <label for="description">Description:</label>
                     <textarea id="description" name="description"></textarea><br>
 
-                    <input type="submit" value="Add Product">
+                    <input id="submit" type="submit" value="Add Product">
                     <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
 
                 </form>

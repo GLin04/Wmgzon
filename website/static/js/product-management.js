@@ -106,19 +106,27 @@ function preview_image(input) {
       
         // Set the preview image src to the data URL of the canvas
         document.getElementById('preview').src = canvas.toDataURL('image/jpeg');
+
         
-        // Set the value of the input file to the data URL of the canvas
-        input.value = canvas.toDataURL('image/jpeg');
-        
-        // Set the value of the hidden input field to the URL
-        document.getElementById('image_url').value = input.value;
-        alert(input.value);
       };
   
       reader.readAsDataURL(input.files[0]);
       
     }
   }
+
+function check_image_exists(product_image_array) {
+    var image = document.getElementById('inputFile').files[0].name;
+
+
+    for (i in product_image_array) {
+        if (image === product_image_array[i]){
+            alert(image +' image name already exists, please choose another image');
+            submit.disabled = true;
+            break;
+        }
+    }
+}
   
 function warn() {
     alert('This product is currently out of stock');
