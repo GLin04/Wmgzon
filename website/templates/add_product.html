@@ -9,14 +9,14 @@
         <h1>Add Product </h1>
                 <form method="POST" enctype="multipart/form-data" action="/add_product">
                     <label for="image">Image:</label>
-                    <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }});"><br>
+                    <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }}); check_fields_filled();"><br>
                     <img id="preview"  width="200" height="150" ><br>
 
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name"><br>
+                    <input type="text" id="name" name="name" onchange="check_fields_filled()"><br>
 
                     <label for="stock">Stock:</label>
-                    <input type="number" id="stock" name="stock"><br>
+                    <input type="number" id="stock" name="stock" onchange="check_fields_filled()"><br>
 
 
                     <label for="productType">Product Type:</label>
@@ -34,21 +34,21 @@
                     </select><br>
 
                     <label for="price">Price:</label>
-                    <input type="float" id="price" name="price"><br>
+                    <input type="float" id="price" name="price" onchange="check_fields_filled()"><br>
 
                     <label for="deliveryTime">Delivery Time:</label>
-                    <input type="number" id="deliveryTime" name="deliveryTime"><br>
+                    <input type="number" id="deliveryTime" name="deliveryTime" onchange="check_fields_filled()"><br>
 
                     <label for="brand">Brand:</label>
-                    <input type="text" id="brand" name="brand"><br>
+                    <input type="text" id="brand" name="brand" onchange="check_fields_filled()"><br>
 
                     <label for="specifications">Specifications:</label>
-                    <textarea id="specifications" name="specifications"></textarea><br>
+                    <textarea id="specifications" name="specifications" onchange="check_fields_filled()"></textarea><br>
 
                     <label for="description">Description:</label>
-                    <textarea id="description" name="description"></textarea><br>
+                    <textarea id="description" name="description" onchange="check_fields_filled()"></textarea><br>
 
-                    <input id="submit" type="submit" value="Add Product">
+                    <input id="submit" type="submit" value="Add Product" disabled>
                     <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
 
                 </form>

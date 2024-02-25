@@ -111,6 +111,22 @@ def add_product():
 
 @views.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
+
+    # Connect to the database
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
+    product = cursor.fetchone()
+    
+    if request.method == 'GET':
+        cursor.execute('SELECT product_image FROM products')
+        product_image_tuple = cursor.fetchall()
+        conn.close()
+
+        product_image_array = [item[0] for item in product_image_tuple] 
+        return render_template("edit_product.html", product_image_array=product_image_array, product=product)
+    
     if request.method == 'POST':
         # Get the data from the HTML form
         name = str(request.form['name'])
@@ -129,10 +145,6 @@ def edit_product(product_id):
         else:
             print(f'{image.filename} uploaded successfully')
             image.save(f"{UPLOAD_PATH}/{image.filename}")
-
-        # Update the product in the database
-        conn = sqlite3.connect('wmgzon.db')
-        cursor = conn.cursor()
 
         cursor.execute('SELECT product_image FROM products WHERE product_id=?', (product_id,))
         product_image = cursor.fetchone()
@@ -164,11 +176,6 @@ def edit_product(product_id):
 
         return redirect('/electronics')
 
-    # Fetch the product data from the database
-    conn = sqlite3.connect('wmgzon.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
-    product = cursor.fetchone()
     conn.close()
 
     return render_template("edit_product.html", product=product)

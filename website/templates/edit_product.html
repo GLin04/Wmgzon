@@ -7,19 +7,19 @@
 
 <body>
     <h1>Edit Product</h1>
-    <form method="POST" enctype="multipart/form-data" action="/edit_product/{{ product[0] }} ">
+    <form method="POST" enctype="multipart/form-data" action="/edit_product/{{ product[0] }}">
 
         <h1>Product ID: = {{ product[0] }}</h1>
 
         <label for="image">Image:</label>
-        <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this)"><br>
+        <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }});"><br>
         <img id="preview"  width="200" height="150" src="{{ url_for('static', filename='images/' + product[10]) }}"/><br>
 
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="{{ product[1] }}"><br>
+        <input type="text" id="name" name="name" value="{{ product[1] }}" oninput="check_fields_filled()"><br>
 
         <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" value="{{ product[2] }}"><br>
+        <input type="number" id="stock" name="stock" value="{{ product[2] }}" oninput="check_fields_filled()"><br>
 
         <label for="productType">Product Type:</label>
         <select name="productType" id="productType">
@@ -46,13 +46,13 @@
           </script>
 
         <label for="price">Price:</label>
-        <input type="float" id="price" name="price" value="{{ product[4] }}"><br>
+        <input type="float" id="price" name="price" value="{{ product[4] }}" oninput="check_fields_filled()"><br>
 
         <label for="deliveryTime">Delivery Time:</label>
-        <input type="number" id="deliveryTime" name="deliveryTime" value="{{ product[5] }}"><br>
+        <input type="number" id="deliveryTime" name="deliveryTime" value="{{ product[5] }}" oninput="check_fields_filled()"><br>
 
         <label for="brand">Brand:</label>
-        <input type="text" id="brand" name="brand" value="{{ product[6] }}"><br>
+        <input type="text" id="brand" name="brand" value="{{ product[6] }}" oninput="check_fields_filled()"><br>
 
         <label for="specifications">Specifications:</label>
         <textarea id="specifications" name="specifications">{{ product[7] }}</textarea><br>
@@ -60,7 +60,7 @@
         <label for="description">Description:</label>
         <textarea id="description" name="description">{{ product[8] }}</textarea><br>
 
-        <input type="submit" value="Save Product">
+        <input id="submit" type="submit" value="Save Product" >
 
         <button  id="deleteProductButton" type="button" onclick="deleteProduct({{ product[0] }})">Delete Product</button>
         <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
@@ -68,6 +68,7 @@
         
         <script>
             var productId = {{ product[0] }};
+            var product_image = {{ product|safe }};
         </script>
 
     </form>
