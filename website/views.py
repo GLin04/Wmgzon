@@ -47,7 +47,7 @@ def basket():
 
     products = cursor.fetchall()
     
-    cursor.execute('SELECT SUM(total_price) FROM basket')
+    cursor.execute('SELECT SUM(total_price) FROM basket WHERE user_email=?', (user_email,))
 
     total_basket_price = cursor.fetchone()[0]
     
@@ -295,7 +295,7 @@ def checkout():
 
     products = cursor.fetchall()
     
-    cursor.execute('SELECT SUM(total_price) FROM basket')
+    cursor.execute('SELECT SUM(total_price) FROM basket where user_email=?', (user_email,))
 
     total_basket_price = cursor.fetchone()[0]
     
@@ -324,7 +324,7 @@ def delivery_info():
         address = request.form['address']
         city = request.form['city']
         phone = request.form['phone_number']
-        
+
         session['postcode'] = postcode
 
 

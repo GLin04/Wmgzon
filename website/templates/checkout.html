@@ -50,7 +50,10 @@
         
     </ul>
 
-    total = £{{ total_basket_price }}
+    <p>total = £{{ total_basket_price }}</p>
+    <span>deliver to = {{ postcode }}</span> 
+    <input type="button" value="Change delivery information" onclick="window.location.href='/delivery_info'"/><br>
+    
     <input type="button" value="Pay" onclick="window.location.href='#'" />
     
 
