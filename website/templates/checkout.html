@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <ul>
+        {% for products in products %}
+            <li class="product-item">
+
+                <div class="product-details">
+                    <a href="/electronics/product/{{ products[0] }}">
+                        {{ products[1] }}
+                    </a>
+                    <br>
+                    <div class="product-image">
+                        <img src="{{ url_for('static', filename='images/' + products[10]) }}" width="100" height="100"/>
+                    </div>
+
+                    <div class="product-price">
+                        £{{ products[4] }} x
+                        <span id="current_quantity_{{ products[0] }}" value="{{ products[13] }}"> {{ products[13] }} </span>
+                        <span id="prof_installation_{{ products[0] }}" value="{{ products[14] }}">ss</span>
+
+                        <script>
+
+                            
+                            const prof_installation_check_{{products[0]}} = document.getElementById("prof_installation_{{ products[0] }}");
+
+                            if (prof_installation_check_{{products[0]}}.getAttribute("value") === "true") {
+                                console.log("yes you are installed");
+                                prof_installation_{{products[0]}}.textContent = " + Proffesional Installation (£40 x {{products[13]}}) = £{{products[15]}}";
+                            }
+                        </script>
+                        = £
+                        <span id="current_total_{{ products[0] }}">{{ products[15] }}</span>
+                    </div>
+
+                    <div class="product-description">
+                        Delivery time= {{ products[5] }} days
+                    </div>
+                </div>
+
+                <div class="product-inputs">
+                    <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
+                    <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
+                    <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+                </div>
+            </li>
+            <br>
+        {% endfor %}
+        
+    </ul>
+
+    total = £{{ total_basket_price }}
+    <input type="button" value="Pay" onclick="window.location.href='#'" />
+    
+
+{% endblock %}
+
+{% block js %}
+    <script src=../../static/js/product-management.js></script>   
+{% endblock %}

@@ -266,4 +266,50 @@ def delete_from_basket():
 
         return redirect(url_for('views.basket'))
     
+@views.route('/checkout' , methods=['GET', 'POST'])
+def checkout():
+
+    user_email = session['user_email']
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT products.*, basket.* "
+        "FROM basket "
+        "JOIN products ON basket.product_id = products.product_id "
+        "WHERE basket.user_email = ?",
+        (user_email,)
+    )
+
+    products = cursor.fetchall()
+    
+    cursor.execute('SELECT SUM(total_price) FROM basket')
+
+    total_basket_price = cursor.fetchone()[0]
+    
+    conn.close()
+
+    if request.method == 'GET':
+        return render_template("checkout.html", products=products, total_basket_price=total_basket_price)
+
+    # if request.method == 'POST':
+    #     user_email = session['user_email']
+    #     total_price = request.form.get('total_price')
+    #     delivery_address = request.form.get('delivery_address')
+    #     payment_method = request.form.get('payment_method')
+
+    #     # Insert the data into the database
+    #     conn = sqlite3.connect('wmgzon.db')
+    #     cursor = conn.cursor()
         
+    #     cursor.execute('''
+    #         INSERT INTO orders (user_email, total_price, delivery_address, payment_method)
+    #         VALUES (?, ?, ?, ?)
+    #     ''', (user_email, total_price, delivery_address, payment_method))
+    #     conn.commit()
+    #     conn.close()
+
+    #     return redirect(url_for('views.home'))
+    
+    

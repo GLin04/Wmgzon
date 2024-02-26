@@ -148,8 +148,6 @@ function check_fields_filled() {
 
     const inputFile = document.getElementById('inputFile').value;
 
-    alert(name + " " + stock + " " + productType + " " + price + " " + deliveryTime + " " + brand + " " + specifications + " " + description)
-  
     // Check if all fields are filled
     const allFieldsFilled = (
       name && stock && productType && price &&
