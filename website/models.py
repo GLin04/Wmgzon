@@ -51,6 +51,18 @@ cursor.execute('''
     )
 ''')
 
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS delivery_info (
+        user_email TEXT NOT NULL PRIMARY KEY,
+        user_postcode TEXT NOT NULL,
+        user_address TEXT NOT NULL,
+        user_phone_number TEXT NOT NULL,
+        user_city TEXT NOT NULL,
+
+        FOREIGN KEY (user_email) REFERENCES login_details(user_email) ON DELETE CASCADE
+    )
+''')
+
 
 # Commit the changes and close the connection
 conn.commit()

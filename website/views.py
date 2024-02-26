@@ -5,6 +5,17 @@ import sqlite3
 
 views = Blueprint('views', __name__)
 
+
+def base():
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    user_email = session['user_email']
+
+    delivery_info = cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,)).fetchone()
+
+
+    return render_template("base.html" , delivery_info=delivery_info)
+
 @views.route('/')
 def home():
     return render_template("home.html")
@@ -293,23 +304,52 @@ def checkout():
     if request.method == 'GET':
         return render_template("checkout.html", products=products, total_basket_price=total_basket_price)
 
-    # if request.method == 'POST':
-    #     user_email = session['user_email']
-    #     total_price = request.form.get('total_price')
-    #     delivery_address = request.form.get('delivery_address')
-    #     payment_method = request.form.get('payment_method')
-
-    #     # Insert the data into the database
-    #     conn = sqlite3.connect('wmgzon.db')
-    #     cursor = conn.cursor()
-        
-    #     cursor.execute('''
-    #         INSERT INTO orders (user_email, total_price, delivery_address, payment_method)
-    #         VALUES (?, ?, ?, ?)
-    #     ''', (user_email, total_price, delivery_address, payment_method))
-    #     conn.commit()
-    #     conn.close()
-
-    #     return redirect(url_for('views.home'))
+@views.route('/delivery_info', methods=['GET', 'POST'])
+def delivery_info():
     
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    email = session['user_email']
+
+    if request.method == 'GET':
+
+        cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (email,))
+        delivery_info = cursor.fetchone()
+
+        conn.close()
+        return render_template("delivery_info.html", delivery_info=delivery_info)
+
+    if request.method == 'POST':
+        postcode = request.form['postcode']
+        address = request.form['address']
+        city = request.form['city']
+        phone = request.form['phone_number']
+        
+        session['postcode'] = postcode
+
+
+        cursor.execute('SELECT user_email FROM delivery_info WHERE user_email=?', (email,))
+        existing_email = cursor.fetchone()
+
+        if existing_email:
+            cursor.execute('''
+                UPDATE delivery_info
+                SET user_postcode=?, user_address=?, user_phone_number=?, user_city=?
+                WHERE user_email=?
+                ''', (postcode, address, phone, city, email)
+            )
+        else:
+            cursor.execute('''
+                INSERT INTO delivery_info (user_email, user_postcode, user_address, user_phone_number, user_city)
+                VALUES (?, ?, ?, ?, ?)
+                ''', (email, postcode, address, phone, city)
+            )
+            
+
+        conn.commit()
+        conn.close()
+
+        return redirect('/account')
+
+    return render_template("delivery_info.html")    
     
