@@ -427,3 +427,29 @@ def orders():
     conn.close()
 
     return render_template("orders.html", orders=orders)
+
+@views.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST':
+
+        old_password = request.form['old_password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        user_email = session['user_email']
+
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT password FROM login_details WHERE email=?', (user_email,))
+        current_password = cursor.fetchone()[0]
+
+        if old_password == current_password and new_password == confirm_password:
+            cursor.execute('UPDATE login_details SET password=? WHERE email=?', (new_password, user_email))
+            conn.commit()
+            conn.close()
+            return redirect('/account')
+        else:
+            conn.close()
+            return render_template("change_password.html", error="Invalid password or passwords do not match")
+
+    return render_template("change_password.html")
