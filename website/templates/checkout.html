@@ -54,7 +54,11 @@
     <span>deliver to = {{ postcode }}</span> 
     <input type="button" value="Change delivery information" onclick="window.location.href='/delivery_info'"/><br>
     
-    <input type="button" value="Pay" onclick="window.location.href='#'" />
+    <p> (no payment data needed as this is a test site) </p>
+    <form action="/order_confirmation" method="POST">
+        <input type="submit" value="pay"/>
+    </form>
+
     
 
 {% endblock %}

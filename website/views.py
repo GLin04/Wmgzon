@@ -353,3 +353,24 @@ def delivery_info():
 
     return render_template("delivery_info.html")    
     
+@views.route('/order_confirmation', methods=['POST'])
+def order_confirmation():
+    if request.method == 'POST':
+        user_email = session['user_email']
+
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT products.*, basket.* "
+            "FROM basket "
+            "JOIN products ON basket.product_id = products.product_id "
+            "WHERE basket.user_email = ?",
+            (user_email,)
+        )
+
+        purchased_products = cursor.fetchall()
+        
+        conn.close()
+
+        return render_template("order_confirmation.html", purchased_products=purchased_products)
