@@ -40,17 +40,22 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        hashed_password = hash_password(password)
+
 
         # Connect to the database
         connection = sqlite3.connect('wmgzon.db')
         cursor = connection.cursor()
 
         # Check if the email and password match a user in the database
-        cursor.execute("SELECT * FROM login_details WHERE email=?", (email,))
+        cursor.execute("SELECT * FROM login_details WHERE user_email=?", (email,))
         user = cursor.fetchone()
 
-        if user and user[2] == password:
+        user_salt = user[4]
+        user_password = user[2]
+
+        hashed_and_salted_password = hash_and_salt_password(password, user_salt)
+
+        if user and user_password == hashed_and_salted_password:
             session['user'] = user
             session['user_email'] = user[0]
             session['user_name'] = user[1]
