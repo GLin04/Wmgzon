@@ -6,48 +6,57 @@
 
     <ul>
         {% for products in products %}
-<li class="product-item">
-    <div class="product-details">
-        <a href="/electronics/product/{{ products[0] }}">
-            {{ products[1] }}
-        </a>
-        <br>
-        <div class="product-image">
-            <img src="{{ url_for('static', filename='images/' + products[10]) }}" width="100" height="100"/>
-        </div>
-        <br>
+            <li class="product-item">
+                <div class="product-details">
+                    <a href="/electronics/product/{{ products[0] }}">
+                        {{ products[1] }}
+                    </a>
+                    <br>
+                    <div class="product-image">
+                        <img src="{{ url_for('static', filename='images/' + products[10]) }}" width="100" height="100"/>
+                    </div>
+                    <br>
 
-        <div class="product-quantity" id="original_quantity_{{ products[0] }}" hidden>{{ products[12] }}</div>
+                    <div class="product-quantity" id="original_quantity_{{ products[0] }}" hidden>{{ products[12] }}</div>
 
-        <div class="product-price">
-            £{{ products[4] }} x
-            <span id="current_quantity_{{ products[0] }}" value="{{ products[13] }}">{{ products[13] }}</span>
-            and installations =
-            <span id="current_total_{{ products[0] }}"> {{ products[14] }}</span>
-            P.installation =
-            <label>{{ products[15] }}</label>
-        </div>
+                    <div class="product-price">
+                        £{{ products[4] }} x
+                        <span id="current_quantity_{{ products[0] }}" value="{{ products[13] }}">{{ products[13] }}</span>
+                        and installations =
+                        <span id="current_total_{{ products[0] }}"> {{ products[14] }}</span>
+                        P.installation =
+                        <label>{{ products[15] }}</label>
+                    </div>
 
-        <div class="product-inputs">
-            <input type="number" id="quantity_{{ products[0] }}" name="quantity" value="{{ products[13] }}" oninput="updateQuantity({{ products[0] }})"/>
-            <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
-            <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
-            <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
-        </div>
-    </div>
+                    <div class="product-inputs">
+                        <input type="number" id="quantity_{{ products[0] }}" name="quantity" value="{{ products[13] }}" oninput="updateQuantity({{ products[0] }})"/>
+                        <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
+                        <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
+                        <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+                    </div>
+                </div>
 
-    <div class="product-buttons">
-        <input id="update_button_{{ products[0] }}" type="button" value="Update" onclick="updateBasket({{ products[0] }})" style="display: none;" />
-        <input id="delete_button_{{ products[0] }}" type="button" value="Delete" onclick="deleteBasket({{ products[0] }})" />
-    </div>
-</li>
+                <div class="product-buttons">
+                    <input id="update_button_{{ products[0] }}" type="button" value="Update" onclick="updateBasket({{ products[0] }})" style="display: none;" />
+                    <input id="delete_button_{{ products[0] }}" type="button" value="Delete" onclick="deleteBasket({{ products[0] }})" />
+                </div>
+            </li>
         {% endfor %}
         
     </ul>
 
     Basket total = £{{ total_basket_price }}
-    <input type="button" value="Checkout" onclick="window.location.href='/checkout'" />
-    
+    <input type="button" value="Checkout" onclick="window.location.href='/checkout'"/>
+
+    <script>
+
+        if ("{{ total_basket_price }}") {
+            document.querySelector('input[type="button"]').disabled = true;
+        } else {
+            document.querySelector('input[type="button"]').disabled = false;
+        }
+        
+    </script>
 
 {% endblock %}
 
