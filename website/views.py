@@ -1,6 +1,7 @@
 import os
 from flask import Blueprint, app, render_template, request,redirect, session, url_for
 import sqlite3
+from datetime import datetime
 
 
 views = Blueprint('views', __name__)
@@ -357,6 +358,7 @@ def delivery_info():
 def order_confirmation():
     if request.method == 'POST':
         user_email = session['user_email']
+        current_date_time = datetime.now()
 
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
@@ -371,6 +373,37 @@ def order_confirmation():
 
         purchased_products = cursor.fetchall()
         
+        cursor.execute('SELECT SUM(total_price) FROM basket where user_email=?', (user_email,))
+        total_basket_price = cursor.fetchone()[0]
+
+        cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,))
+        delivery_info = cursor.fetchone()
+        
+        cursor.execute('''
+            INSERT INTO orders (
+                order_date,
+                order_total,
+                order_postcode,
+                order_address,
+                order_phone_number,
+                order_city,
+                user_email
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (current_date_time, total_basket_price, session['postcode'][0], delivery_info[2], delivery_info[3], delivery_info[4], user_email))
+
+        cursor.execute('SELECT order_id FROM Orders WHERE user_email=?', (user_email,))
+        order_id = cursor.fetchone()[0]
+
+        for product in purchased_products:
+            cursor.execute('''
+                INSERT INTO order_items (order_id, product_id, product_quantity, product_price, product_professional_installation)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (order_id, product[0], product[13], product[4], product[14]))
+        
+        cursor.execute('DELETE FROM basket WHERE user_email=?', (user_email,))
+
+        conn.commit()
         conn.close()
 
         return render_template("order_confirmation.html", purchased_products=purchased_products)
