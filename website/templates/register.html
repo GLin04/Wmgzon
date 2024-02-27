@@ -7,7 +7,7 @@
     <body>
         <form method="POST" onsubmit="return checkPassEqual()">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" onchange="check_fields_filled()"><br><br>
+            <input type="text" id="name" name="name" onchange="check_fields_filled()"/><br><br>
             
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" onchange="check_fields_filled()"><br><br>
@@ -18,7 +18,12 @@
             <label for="passwordConfirm">Confirm Password:</label>
             <input type="password" id="passwordConfirm" name="passwordConfirm" onchange="check_fields_filled()"><br><br>
             
+            <div class="error">
+                {{ error }}
+            </div>
+            
             <input type="submit" id="register" value="Register" >
+            
             <script>
                 document.getElementById("register").disabled = true;
             </script>

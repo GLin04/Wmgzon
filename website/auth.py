@@ -1,25 +1,32 @@
 from flask import Blueprint, render_template, request,redirect, session
 import sqlite3
-from utils import hash_and_salt_password
+from utils import hash_and_salt_password, generate_salt
 
 auth = Blueprint('auth', __name__)
 
 @auth.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
+        print("POST request received")
         email = request.form['email']
         name = request.form['name']
         password = request.form['password']
+        passwordConfirm = request.form['passwordConfirm']
 
-        hashed_password, salt = hash_and_salt_password(password)
+        # Check if the passwords match
+        if password != passwordConfirm:
+            return render_template('register.html', error='Passwords do not match')
+        
+        salt = generate_salt()
+        hashed_and_salted_password = hash_and_salt_password(password, salt)
 
         # Connect to the database
         connection = sqlite3.connect('wmgzon.db')
         cursor = connection.cursor()
 
         # Insert the data into the database
-        cursor.execute("INSERT INTO login_details (user_email, name, hashed_password, salt) VALUES (?, ?, ?, ?)",
-                       (email, name, hashed_password, salt))
+        cursor.execute("INSERT INTO login_details (user_email, name, hashed_and_salted_password, salt) VALUES (?, ?, ?, ?)",
+                       (email, name, hashed_and_salted_password, salt))
         
         # Commit changes and close the connection
         connection.commit()
@@ -32,6 +39,8 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+
+        hashed_password = hash_password(password)
 
         # Connect to the database
         connection = sqlite3.connect('wmgzon.db')

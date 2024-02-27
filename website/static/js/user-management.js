@@ -1,23 +1,15 @@
-function checkPassEqual() {
-    var password = document.getElementById("password").value;
-    var confirmPassword = document.getElementById("passwordConfirm").value;
+// function checkPassEqual() {
+//     var password = document.getElementById("password").value;
+//     var confirmPassword = document.getElementById("passwordConfirm").value;
 
-    if (password !== confirmPassword) {
-        alert("Passwords do not match");
-        return false;
-    }
-    return true;
-}
+//     if (password !== confirmPassword) {
+//         error = "Passwords do not match";
+//         return false;
+//     }
+//     return true;
+// }
 
-function checkFormFilled() {
-    alert("checkFormFilled");
-    console.log(user_name + email + password + passwordConfirm);
-    if (user_name && email && password && passwordConfirm) {
-        document.getElementById("register").disabled = true;
-    } else {
-        document.getElementById("register").disabled = false;
-    }
-}
+
 
 function check_fields_filled() {
     const name = document.getElementById('name').value;
@@ -34,6 +26,4 @@ function check_fields_filled() {
     } else {
         register.disabled = true;
     }
-
-    return allFieldsFilled;
 }
