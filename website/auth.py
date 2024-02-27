@@ -11,20 +11,20 @@ def register():
         name = request.form['name']
         password = request.form['password']
 
+        hashed_password, salt = hash_and_salt_password(password)
+
         # Connect to the database
         connection = sqlite3.connect('wmgzon.db')
         cursor = connection.cursor()
 
         # Insert the data into the database
-        cursor.execute("INSERT INTO login_details (email, name, hashed_password) VALUES (?, ?, ?)",
-                       (email, name, password))
+        cursor.execute("INSERT INTO login_details (user_email, name, hashed_password, salt) VALUES (?, ?, ?, ?)",
+                       (email, name, hashed_password, salt))
         
         # Commit changes and close the connection
         connection.commit()
         return redirect('/login')
     
-    print("password:")
-    print(hash_and_salt_password("hi"))
     return render_template("register.html")
 
 @auth.route('/login', methods=['GET', 'POST'])
