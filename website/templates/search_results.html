@@ -2,26 +2,48 @@
 {% block title %}Electronics search{% endblock %}
 
 {% block content %}
-    <span id="search_message">Search for {{search_term}}</span>
+    <span id="search_message">Search for {{search_input}}</span>
 
-    {% for results in results %}
+    <form id="filter_form" method="POST" action="/electronics/search">
+
+        <input type="hidden" name="search_input" value="{{search_input}}"/>
+        <input type="checkbox" name="accessories_filter" id="accessories_filter" value="accessories" {% if 'accessories' in filter_list %} checked {% endif %}> Accessories<br>
+        <input type="checkbox" name="data_storage_filter" id="data_storage_filter" value="data_storage" {% if 'data_storage' in filter_list %} checked {% endif %}> Data Storage<br>
+        <input type="checkbox" name="desktop_filter" id="desktop_filter" value="desktops" {% if 'desktops' in filter_list %} checked {% endif %}> Desktops<br>
+        <input type="checkbox" name="laptop_filter" id="laptop_filter" value="laptops" {% if 'laptops' in filter_list %} checked {% endif %}> Laptops<br>
+        <input type="checkbox" name="monitor_filter" id="monitor_filter" value="monitors" {% if 'monitors' in filter_list %} checked {% endif %}> Monitors<br>  
+        <input type="checkbox" name="phone_filter" id="phone_filter" value="phones" {% if 'phones' in filter_list %} checked {% endif %}> Phones<br> 
+        <input type="checkbox" name="printer_filter" id="printer_filter"value="printers" {% if 'printers' in filter_list %} checked {% endif %}> Printers<br>
+        <input type="checkbox" name="tv_filter" id="tv_filter" value="tvs" {% if 'tvs' in filter_list %} checked {% endif %}> TVs<br>   
+
+        <input type="number" name="max_price" id="max_price" value="{{ max_price }}" placeholder="Under £" min="0" max="100000">
+        <input type="submit" value="Apply Filter"/>
+    </form>
+    <form id="reset_filter_form" method="POST" action="/electronics/search">
+        <input type="submit" value="Reset filters"/>
+    </form>
+
+    {% for filtered_products in filtered_products %}
         <li>
 
-            <a href="/electronics/product/{{ results[0] }}">{{ results[1] }}</a> 
-            <a href="/edit_product/{{ results[0] }}">(edit)</a><br>
-            <img src="{{ url_for('static', filename='images/' + results[10]) }}" width="200" height="150"/>
+            <a href="/electronics/product/{{ filtered_products[0] }}">{{ filtered_products[1] }}</a>
+            <span>price: £{{ filtered_products[4] }}</span>
+            <a href="/edit_product/{{ filtered_products[0] }}">(edit)</a><br>
+            <img src="{{ url_for('static', filename='images/' + filtered_products[10]) }}" width="200" height="150"/>
             <br><br>
 
         </li>
     {% endfor %}
-    <span id="no_results_message" style="display: none;">No results for "{{search_term}}" </span>
+
+    <span id="no_results_message" style="display: none;">No results for "{{search_input}}" </span>
+
     <script>
-        if ({{results|safe}}.length == 0) {
+        if ({{filtered_products|safe}}.length == 0) {
             document.getElementById('no_results_message').style.display = 'block';
             document.getElementById('search_message').style.display = 'none'
         }
         
-        if ("{{search_term}}" === undefined || "{{search_term}}" === ""){
+        if ("{{search_input}}" === undefined || "{{search_input}}" === ""){
             document.getElementById('search_message').innerHTML = "Search for all electronics";
         }
     </script>
