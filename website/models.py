@@ -31,8 +31,9 @@ cursor.execute('''
     CREATE TABLE IF NOT EXISTS login_details (
         user_email TEXT NOT NULL PRIMARY KEY,               
         name TEXT NOT NULL,
-        password TEXT NOT NULL,
+        hashed_password TEXT NOT NULL,
         admin BOOLEAN NOT NULL DEFAULT FALSE
+        salt TEXT NOT NULL,
     )
 ''')
 

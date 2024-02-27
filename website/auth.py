@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request,redirect, session
 import sqlite3
+from utils import hash_and_salt_password
 
 auth = Blueprint('auth', __name__)
 
@@ -15,12 +16,15 @@ def register():
         cursor = connection.cursor()
 
         # Insert the data into the database
-        cursor.execute("INSERT INTO login_details (email, name, password) VALUES (?, ?, ?)",
+        cursor.execute("INSERT INTO login_details (email, name, hashed_password) VALUES (?, ?, ?)",
                        (email, name, password))
         
         # Commit changes and close the connection
         connection.commit()
         return redirect('/login')
+    
+    print("password:")
+    print(hash_and_salt_password("hi"))
     return render_template("register.html")
 
 @auth.route('/login', methods=['GET', 'POST'])
