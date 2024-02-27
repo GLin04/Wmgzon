@@ -1,9 +1,21 @@
 import os
 from flask import Blueprint, app, render_template, request,redirect, session, url_for
 import sqlite3
+from datetime import datetime
 
 
 views = Blueprint('views', __name__)
+
+
+def base():
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    user_email = session['user_email']
+
+    delivery_info = cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,)).fetchone()
+
+
+    return render_template("base.html" , delivery_info=delivery_info)
 
 @views.route('/')
 def home():
@@ -36,7 +48,7 @@ def basket():
 
     products = cursor.fetchall()
     
-    cursor.execute('SELECT SUM(total_price) FROM basket')
+    cursor.execute('SELECT SUM(total_price) FROM basket WHERE user_email=?', (user_email,))
 
     total_basket_price = cursor.fetchone()[0]
     
@@ -266,4 +278,178 @@ def delete_from_basket():
 
         return redirect(url_for('views.basket'))
     
+@views.route('/checkout' , methods=['GET', 'POST'])
+def checkout():
+
+    user_email = session['user_email']
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT products.*, basket.* "
+        "FROM basket "
+        "JOIN products ON basket.product_id = products.product_id "
+        "WHERE basket.user_email = ?",
+        (user_email,)
+    )
+
+    products = cursor.fetchall()
+    
+    cursor.execute('SELECT SUM(total_price) FROM basket where user_email=?', (user_email,))
+
+    total_basket_price = cursor.fetchone()[0]
+    
+    conn.close()
+
+    if request.method == 'GET':
+        return render_template("checkout.html", products=products, total_basket_price=total_basket_price)
+
+@views.route('/delivery_info', methods=['GET', 'POST'])
+def delivery_info():
+    
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    email = session['user_email']
+
+    if request.method == 'GET':
+
+        cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (email,))
+        delivery_info = cursor.fetchone()
+
+        conn.close()
+        return render_template("delivery_info.html", delivery_info=delivery_info)
+
+    if request.method == 'POST':
+        postcode = request.form['postcode']
+        address = request.form['address']
+        city = request.form['city']
+        phone = request.form['phone_number']
+
+        session['postcode'] = postcode
+
+
+        cursor.execute('SELECT user_email FROM delivery_info WHERE user_email=?', (email,))
+        existing_email = cursor.fetchone()
+
+        if existing_email:
+            cursor.execute('''
+                UPDATE delivery_info
+                SET user_postcode=?, user_address=?, user_phone_number=?, user_city=?
+                WHERE user_email=?
+                ''', (postcode, address, phone, city, email)
+            )
+        else:
+            cursor.execute('''
+                INSERT INTO delivery_info (user_email, user_postcode, user_address, user_phone_number, user_city)
+                VALUES (?, ?, ?, ?, ?)
+                ''', (email, postcode, address, phone, city)
+            )
+            
+
+        conn.commit()
+        conn.close()
+
+        return redirect('/account')
+
+    return render_template("delivery_info.html")    
+    
+@views.route('/order_confirmation', methods=['POST'])
+def order_confirmation():
+    if request.method == 'POST':
+        user_email = session['user_email']
+        current_date_time = datetime.now().strftime("%Y-%m-%d")
+
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT products.*, basket.* "
+            "FROM basket "
+            "JOIN products ON basket.product_id = products.product_id "
+            "WHERE basket.user_email = ?",
+            (user_email,)
+        )
+
+        purchased_products = cursor.fetchall()
         
+        cursor.execute('SELECT SUM(total_price) FROM basket where user_email=?', (user_email,))
+        total_basket_price = cursor.fetchone()[0]
+
+        cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,))
+        delivery_info = cursor.fetchone()
+        
+        cursor.execute('''
+            INSERT INTO orders (
+                order_date,
+                order_total,
+                order_postcode,
+                order_address,
+                order_phone_number,
+                order_city,
+                user_email
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (current_date_time, total_basket_price, session['postcode'][0], delivery_info[2], delivery_info[3], delivery_info[4], user_email))
+
+        cursor.execute('SELECT order_id FROM Orders WHERE user_email=?', (user_email,))
+        order_id = cursor.fetchone()[0]
+
+        for product in purchased_products:
+            cursor.execute('''
+                INSERT INTO order_items (order_id, product_id, product_quantity, product_price, product_professional_installation)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (order_id, product[0], product[13], product[4], product[14]))
+        
+        cursor.execute('DELETE FROM basket WHERE user_email=?', (user_email,))
+
+        conn.commit()
+        conn.close()
+
+        return render_template("order_confirmation.html", purchased_products=purchased_products)
+    
+@views.route('/orders')
+def orders():
+    user_email = session['user_email']
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT orders.*, order_items.*, products.*
+        FROM orders
+        JOIN order_items ON orders.order_id = order_items.order_id
+        JOIN products ON order_items.product_id = products.product_id
+        WHERE orders.user_email=?
+    ''', (user_email,))
+
+    orders = cursor.fetchall()
+    conn.close()
+
+    return render_template("orders.html", orders=orders)
+
+@views.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST':
+
+        old_password = request.form['old_password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        user_email = session['user_email']
+
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT password FROM login_details WHERE email=?', (user_email,))
+        current_password = cursor.fetchone()[0]
+
+        if old_password == current_password and new_password == confirm_password:
+            cursor.execute('UPDATE login_details SET password=? WHERE email=?', (new_password, user_email))
+            conn.commit()
+            conn.close()
+            return redirect('/account')
+        else:
+            conn.close()
+            return render_template("change_password.html", error="Invalid password or passwords do not match")
+
+    return render_template("change_password.html")

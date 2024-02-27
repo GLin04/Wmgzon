@@ -51,6 +51,46 @@ cursor.execute('''
     )
 ''')
 
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS orders (
+        order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_date TEXT,
+        order_total REAL,
+        order_postcode TEXT,
+        order_address TEXT,
+        order_phone_number TEXT,
+        order_city TEXT,
+        user_email TEXT,
+               
+        FOREIGN KEY (user_email) REFERENCES login_details(user_email) ON DELETE CASCADE
+    )
+''')
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS order_items (
+        order_id INTEGER,
+        product_id TEXT,
+        product_quantity INTEGER,
+        product_price REAL,
+        product_professional_installation BOOLEAN,
+               
+        FOREIGN KEY (order_id) REFERENCES Orders(OrderID),
+        FOREIGN KEY (product_id) REFERENCES products(product_id)
+    )
+''')
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS delivery_info (
+        user_email TEXT NOT NULL PRIMARY KEY,
+        user_postcode TEXT NOT NULL,
+        user_address TEXT NOT NULL,
+        user_phone_number TEXT NOT NULL,
+        user_city TEXT NOT NULL,
+
+        FOREIGN KEY (user_email) REFERENCES login_details(user_email) ON DELETE CASCADE
+    )
+''')
+
 
 # Commit the changes and close the connection
 conn.commit()
