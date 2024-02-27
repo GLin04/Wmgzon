@@ -388,10 +388,21 @@ def order_confirmation():
         order_id = cursor.fetchone()[0]
 
         for product in purchased_products:
+            print(product)
+            product_id = product[0]
+            product_quantity_purchased = product[13]
+
+            cursor.execute('SELECT stock FROM products WHERE product_id=?', (product_id,))
+            current_stock = cursor.fetchone()[0]
+            updated_stock = current_stock - product_quantity_purchased
+
+            cursor.execute('UPDATE products SET stock=? WHERE product_id=?', (updated_stock, product_id))
+
             cursor.execute('''
                 INSERT INTO order_items (order_id, product_id, product_quantity, product_price, product_professional_installation)
                 VALUES (?, ?, ?, ?, ?)
-            ''', (order_id, product[0], product[13], product[4], product[14]))
+            ''', (order_id, product_id, product_quantity_purchased, product[4], product[14]))
+
         
         cursor.execute('DELETE FROM basket WHERE user_email=?', (user_email,))
 
