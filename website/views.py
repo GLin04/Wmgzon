@@ -358,7 +358,7 @@ def delivery_info():
 def order_confirmation():
     if request.method == 'POST':
         user_email = session['user_email']
-        current_date_time = datetime.now()
+        current_date_time = datetime.now().strftime("%Y-%m-%d")
 
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
@@ -407,3 +407,23 @@ def order_confirmation():
         conn.close()
 
         return render_template("order_confirmation.html", purchased_products=purchased_products)
+    
+@views.route('/orders')
+def orders():
+    user_email = session['user_email']
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT orders.*, order_items.*, products.*
+        FROM orders
+        JOIN order_items ON orders.order_id = order_items.order_id
+        JOIN products ON order_items.product_id = products.product_id
+        WHERE orders.user_email=?
+    ''', (user_email,))
+
+    orders = cursor.fetchall()
+    conn.close()
+
+    return render_template("orders.html", orders=orders)
