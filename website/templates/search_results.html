@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Electronics search{% endblock %}
+
+{% block content %}
+    <span id="search_message">Search for {{search_term}}</span>
+
+    {% for results in results %}
+        <li>
+
+            <a href="/electronics/product/{{ results[0] }}">{{ results[1] }}</a> 
+            <a href="/edit_product/{{ results[0] }}">(edit)</a><br>
+            <img src="{{ url_for('static', filename='images/' + results[10]) }}" width="200" height="150"/>
+            <br><br>
+
+        </li>
+    {% endfor %}
+    <span id="no_results_message" style="display: none;">No results for "{{search_term}}" </span>
+    <script>
+        if ({{results|safe}}.length == 0) {
+            document.getElementById('no_results_message').style.display = 'block';
+            document.getElementById('search_message').style.display = 'none'
+        }
+        
+        if ("{{search_term}}" === undefined || "{{search_term}}" === ""){
+            document.getElementById('search_message').innerHTML = "Search for all electronics";
+        }
+    </script>
+{% endblock %}

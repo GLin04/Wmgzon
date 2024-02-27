@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, request, session
 import sqlite3
 electronics = Blueprint('electronics', __name__)
 
@@ -37,3 +37,24 @@ def product(product_id):
 
     # render the template with the product details
     return render_template("product.html", product=product, product_ids=product_ids)
+
+
+
+@electronics.route('/search', methods=['POST'])
+def search():
+    if request.method == 'POST':
+        keyword = request.form['search_input']
+
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT * FROM products
+            WHERE name LIKE ?
+        ''', ('%' + keyword + '%',))
+
+        results = cursor.fetchall()
+        conn.close()
+
+        # Pass the results to the search_results template
+        return render_template('search_results.html', results=results, search_term=keyword)

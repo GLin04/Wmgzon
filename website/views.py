@@ -472,3 +472,4 @@ def change_password():
             return render_template("change_password.html", error="Invalid password or passwords do not match")
 
     return render_template("change_password.html")
+
