@@ -72,3 +72,36 @@ def logout():
     session.pop('user_email', None)
     session.pop('user_name', None)
     return redirect('/login')
+
+@auth.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST':
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        old_password_input = request.form['old_password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        user_email = session['user_email']
+
+        user_salt = cursor.execute('SELECT salt FROM login_details WHERE user_email=?', (user_email,)).fetchone()[0]
+
+        hashed_and_salted_old_password_input = hash_and_salt_password(old_password_input, user_salt)
+
+
+        
+        cursor.execute('SELECT hashed_and_salted_password FROM login_details WHERE user_email=?', (user_email,))
+        hashed_and_salted_existing_password = cursor.fetchone()[0]
+
+        if hashed_and_salted_old_password_input == hashed_and_salted_existing_password and new_password == confirm_password:
+            hashed_and_salted_new_password = hash_and_salt_password(new_password, user_salt)
+            cursor.execute('UPDATE login_details SET hashed_and_salted_password=? WHERE user_email=?', (hashed_and_salted_new_password, user_email))
+            conn.commit()
+            conn.close()
+            return redirect('/account')
+        else:
+            conn.close()
+            return render_template("change_password.html", error="Invalid password or passwords do not match")
+
+    return render_template("change_password.html")
+
