@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block title %}Edit Product{% endblock %}
+{% block content %}
 
-<head>
-    <title>Edit Product</title>
-</head>
-
-<body>
     <h1>Edit Product</h1>
     <form method="POST" enctype="multipart/form-data" action="/edit_product/{{ product[0] }}">
 
@@ -72,6 +68,7 @@
         </script>
 
     </form>
+{% endblock %}
+{% block script %}
     <script src=../static/js/product-management.js></script>
-</body>
-</html>
+{% endblock %}

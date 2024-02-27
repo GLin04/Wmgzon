@@ -166,6 +166,3 @@ function check_fields_filled() {
     }
   }
   
-function warn() {
-    alert('This product is currently out of stock');
-}

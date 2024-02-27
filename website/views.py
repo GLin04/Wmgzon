@@ -7,15 +7,34 @@ from datetime import datetime
 views = Blueprint('views', __name__)
 
 
-def base():
-    conn = sqlite3.connect('wmgzon.db')
-    cursor = conn.cursor()
-    user_email = session['user_email']
+# def base():
+#     conn = sqlite3.connect('wmgzon.db')
+#     cursor = conn.cursor()
+#     user_email = session['user_email']
 
-    delivery_info = cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,)).fetchone()
+#     delivery_info = cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,)).fetchone()
+
+#     # Execute a query to search for products based on a keyword
+#     cursor.execute('''
+#         SELECT * FROM products
+#         WHERE name LIKE ?
+#         OR productType LIKE ?
+#         OR brand LIKE ?
+#     ''', ('%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%'))
+
+#     # Fetch the results
+#     results = cursor.fetchall()
+#     print("hi")
+#     # Process the results
+#     for row in results:
+#         # Process each row as needed
+#         print(row)
 
 
-    return render_template("base.html" , delivery_info=delivery_info)
+#     conn.commit()
+#     conn.close()
+
+#     return render_template("base.html" , delivery_info=delivery_info)
 
 @views.route('/')
 def home():
