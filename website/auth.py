@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request,redirect, session
+from flask import Blueprint, abort, render_template, request,redirect, session
 import sqlite3
 from utils import hash_and_salt_password, generate_salt
 
@@ -59,6 +59,7 @@ def login():
             session['user'] = user
             session['user_email'] = user[0]
             session['user_name'] = user[1]
+            session['admin'] = user[3]
             return redirect('/')
         else:
             # If the user doesn't exist, show an error message
@@ -107,6 +108,10 @@ def change_password():
 
 @auth.route('/give_admin_privileges_page', methods=['GET'])
 def give_admin_privileges_page():
+
+    if not session['admin']:
+        abort(403, description="You are not authorised to access this page")
+
     if request.method == 'GET':
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()

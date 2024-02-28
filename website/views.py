@@ -2,6 +2,7 @@ import os
 from flask import Blueprint, app, render_template, request,redirect, session, url_for
 import sqlite3
 from datetime import datetime
+from flask import abort
 
 
 views = Blueprint('views', __name__)
@@ -56,7 +57,11 @@ def add_product():
     # Connect to the database
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
-    
+
+    if not session['admin']:
+        conn.close()
+        abort(403, description="You are not authorised to access this page")
+
     if request.method == 'GET':
         cursor.execute('SELECT product_image FROM products')
         product_image_tuple = cursor.fetchall()
@@ -123,6 +128,10 @@ def edit_product(product_id):
     cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
     product = cursor.fetchone()
     
+    if not session['admin']:
+        conn.close()
+        abort(403, description="You are not authorised to access this page")
+
     if request.method == 'GET':
         cursor.execute('SELECT product_image FROM products')
         product_image_tuple = cursor.fetchall()

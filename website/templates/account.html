@@ -9,7 +9,7 @@
             <li><a href="/delivery_info">Change delivery informaion</a></li>
             <li><a href="/orders">Orders</a></li>
             <li><a href="/logout">Log out</a></li>
-            <li><a href="/give_admin_privileges_page">Give admin privileges</a></li>
+            {% if session['admin'] %}<li><a href="/give_admin_privileges_page">Give admin privileges</a></li> {% endif %}
         </ul>
     </div>
     
