@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, redirect, render_template, request, session
 import sqlite3
 electronics = Blueprint('electronics', __name__)
 
@@ -147,3 +147,34 @@ def search():
 
         conn.close()
         return render_template('search_results.html', filtered_products=filtered_products, search_input=search_input, filter_list=filter_list)
+    
+@electronics.route('/add_review', methods=['POST'])
+def add_review():
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    product_id = request.form['product_id']
+    rating = request.form['rating']
+
+    cursor.execute('''
+        INSERT INTO product_reviews (product_id, rating)
+        VALUES (?, ?)
+    ''', (product_id, rating))
+
+    average_rating_query = '''
+        SELECT AVG(rating) FROM product_reviews
+        WHERE product_id = ?
+    '''
+    cursor.execute(average_rating_query, (product_id,))
+
+    average_rating = round(cursor.fetchone()[0], 1)
+
+    cursor.execute('''
+        UPDATE products 
+        SET product_average_rating = ?
+        WHERE product_id = ?''', (average_rating, product_id))
+    
+    conn.commit()
+    conn.close()
+
+    return redirect('/electronics/product/' + product_id)

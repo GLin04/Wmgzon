@@ -30,6 +30,11 @@
             <span>price: £{{ filtered_products[4] }}</span>
             <a href="/edit_product/{{ filtered_products[0] }}">(edit)</a><br>
             <span id="stock_hidden_{{ filtered_products[0] }}" style=display:none></span>
+            {% if filtered_products[11] %}
+                <span>Rating: {{ filtered_products[11] }}/5</span><br>
+            {% else %}
+                <span>No rating</span><br>
+            {% endif %} 
             <img src="{{ url_for('static', filename='images/' + filtered_products[10]) }}" width="200" height="150"/>
             <br><br>
 

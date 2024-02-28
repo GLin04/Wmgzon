@@ -17,13 +17,13 @@ cursor.execute('''
         specifications TEXT NOT NULL,
         description TEXT NOT NULL,
         professional_installation BOOLEAN NOT NULL DEFAULT FALSE,
-        product_image TEXT NOT NULL
+        product_image TEXT NOT NULL,
+        product_average_rating REAL
     )
 ''')
 
 # In case i need to edit a table
-cursor.execute('''
-               ''')
+cursor.execute('''''')
     
 
 # Create the register form table
@@ -92,7 +92,14 @@ cursor.execute('''
     )
 ''')
 
-
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS product_reviews (
+        product_id INTEGER,
+        rating INTEGER,
+            
+        FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
+    )
+''')
 # Commit the changes and close the connection
 conn.commit()
 conn.close()

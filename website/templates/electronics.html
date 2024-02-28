@@ -34,8 +34,14 @@
             <span>price: £{{ product[4] }}</span>
             <a href="/edit_product/{{ product[0] }}">(edit)</a><br>
             <span id="stock_hidden_{{ product[0] }}" style=display:none></span>
+            {% if product[11] %}
+                <span>Rating: {{ product[11] }}/5</span><br>
+            {% else %}
+                <span>No rating</span><br>
+            {% endif %} 
             <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="200" height="150"/>
             <br><br>
+            
         </li>
         <script>
             if ({{product[2]}} === 0){
