@@ -22,20 +22,20 @@
                     </div>
                     <br>
 
-                    <div class="product-quantity" id="original_quantity_{{ product[0] }}" >{{ product[13] }}</div>
+                    <div class="product-quantity" id="original_quantity_{{ product[0] }}" >{{ product[14] }}</div>
 
                     <div class="product-price">
                         £{{ product[4] }} x
-                        <span id="current_quantity_{{ product[0] }}" value="{{ product[13] }}">{{ product[13] }}</span>
+                        <span id="current_quantity_{{ product[0] }}" value="{{ product[14] }}">{{ product[14] }}</span>
                         and installations =
-                        <span id="current_total_{{ product[0] }}"> {{ product[14] }}</span>
+                        <span id="current_total_{{ product[0] }}"> £ {{ product[16] }}</span>
                         P.installation =
                         <label>{{ product[15] }}</label>
                     </div>
 
                     <div class="product-inputs">
                         <input id="stock_hidden_{{ product[0] }}" type="hidden" value="{{ product[2]}}"/>
-                        <input type="number" id="quantity_{{ product[0] }}" name="quantity" value="{{ product[13] }}" oninput="updateQuantity({{ product[0] }}); check_stock({{ product[0] }});"/>
+                        <input type="number" id="quantity_{{ product[0] }}" name="quantity" value="{{ product[14] }}" oninput="updateQuantity({{ product[0] }}); check_stock({{ product[0] }});" min="1"/>
                         <input id="price_hidden_{{ product[0] }}" type="hidden" value="{{ product[4] }}"/>
                         <input id="id_hidden_{{ product[0] }}" type="hidden" value="{{ product[0] }}"/>
                         <input id="prof_installation_hidden_{{ product[0] }}" type="hidden" value="{{ product[13] }}"/>

@@ -68,7 +68,6 @@ def add_product():
         conn.close()
 
         product_image_array = [item[0] for item in product_image_tuple]
-        print(product_image_array)
         return render_template("add_product.html", product_image_array=product_image_array)
 
     
@@ -163,11 +162,9 @@ def edit_product(product_id):
         product_image = cursor.fetchone()
 
         if product_image[0] == 'default.jpg' or image.filename == '':
-            print('Default image or no change detected. No need to delete')
             image.filename = product_image[0]
         else:
             os.remove(f"{UPLOAD_PATH}/{product_image[0]}")
-            print(f'File {UPLOAD_PATH}/{product_image[0]} deleted successfully')
 
         update_sql = '''
             UPDATE products 
@@ -239,7 +236,7 @@ def add_to_basket():
         product_ids = cursor.fetchall()
         product_ids = [i[0] for i in product_ids]
         
-        print(quantity, " > ", product_stock)
+
         if int(quantity) > int(product_stock):
             error = "Not enough stock available. Please try again."
             return render_template("product.html", product=product, product_ids=product_ids, error=error)
@@ -279,11 +276,11 @@ def update_basket():
         cursor.execute('SELECT stock FROM products WHERE product_id=?', (product_id,))
         product_stock = cursor.fetchone()[0]
 
-        print(quantity, " > ", product_stock)
+
         if int(quantity) > int(product_stock):
 
             error = "Not enough stock available. Please try again."
-            print(error)
+
             return render_template("basket.html", products=products, total_basket_price=total_basket_price, product_stock=product_stock, error=error)
         
         cursor.execute('''
@@ -429,13 +426,14 @@ def order_confirmation():
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (current_date_time, total_basket_price, session['postcode'][0], delivery_info[2], delivery_info[3], delivery_info[4], user_email))
 
-        cursor.execute('SELECT order_id FROM Orders WHERE user_email=?', (user_email,))
+        cursor.execute('''SELECT order_id FROM Orders WHERE(
+                       order_date=? AND order_total=? AND order_postcode=? AND order_address=? AND order_phone_number=? AND order_city=? AND user_email=?)''', (current_date_time, total_basket_price, session['postcode'][0], delivery_info[2], delivery_info[3], delivery_info[4], user_email))
         order_id = cursor.fetchone()[0]
 
         for product in purchased_products:
-            print(product)
+   
             product_id = product[0]
-            product_quantity_purchased = product[13]
+            product_quantity_purchased = product[14]
 
             cursor.execute('SELECT stock FROM products WHERE product_id=?', (product_id,))
             current_stock = cursor.fetchone()[0]
@@ -470,6 +468,7 @@ def orders():
         JOIN products ON order_items.product_id = products.product_id
         WHERE orders.user_email=?
     ''', (user_email,))
+
 
     orders = cursor.fetchall()
     conn.close()
