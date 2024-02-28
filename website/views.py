@@ -484,3 +484,7 @@ def contact():
 @views.route('/email_sent')
 def email_sent():
     return render_template("email_sent.html")
+
+@views.route('/contact_it')
+def contact_it():
+    return render_template("contact_it.html")

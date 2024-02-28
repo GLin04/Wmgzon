@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Contact IT{% endblock %}
+
+{% block content %}
+    <h2>Contact IT support</h2>
+    <p>Send us the issue and we will get back to you with a solution as soon as possible.</p>
+    <form action="/email_sent">
+        <div class="form-group"/>
+            Your email: {{session['user_email']}}
+            <br>
+            <label>Issue title:</label><br>
+            <input type="text" id="issue" name="issue" required/><br>
+
+            <label>Message:</label><br>
+            <textarea type="text" id="message" name="message" required></textarea>
+        </div>
+        <input type="submit" value="Send"/>
+        
+
+    </form>
+{% endblock %}
