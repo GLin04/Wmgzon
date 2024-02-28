@@ -105,3 +105,46 @@ def change_password():
 
     return render_template("change_password.html")
 
+@auth.route('/give_admin_privileges_page', methods=['GET'])
+def give_admin_privileges_page():
+    if request.method == 'GET':
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT user_email, admin FROM login_details')
+        users = cursor.fetchall()
+        
+        email_list = [user[0] for user in users]
+
+        conn.close()
+
+
+    return render_template("give_admin_privileges.html", users=users, email_list=email_list)
+
+@auth.route('/give_admin_privileges', methods=['POST'])
+def give_admin_privileges():
+    if request.method == 'POST':
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        user_email = request.form['user_email']
+
+        cursor.execute('UPDATE login_details SET admin=TRUE WHERE user_email=?', (user_email,))
+        conn.commit()
+        conn.close()
+
+    return redirect('/give_admin_privileges_page')
+
+@auth.route('/remove_admin_privileges', methods=['POST'])
+def remove_admin_privileges():
+    if request.method == 'POST':
+        conn = sqlite3.connect('wmgzon.db')
+        cursor = conn.cursor()
+
+        user_email = request.form['user_email']
+
+        cursor.execute('UPDATE login_details SET admin=FALSE WHERE user_email=?', (user_email,))
+        conn.commit()
+        conn.close()
+
+    return redirect('/give_admin_privileges_page')

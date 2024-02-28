@@ -15,7 +15,7 @@
         <input type="checkbox" name="printer_filter" id="printer_filter"value="printers" {% if 'printers' in filter_list %} checked {% endif %}> Printers<br>
         <input type="checkbox" name="tv_filter" id="tv_filter" value="tvs" {% if 'tvs' in filter_list %} checked {% endif %}> TVs<br>   
 
-        <input type="number" name="max_price" id="max_price" value="{{ max_price }}" placeholder="Under £" min="0" max="100000">
+        <input type="number" name="max_price" id="max_price" value="{{ max_price }}" placeholder="Under £" min="0" max="100000"><br>
         <input type="submit" value="Apply Filter"/>
     </form>
     <form id="reset_filter_form" method="GET" action="/electronics">
