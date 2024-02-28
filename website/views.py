@@ -477,3 +477,10 @@ def orders():
     return render_template("orders.html", orders=orders)
 
 
+@views.route('/contact')
+def contact():
+    return render_template("contact.html")
+
+@views.route('/email_sent')
+def email_sent():
+    return render_template("email_sent.html")
