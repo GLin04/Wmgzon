@@ -29,13 +29,19 @@
 
     
     {% for product in products %}
-        <li>
-            
+        <li> 
             <a href="/electronics/product/{{ product[0] }}">{{ product[1] }}</a> 
             <span>price: £{{ product[4] }}</span>
             <a href="/edit_product/{{ product[0] }}">(edit)</a><br>
+            <span id="stock_hidden_{{ product[0] }}" style=display:none></span>
             <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="200" height="150"/>
             <br><br>
         </li>
+        <script>
+            if ({{product[2]}} === 0){
+                document.getElementById('stock_hidden_'+{{ product[0] }}).innerHTML = "Out of stock!";
+                document.getElementById('stock_hidden_'+{{ product[0] }}).style.display = "block";
+            }
+        </script>
     {% endfor %}
 {% endblock %}

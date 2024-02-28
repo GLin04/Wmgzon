@@ -29,10 +29,17 @@
             <a href="/electronics/product/{{ filtered_products[0] }}">{{ filtered_products[1] }}</a>
             <span>price: £{{ filtered_products[4] }}</span>
             <a href="/edit_product/{{ filtered_products[0] }}">(edit)</a><br>
+            <span id="stock_hidden_{{ filtered_products[0] }}" style=display:none></span>
             <img src="{{ url_for('static', filename='images/' + filtered_products[10]) }}" width="200" height="150"/>
             <br><br>
 
         </li>
+        <script>
+            if ({{filtered_products[2]}} === 0){
+                document.getElementById('stock_hidden_'+{{ filtered_products[0] }}).innerHTML = "Out of stock!";
+                document.getElementById('stock_hidden_'+{{ filtered_products[0] }}).style.display = "block";
+            }
+        </script>
     {% endfor %}
 
     <span id="no_results_message" style="display: none;">No results for "{{search_input}}" </span>
