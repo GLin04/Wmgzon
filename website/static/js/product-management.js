@@ -145,6 +145,9 @@ function check_fields_filled() {
     }
 }
 
+
+
+
 function check_stock(productId) {
     var quantity = parseInt(document.getElementById('quantity_' + productId).value);
     var stock = parseInt(document.getElementById('stock_hidden_' + productId).value);

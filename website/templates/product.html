@@ -12,11 +12,21 @@
 </div>
 {% endblock %}
 {% block content %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if ({{product[2]}} === 0){
+            document.getElementById('add_to_basket_form').style.display = "none";
+            document.getElementById('stock').innerHTML = "Out of stock!";
+        }
+    });
+</script>
+
 <div class="product-page">
     <div class="product-details">
         <h1>{{product[1]}}</h1>
-        <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="300" height="300"/>
-        <p>{{product[2]}} left!</p>
+        <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="300" height="300"/><br>
+        <span id="stock" value="{{product[2]}}">{{product[2]}} left! </span><br>
         <p>Category: {{product[3]}}</p>
         <p>Price: £{{product[4]}}</p>
         <p>{{product[5]}} day delivery </p>
