@@ -37,18 +37,18 @@ def basket():
         "WHERE basket.user_email = ?",
         (user_email,)
     )
-
     products = cursor.fetchall()
     
-    cursor.execute('SELECT SUM(total_price) FROM basket WHERE user_email=?', (user_email,))
+    product_stock = [product[2] for product in products]
 
+    cursor.execute('SELECT SUM(total_price) FROM basket WHERE user_email=?', (user_email,))
     total_basket_price = cursor.fetchone()[0]
     
     conn.close()
 
 
 
-    return render_template("basket.html", products=products, total_basket_price=total_basket_price)
+    return render_template("basket.html", products=products, total_basket_price=total_basket_price, product_stock=product_stock)
 
 @views.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -209,6 +209,10 @@ def delete_product(product_id):
 
 @views.route('/add_to_basket', methods=['POST'])
 def add_to_basket():
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
     if request.method == 'POST':
         product_id = request.form.get('product_id')
         quantity = request.form.get('quantity')
@@ -216,9 +220,20 @@ def add_to_basket():
         user_email = session['user_email']
         total_price = request.form.get('total_hidden')
 
-        # Insert the data into the database
-        conn = sqlite3.connect('wmgzon.db')
-        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
+        product = cursor.fetchone()
+
+        cursor.execute('SELECT stock FROM products WHERE product_id=?', (product_id,))
+        product_stock = cursor.fetchone()[0]
+
+        cursor.execute('SELECT product_id FROM basket WHERE user_email=?', (user_email,))
+        product_ids = cursor.fetchall()
+        product_ids = [i[0] for i in product_ids]
+        
+        print(quantity, " > ", product_stock)
+        if int(quantity) > int(product_stock):
+            error = "Not enough stock available. Please try again."
+            return render_template("product.html", product=product, product_ids=product_ids, error=error)
         
         cursor.execute('''
             INSERT INTO basket (user_email, product_id, product_quantity, professional_installation, total_price)
@@ -231,15 +246,36 @@ def add_to_basket():
     
 @views.route('/update_basket', methods=['PUT'])
 def update_basket():
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
     if request.method == 'PUT':
         product_id = request.args.get('productId')
         quantity = request.args.get('quantity')
         total_price = request.args.get('total')
         user_email = session['user_email']
 
-        # Update the data in the database
-        conn = sqlite3.connect('wmgzon.db')
-        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT products.*, basket.* "
+            "FROM basket "
+            "JOIN products ON basket.product_id = products.product_id "
+            "WHERE basket.user_email = ?",
+            (user_email,)
+        )
+        products = cursor.fetchall()
+
+        cursor.execute('SELECT SUM(total_price) FROM basket WHERE user_email=?', (user_email,))
+        total_basket_price = cursor.fetchone()[0]
+
+        cursor.execute('SELECT stock FROM products WHERE product_id=?', (product_id,))
+        product_stock = cursor.fetchone()[0]
+
+        print(quantity, " > ", product_stock)
+        if int(quantity) > int(product_stock):
+
+            error = "Not enough stock available. Please try again."
+            print(error)
+            return render_template("basket.html", products=products, total_basket_price=total_basket_price, product_stock=product_stock, error=error)
         
         cursor.execute('''
             UPDATE basket

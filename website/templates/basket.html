@@ -1,46 +1,60 @@
 {% extends "base.html" %}
 {% block title %}Basket{% endblock %}
+{% block js %}
+    <script src=../../static/js/product-management.js></script>   
+{% endblock %}
 {% block content %}
 
         
 
     <ul>
-        {% for products in products %}
+        {% set i = namespace(value=0) %}
+        {% set product_index = namespace(value=0) %}
+        {% for product in products %}
             <li class="product-item">
                 <div class="product-details">
-                    <a href="/electronics/product/{{ products[0] }}">
-                        {{ products[1] }}
+                    <a href="/electronics/product/{{ product[0] }}">
+                        {{ product[1] }}
                     </a>
                     <br>
                     <div class="product-image">
-                        <img src="{{ url_for('static', filename='images/' + products[10]) }}" width="100" height="100"/>
+                        <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="100" height="100"/>
                     </div>
                     <br>
 
-                    <div class="product-quantity" id="original_quantity_{{ products[0] }}" hidden>{{ products[12] }}</div>
+                    <div class="product-quantity" id="original_quantity_{{ product[0] }}" >{{ product[13] }}</div>
 
                     <div class="product-price">
-                        £{{ products[4] }} x
-                        <span id="current_quantity_{{ products[0] }}" value="{{ products[13] }}">{{ products[13] }}</span>
+                        £{{ product[4] }} x
+                        <span id="current_quantity_{{ product[0] }}" value="{{ product[13] }}">{{ product[13] }}</span>
                         and installations =
-                        <span id="current_total_{{ products[0] }}"> {{ products[14] }}</span>
+                        <span id="current_total_{{ product[0] }}"> {{ product[14] }}</span>
                         P.installation =
-                        <label>{{ products[15] }}</label>
+                        <label>{{ product[15] }}</label>
                     </div>
 
                     <div class="product-inputs">
-                        <input type="number" id="quantity_{{ products[0] }}" name="quantity" value="{{ products[13] }}" oninput="updateQuantity({{ products[0] }})"/>
-                        <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
-                        <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
-                        <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+                        <input id="stock_hidden_{{ product[0] }}" type="hidden" value="{{ product[2]}}"/>
+                        <input type="number" id="quantity_{{ product[0] }}" name="quantity" value="{{ product[13] }}" oninput="updateQuantity({{ product[0] }}); check_stock({{ product[0] }});"/>
+                        <input id="price_hidden_{{ product[0] }}" type="hidden" value="{{ product[4] }}"/>
+                        <input id="id_hidden_{{ product[0] }}" type="hidden" value="{{ product[0] }}"/>
+                        <input id="prof_installation_hidden_{{ product[0] }}" type="hidden" value="{{ product[13] }}"/>
+                        <error id="error_{{ product[0] }}" hidden>Not enough stock</error>
                     </div>
                 </div>
 
                 <div class="product-buttons">
-                    <input id="update_button_{{ products[0] }}" type="button" value="Update" onclick="updateBasket({{ products[0] }})" style="display: none;" />
-                    <input id="delete_button_{{ products[0] }}" type="button" value="Delete" onclick="deleteBasket({{ products[0] }})" />
+                    <input id="update_button_{{ product[0] }}" type="button" value="Update" onclick="updateBasket({{ product[0] }})" />
+                    <input id="delete_button_{{ product[0] }}" type="button" value="Delete" onclick="deleteBasket({{ product[0] }})" />
                 </div>
             </li>
+            stock = {{ product[2]}}
+            
+            <script>
+                productId = {{ product[0] }};
+                document.getElementById('update_button_'+ productId).disabled = true;
+            </script>
+            {% set i.value = i.value + 1 %}
         {% endfor %}
         
     </ul>
@@ -58,8 +72,9 @@
         
     </script>
 
+
+
+
 {% endblock %}
 
-{% block js %}
-    <script src=../../static/js/product-management.js></script>   
-{% endblock %}
+

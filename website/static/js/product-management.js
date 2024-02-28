@@ -11,28 +11,7 @@ function redirectElectronics() {
     window.location.href = '/electronics';
 }
 
-function calculateTotal() {
-    var quantity = document.getElementById('quantity').value;
-    var profInstallationHidden = document.getElementById('prof_installation_hidden');
-    var profInstallationCheckbox = document.getElementById('prof_installation');
-    var total;
 
-    if (profInstallationCheckbox.checked) {
-        profInstallationHidden.value = true;
-    }else {
-        profInstallationHidden.value = false;
-    }
-
-    if (document.getElementById('prof_installation').checked) {
-        var total = quantity * price + 40 * quantity;
-    } else {
-        var total = quantity * price;
-    }
-    document.getElementById('total').innerHTML = 'TOTAL = £' + total.toFixed(2);
-
-    document.getElementById('total_hidden').value = total.toFixed(2);
-
-}
 
 function updateQuantity(productId) {
     var quantity = document.getElementById('quantity_' + productId).value;
@@ -44,9 +23,9 @@ function updateQuantity(productId) {
     prof_installation = (prof_installation === 'true');
 
     if (quantity != original_quantity) {
-        update_button.style.display = 'inline';
+        update_button.disabled = false;
     } else {
-        update_button.style.display = 'none';
+        update_button.disabled = true;
     }
 
     if (prof_installation) {
@@ -164,5 +143,46 @@ function check_fields_filled() {
     } else {
       submitButton.disabled = true;
     }
-  }
-  
+}
+
+function check_stock(productId) {
+    var quantity = parseInt(document.getElementById('quantity_' + productId).value);
+    var stock = parseInt(document.getElementById('stock_hidden_' + productId).value);
+
+    if ((stock < quantity) || !quantity){
+        document.getElementById('update_button_' + productId).disabled = true;
+        document.getElementById('error_' + productId).removeAttribute('hidden');
+
+        if (stock < quantity) {
+            document.getElementById('error_' + productId).innerText = 'Insufficient stock';
+        } else {
+            document.getElementById('error_' + productId).innerText = 'Please enter a quantity';
+        }
+    } else {
+        document.getElementById('update_button_' + productId).disabled = false;
+        document.getElementById('error_' + productId).setAttribute('hidden', true);
+    }
+}
+
+function calculateTotal() {
+    var quantity = document.getElementById('quantity').value;
+    var profInstallationHidden = document.getElementById('prof_installation_hidden');
+    var profInstallationCheckbox = document.getElementById('prof_installation');
+    var total;
+
+    if (profInstallationCheckbox.checked) {
+        profInstallationHidden.value = true;
+    }else {
+        profInstallationHidden.value = false;
+    }
+
+    if (document.getElementById('prof_installation').checked) {
+        var total = quantity * price + 40 * quantity;
+    } else {
+        var total = quantity * price;
+    }
+    document.getElementById('total').innerHTML = 'TOTAL = £' + total.toFixed(2);
+
+    document.getElementById('total_hidden').value = total.toFixed(2);
+
+}

@@ -71,7 +71,7 @@ def product(product_id):
     conn.close()
 
     # render the template with the product details
-    return render_template("product.html", product=product, product_ids=product_ids)
+    return render_template("product.html", product=product, product_ids=product_ids, error='')
 
 
 
