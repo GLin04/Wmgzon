@@ -1,91 +1,118 @@
-.main {
-    width: 50%;
-    margin: 50px auto;
+html body{
+    background-color: #ebfcff !important;
+    height: 100%; /* Set the height of the HTML element to 100% */
+    width: 100%; /* Set the width of the HTML element to 100% */
+    margin: 0; /* Remove the default margin */
+    padding: 0; /* Remove the default padding */
 }
 
-body {
-    background-color: #e7fffe !important;
-    margin: 0;
-}
 
-.has-search .form-control {
-    padding-left: 2.375rem;
-}
 
-.has-search .form-control-feedback {
-    position: fixed;
-    z-index: 2;
-    display: block;
-    width: 2.375rem;
-    height: 2.375rem;
-    line-height: 2.375rem;
-    text-align: center;
-    pointer-events: none;
-    color: #aaa;
-}
 
-.top-section .input-group {
-    max-width: 800px;
-    flex: 1;
-}
+/* || Main navigation bar */
 
-.top-section {
+.navbar-container {
     background-color: #0cc7ca;
-    color: #000000;
-    padding: 10px;
+    display: flex; /* Set the display value to flex */
+    align-items: center; /* aligns items vertiacally */ 
+    justify-content: space-between; /* aligns items horizontally */
+    height: 75px; /* Set the height of the container */
+    padding: 0;
+}
+
+.navbar-container__logo {
+    justify-content: left;
+    width: 200px; /* Set the width of the image */
+    height: auto; /* Maintain the aspect ratio of the image */
+}
+
+@media (max-width: 768px) {
+    .navbar-container__logo {
+        display: none; /* Set the width of the image */
+    }
+}
+
+.navbar-container__logo-container {
+    padding-right: 2%;
+}
+
+.navbar-container__delivery-details-container {
+    overflow: hidden; /* Hide the content that is outside of the container */
+    text-overflow: ellipsis;
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    flex-direction: column;
+    justify-content: right;
+    padding-right: 2%;
+    width: 200px;
 }
 
-.logo img {
-    max-width: 100%;
-    height: auto;
-}
-
-.delivery-details {
-    text-align: center;
-}
-
-.main-nav ul {
-    list-style: none;
+.navbar-container__delivery-details-container > * {
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
-.user-actions a {
-    color: #000000;
+
+@media (max-width: 400px) {
+    .navbar-container__delivery-details-container {
+        display: none; /* Set the width of the image */
+    }
+}
+
+.navbar-container > a {
+    min-width: 75px;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
     text-decoration: none;
-    margin-left: 10px;
-    margin-right: 25px;
+    color: black;
+    font-weight: 650;
+    text-align: center;
+    border: 2px solid transparent; /* Add a transparent border */
+    transition: border-color 0.3s; /* Optional: Add transition for smoother hover effect */
+}
+.navbar-container__search-bar {
+    padding: 1%;
+    min-width: 100px;
+}
+.navbar-container > a:hover {
+    border-bottom: 2px solid #cdf9fa; /* Add a border to the bottom of the text on hover */
+    text-decoration: none;
 }
 
-.categories-section {
+/* || Categories container */
+
+.categories-container {
+    display: flex;
     background-color: #cdf9fa;
-    padding: 10px;
-    text-align: center;
-}
-
-.categories-list {
-    list-style: none;
-    margin: 0;
+    justify-content: space-evenly; /* aligns items horizontally */
+    height: 50px; /* Set the height of the container */
     padding: 0;
 }
 
-.categories-list li {
-    display: inline-block;
-    margin-right: 5%;
-    margin-left: 5%;
+.categories-container ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
 }
 
-.categories-list a {
-    color: #000000;
+.categories-container ul a {
     text-decoration: none;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: border-color 0.3s; /* Optional: Add transition for smoother hover effect */
+    width: 100%;
+    border: 2px solid transparent; /* Add a transparent border */
+    text-align: center;
 }
 
-.logo img {
-    max-width: 100%;
-    height: auto;
-    max-height: 50px;
+.categories-container ul a:hover {
+    border: 2px solid #0cc7ca; /* Add a border to the bottom of the text on hover */
 }
+
+  /* Categories container || */
+
+
+

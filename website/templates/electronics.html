@@ -4,7 +4,7 @@
     <h1>electronics</h1>
 {% endblock %}
 
-{% block content %}
+{% block main %}
     <form id="filter_form" method="POST" action="/electronics">
         <input type="checkbox" name="accessories_filter" id="accessories_filter" value="accessories" {% if 'accessories' in filter_list %} checked {% endif %}> Accessories<br>
         <input type="checkbox" name="data_storage_filter" id="data_storage_filter" value="data_storage" {% if 'data_storage' in filter_list %} checked {% endif %}> Data Storage<br>

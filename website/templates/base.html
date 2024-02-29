@@ -22,57 +22,70 @@
         
     </head>
     <body>
-
-        <div class="top-section">
-            {% block logo %}            
-                <div class="logo">
-                    <a href="/">
-                        <img src="../static/images/wmgzon.png">
-                    </a>
-                </div>
-            {% endblock %}
-            <div class="delivery-details">
-                <p>Deliver to: {{postcode}}</p>
-            </div>
-            <form action="/electronics/search" method="POST" id="search">
-                <div class="input-group">
-                        <input type="text" class="form-control" name="search_input" placeholder="Search Electronics">
-                        <div class="input-group-append">
-                        <button class="btn btn-secondary" type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                            </svg>
-                        </button>
+        <header>
+            <div class="navbar-container">
+                {% block logo %}
+                    <div class="navbar-container__logo-container">          
+                        <a href="/">
+                            <img class="navbar-container__logo" src="../static/images/wmgzon.png">
+                        </a>
                     </div>
+                {% endblock %}
+                <div class="navbar-container__delivery-details-container">
+                    <span>Deliver to:</span>
+                    <a>{{postcode}}</a>
                 </div>
-            </form>
-            <div class="user-actions">
+                
+                <div class="navbar-container__search-bar w-100 me-3">
+                    <form action="/electronics/search" method="POST" id="search">
+                        <div class="input-group">
+                            <input type="text" class="form-control navbar-container__text-input" name="search_input" placeholder="Search Electronics">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 {% if 'user' in session %}
                 <a href="/account">
                     <span>{{ session['user_name'] }}</span>
                 </a>
                 {% else %}
-                    <a href="/register">Sign up</a>
+                <a href="/register">Register</a>
                 {% endif %}
-                    <a href="/basket">Basket</a>
+                <a href="/basket">Basket</a>
             </div>
-        </div>
+    
+    
+            
+            <div class="categories-container">
+                <ul>
+                    <a href="/coming_soon">Movies</a>
+                    <a href="/coming_soon">Groceries</a>
+                    <a href="/coming_soon">Books</a>
+                    <a href="/electronics">Electronics</a>
+                    <a href="/coming_soon">Clothing</a>
+                    <a href="/coming_soon">Music</a>
+                </ul>
+            </div>
+            <body>
+            {% block header %}
 
+            {% endblock %}
+        </header>
 
-        
-        <div class="categories-section">
-            <ul class="categories-list">
-                <li><a href="/coming_soon">Movies</a></li>
-                <li><a href="/coming_soon">Groceries</a></li>
-                <li><a href="/coming_soon">Books</a></li>
-                <li><a href="/electronics">Electronics</a></li>
-                <li><a href="/coming_soon">Clothing</a></li>
-                <li><a href="/coming_soon">Music</a></li>
-            </ul>
-        </div>
+        <main>
+            {% block main %}
 
-        {% block content %}
-
-        {% endblock %}
+            {% endblock %}
+        </main>
+        <footer>
+            {% block footer %}
+            {% endblock %}
+        </footer>
     </body>
 </html>

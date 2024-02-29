@@ -27,5 +27,5 @@ def delivery_info_context_processor():
     if session['postcode']:
         return {'postcode': session['postcode'][0]}
     else:
-        return {'postcode': 'No delivery info'}
+        return {'postcode': 'None set'}
 
