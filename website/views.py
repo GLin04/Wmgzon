@@ -444,7 +444,7 @@ def order_confirmation():
             cursor.execute('''
                 INSERT INTO order_items (order_id, product_id, product_quantity, product_price, product_professional_installation)
                 VALUES (?, ?, ?, ?, ?)
-            ''', (order_id, product_id, product_quantity_purchased, product[4], product[14]))
+            ''', (order_id, product_id, product_quantity_purchased, product[4], product[15]))
 
         
         cursor.execute('DELETE FROM basket WHERE user_email=?', (user_email,))
