@@ -4,6 +4,7 @@ html body{
     width: 100%; /* Set the width of the HTML element to 100% */
     margin: 0; /* Remove the default margin */
     padding: 0; /* Remove the default padding */
+    overflow-x: hidden;
 }
 
 
@@ -78,7 +79,9 @@ html body{
 .navbar-container > a:hover {
     border-bottom: 2px solid #cdf9fa; /* Add a border to the bottom of the text on hover */
     text-decoration: none;
+    color: #000000;
 }
+
 
 /* || Categories container */
 
@@ -88,6 +91,8 @@ html body{
     justify-content: space-evenly; /* aligns items horizontally */
     height: 50px; /* Set the height of the container */
     padding: 0;
+    box-shadow: 0 0 5px #ddd
+    
 }
 
 .categories-container ul {
@@ -102,17 +107,313 @@ html body{
     color: black;
     padding-top: 10px;
     padding-bottom: 10px;
-    transition: border-color 0.3s; /* Optional: Add transition for smoother hover effect */
     width: 100%;
-    border: 2px solid transparent; /* Add a transparent border */
+    border: 2px solid;
+    border-color: #cdf9fa;
     text-align: center;
+    font-weight: 600;
+    transition: border-color 1s, background-color 1s, font-weight 1s; 
+    
 }
 
 .categories-container ul a:hover {
-    border: 2px solid #0cc7ca; /* Add a border to the bottom of the text on hover */
+    border-color: #0cc7ca;
+    background-color: #C3D2D5;
+    font-weight: 650;
 }
 
-  /* Categories container || */
+
+
+/* || product container */
+
+.main-container {
+    display: flex;
+    padding-right: 1vw;
+    align-items: stretch;
+    justify-content: flex-start;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/*filter*/
+
+.main-containter__product-filter-container__form-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.main-containter__product-filter-container__form-container h2 {
+    color: #2d0a79;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: #0000003f 1px solid;
+}
+
+.main-containter__product-filter-container__form-container form {
+    margin-bottom: 20px;
+}
+
+.main-containter__product-filter-container__form-container form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.main-containter__product-filter-container__form-container form input[type="number"] {
+    margin-top: 10px;
+}
+
+.main-containter__product-filter-container__form-container form input[type="submit"] {
+    background-color: #2d0a79;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.main-containter__product-filter-container__form-container a {
+    background-color: #790a0a;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid #790a0a;
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 120.133px;
+    display:block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.main-containter__product-filter-container__form-container a:hover {
+    background-color: #790a0a9c;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid #790a0a;
+}
+
+.main-containter__product-filter-container__form-container form input[type="submit"]:hover {
+    background-color: #4e2ca1;
+}
+
+.main-containter__product-filter-container__form-container form input[type="submit"]:hover {
+    background-color: #4e2ca1;
+}
+
+.main-containter__product-filter-container > * {
+    position: sticky;
+    top: 0;
+    
+}
+
+
+/*end filter*/
 
 
 
+
+.main-containter__product-filter-container {
+    position: sticky;
+    top: 0;
+    left: 0;  /* make it stick to left */
+    width: 150px; 
+    margin-right: 0.5%;
+    background-color: #C3D2D5;
+    border: 0.01px solid #000;
+    height: 90%;
+}
+
+
+.main-container__product-info-container {
+    width: 100%;
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Use repeat() and auto-fill to create a responsive grid layout */
+    grid-gap: 10px; /* Set the gap between grid items */
+    justify-content: center; /* Center the grid items horizontally */
+    align-items: center; /* Center the grid items vertically */
+    position: relative;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+    height: 300px;
+    border: #69696948 0.1px solid;
+    overflow: hidden;
+    position: relative;
+}
+
+@media (max-width: 430px) {
+    .product-card .product-card__image-container img{
+        width: 100%;
+}
+    
+}
+
+.product-card__stock-warning {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+.product-card__text-info-container {
+    padding: 5px; /* Add padding to the container */
+    display: flex; /* Set the display value to flex */
+    flex-direction: column; /* Set the flex direction to column */
+    height: 100%;
+    flex-wrap: wrap;
+    gap: 0;
+
+}
+.product-card__text-info-container a {
+    text-decoration: none; /* Remove the default underline from links */
+    color: #000; /* Set the color of the product name */
+    font-weight: bold; /* Set the font weight of the product name */
+}
+
+.product-card__text-info-container a:hover {
+    text-decoration: none; /* Remove the default underline from links */
+    color: #000; /* Set the color of the product name */
+    font-weight: bold; /* Set the font weight of the product name */
+}
+
+.product-card__text-info-container__horizontal-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px; /* Create a gap between the columns */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.product-card__price {
+    padding: 5px; /* Add padding to the price */
+    background-color: #0000003f; /* Set the background color of the price */
+    border-radius: 0px 5px 0px 0px; /* Round the bottom corners */
+    border: 1px solid #000000; /* Add a border */
+    color: #fff; /* Set the color of the price */
+    font-weight: bold; /* Set the font weight of the price */
+    text-align: center; /* Center the text */
+    transition: background-color 0.3s, color 0.3s; /* Add a transition effect */
+    border: 1px solid rgba(0, 0, 0, 0.37);
+}
+
+
+.product-card__price:hover {
+background-color: #ffffff; /* Change background color on hover */
+border: 1px solid #000;
+}
+
+.product-card__price,
+.product-card__rating {
+  padding: 5px; /* Add padding to each item */
+}
+
+.product-card img {
+    width: 100%; 
+    height: 200px; /* Set the width of the image to 100% */
+}
+
+.product-card__name {
+    width: 100%; /* Set the width of the text container */
+    height: 2.4em;
+}
+
+
+.product-card__name a{
+    height: 100%; /* Set maximum height for two lines */
+    line-height: 1.2em; /* Set line height to 1.2em (font size x 1.2) */
+    width: 100%; /* Set the width of the text container */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card__name a:hover {
+    text-decoration: none; /* Remove the default underline from links */
+    color: #2d0a79; /* Set the color of the product name */
+    font-weight: bold; /* Set the font weight of the product name */
+
+}
+
+
+a.edit-button {
+    position: absolute;     
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px; /* Add padding to create the button size */
+    background-color: rgba(0, 0, 0, 0.37); /* Set the background color */
+    color: white; /* Set the text color */
+    border-radius: 5px; /* Round the corners */
+    transition: background-color 0.3s, color 0.3s; /* Add a transition effect */
+    border: 1px solid rgba(0, 0, 0, 0.37);
+  }
+  
+a.edit-button:hover {
+    background-color: #ffffff; /* Change background color on hover */
+    border: 1px solid #000;
+}
+  /* product container || */
+
+
+
+  /* ----------------------------------------- Coming soon css -------------------------------------------------- */
+
+
+.main-coming-soon {
+    text-align: center;
+}
+
+.main-coming-soon__text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Adjust the height as needed */
+}
+
+.coming-soon-text {
+    opacity: 0;
+    animation: fadeIn 2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px); /* Optional - slide from bottom */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Optional - slide from bottom */
+    }
+}
+
+.main-coming-soon__redirect-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #C3D2D5;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    transition: background-color 0.3s, transform 0.2s, color 0.3s;
+}
+
+.main-coming-soon__redirect-button:hover {
+    background-color: #5a6263;
+    color: white;
+    transform: scale(1.1);
+}
+/* ------------------------------------------- coming soon end css ----------------------------------------- */

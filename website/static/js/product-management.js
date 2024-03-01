@@ -117,7 +117,6 @@ function check_image_exists(product_image_array) {
 
 function check_fields_filled() {
     const name = document.getElementById('name').value;
-    const stock = document.getElementById('stock').value;
     const productType = document.getElementById('productType').value;
     const price = document.getElementById('price').value;
     const deliveryTime = document.getElementById('deliveryTime').value;
@@ -129,7 +128,7 @@ function check_fields_filled() {
 
     // Check if all fields are filled
     const allFieldsFilled = (
-      name && stock && productType && price &&
+      name && productType && price &&
       deliveryTime && brand && specifications &&
       description
     );

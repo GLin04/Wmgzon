@@ -15,7 +15,7 @@
         <input type="text" id="name" name="name" value="{{ product[1] }}" oninput="check_fields_filled()"><br>
 
         <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" value="{{ product[2] }}" oninput="check_fields_filled()"><br>
+        <input type="number" id="stock" name="stock" value="{{ product[2] }}" min="0"><br>
 
         <label for="productType">Product Type:</label>
         <select name="productType" id="productType">
