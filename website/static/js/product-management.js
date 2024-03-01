@@ -183,7 +183,7 @@ function calculateTotal() {
     } else {
         var total = quantity * price;
     }
-    document.getElementById('total').innerHTML = 'TOTAL = £' + total.toFixed(2);
+    document.getElementById('total').innerHTML = 'Total price: £' + total.toFixed(2);
 
     document.getElementById('total_hidden').value = total.toFixed(2);
 

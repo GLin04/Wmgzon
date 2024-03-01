@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block head %}
+
+{% endblock %}
 {% block title %}{{product[1]}}{% endblock %}
 
 {% block css %}
@@ -22,73 +25,98 @@
     });
 </script>
 
-<div class="product-page">
-    <div class="product-details">
-        <h1>{{product[1]}}</h1>
-        <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="300" height="300"/><br>
-        <span id="stock" value="{{product[2]}}">{{product[2]}} left! </span><br>
-        <p>Category: {{product[3]}}</p>
-        <p>Price: £{{product[4]}}</p>
-        <p>{{product[5]}} day delivery </p>
-        <p>Brand: {{product[6]}}</p>
-        <p>Specification: {{product[7]}}</p>
-        <p>Description: {{product[8]}}</p>
 
-
-        <form id="add_to_basket_form" action='/add_to_basket' method="post">
-            <input type="hidden" id="product_id" name="product_id" value="{{product[0]}}">
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" min="1" max="{{product[2]}}" name="quantity" value="1" placeholder="Quantity" oninput="calculateTotal()"/><br>
-            <div class="error">
-                {{ error }}
-            </div>
-                <p>Professional installation (+£40)
-                    <input id="prof_installation" type="checkbox" name="prof_installation" oninput="calculateTotal()" >
-                </p>
-
-                <input type="hidden" id="prof_installation_hidden" name="prof_installation_hidden">          
-                <input type="submit" value="Add to Cart"></input>
-                <input type="hidden" id="total_hidden" name="total_hidden" value="0.0">
-                <span id="total">TOTAL = £{{product[4]}}</span>
-        </form>
-        <div id="go_to_basket_div">
-            <span>Product already in basket</span>
-            <input type="button" value="Go to Basket" onclick="window.location.href='/basket'"></input>
+<div class="product-page-main-container">
+    <div class="product-page-main-container__top-container">
+        <div class="top-container__product-image">
+            <img src="{{ url_for('static', filename='images/' + product[10]) }}"/><br>
         </div>
 
-        <script>
-            var price = {{product[4]}};
-            var product_id = {{product[0]}};
+        <div class="top-container__product-details">
+            <h3>{{product[1]}}</h3>
+            <p>Brand: {{product[6]}}</p>
+            <p class="product-page-main-container__basket-container__price">£{{product[4]}}</p>
+            <div class="product-reviews">
+                <hr class="solid-divider">
+                <form id="review_form" action='/electronics/add_review' method="post" class="top-container__review-form">
+                    <span>Rating: {{ product[11] }}/5</span>
+                    <input type="hidden" id="product_id" name="product_id" value="{{product[0]}}">
+                    <input type="number" id="rating" name="rating" value="5" min="1" max="5" placeholder="1-5"/>
+                    <input type="submit" value="Add Rating"></input>
+                </form>
+                <hr class="solid-divider">
+            </div>
             
-            document.addEventListener("DOMContentLoaded", function(event) {
-                calculateTotal();
-            });
-        </script>
-        <script>
+            <div class="product-page-main-container__basket-container">
+                <span id="stock" value="{{product[2]}}">{{product[2]}} left! </span><br>
 
-            const add_to_basket_form = document.getElementById('add_to_basket_form');
-            const go_to_basket_div = document.getElementById('go_to_basket_div');
 
-            go_to_basket_div.style.display = "none";
+                <p>{{product[5]}} Day Delivery </p>
+
             
-            if ({{product_ids}}.includes({{product[0]}})) {
-                add_to_basket_form.style.display = "none";
-                go_to_basket_div.style.display = "block";
-            }  
+                <form id="add_to_basket_form" action='/add_to_basket' method="post" class="top-container__add-to-basket-form">
+                    <input type="hidden" id="product_id" name="product_id" value="{{product[0]}}">
 
-        </script>
+                    <div class="error">
+                        {{ error }}
+                    </div>
+
+                    <input type="hidden" id="prof_installation_hidden" name="prof_installation_hidden"> 
+
+                    <div class="quantity-div-container">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" min="1" max="{{product[2]}}" name="quantity" value="1" placeholder="Quantity" oninput="calculateTotal()"/>
+                        <input type="hidden" id="total_hidden" name="total_hidden" value="0.0">
+                        <span id="total">Total price: £{{product[4]}}</span>
+                        <div class="prof-installation-container">
+                            <input id="prof_installation" type="checkbox" name="prof_installation" oninput="calculateTotal()">
+                            <span>Professional installation (+£40 per item)</span>
+                        </div>
+                    </div>         
+
+                    <input type="submit" value="Add to Cart"></input>
+
+                </form>
+            
+                <div id="go_to_basket_div" class="top-container__go-to-basket-div">
+                    <span>Product already in basket</span>
+                    <input type="button" value="Go to Basket" onclick="window.location.href='/basket'"></input>
+                </div>
+            </div>
+
+        </div>        
+    </div>
+    <hr class="solid-divider">
+    <div class="product-page-main-container__spec_description_container">
+        <p class="product-page-main-container__spec_description_container__specification-text">Specification: {{product[7]}}</p>
+        <p class="product-page-main-container__spec_description_container__description-text">Description: {{product[8]}}</p>
     </div>
 </div>
 
-<div class="product-reviews">
-    <h2>Rating: {{ product[11] }}/5</h2>
 
-    <form id="review_form" action='/electronics/add_review' method="post">
-        <input type="hidden" id="product_id" name="product_id" value="{{product[0]}}">
-        <label for="rating">Rating:</label>
-        <input type="number" id="rating" name="rating" value="5" min="1" max="5" placeholder="Rating"/><br>
-        <input type="submit" value="Add Review"></input>
-    </form>
+
+
+
+<script>
+    var price = {{product[4]}};
+    var product_id = {{product[0]}};
+    
+    document.addEventListener("DOMContentLoaded", function(event) {
+        calculateTotal();
+    });
+</script>
+<script>
+
+    const add_to_basket_form = document.getElementById('add_to_basket_form');
+    const go_to_basket_div = document.getElementById('go_to_basket_div');
+
+    go_to_basket_div.style.display = "none";
+    if ({{product_ids}}.includes({{product[0]}})) {
+        add_to_basket_form.style.display = "none";
+        go_to_basket_div.style.display = "block";
+    }  
+
+</script>
 {% endblock %}
 
 {% block js %}
