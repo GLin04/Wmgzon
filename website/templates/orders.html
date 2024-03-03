@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Orders{% endblock %}
 {% block main %}
+<div class="orders-container">
   <h1>Orders</h1>
-  <table border="3">
+  <table class="orders-table">
     <thead>
       <tr>
         <th>Order ID</th>
@@ -31,4 +32,5 @@
       {% endfor %}
     </tbody>
   </table>
+</div>
 {% endblock %}

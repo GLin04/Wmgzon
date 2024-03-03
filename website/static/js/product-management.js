@@ -189,3 +189,5 @@ function calculateTotal() {
     document.getElementById('total_hidden').value = total.toFixed(2);
 
 }
+
+

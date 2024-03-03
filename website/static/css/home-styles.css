@@ -1026,7 +1026,9 @@ a.edit-button:hover {
     margin-bottom: 15px;
 }
 
-.email-form {
+.email-form label {
+    margin-bottom: 0px;
+    margin-top: 15px;
 }
 
 .email-form textarea {
@@ -1038,3 +1040,80 @@ a.edit-button:hover {
 }
 
   /* ------------------------------------------- end contact us page ----------------------------------------- */
+
+
+  /* ------------------------------------------- contact it support page ----------------------------------------- */
+
+  .contact-it-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.email-form label {
+    margin-bottom: 0px;
+    margin-top: 15px;
+}
+
+.email-form input {
+    width: 50%;
+    height: 30px;
+    padding: 10px;
+    margin: 5px 0 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.email-form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* ------------------------------------------- end contact it support page ----------------------------------------- */
+
+
+/* ------------------------------------------- home page ----------------------------------------- */
+
+
+
+/* ------------------------------------------- end home page ----------------------------------------- */
+
+
+
+/* ------------------------------------------- orders page ----------------------------------------- */
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 10px;
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+
+.orders-table th {
+  background-color: #f2f2f2;
+}
+
+.orders-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.orders-table tr:hover {
+  background-color: #f2f2f2;
+}
+
+.orders-container {
+
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+/* ------------------------------------------- end orders page ----------------------------------------- */

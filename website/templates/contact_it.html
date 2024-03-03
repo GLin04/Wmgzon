@@ -3,20 +3,23 @@
 {% block title %}Contact IT{% endblock %}
 
 {% block main %}
-    <h2>Contact IT support</h2>
-    <p>Send us the issue and we will get back to you with a solution as soon as possible.</p>
+<div class="contact-it-form form-container">
+    <div class="contact-it-title">Contact IT</div>
+    <hr class="solid-black-divider">
+    <p style="padding-left: 10px"> Describe the issue and we will get back to you with a solution as soon as possible.</p>
     <form action="/email_sent">
-        <div class="form-group"/>
-            Your email: {{session['user_email']}}
+        <div class="email-form"/>
+            <span style="padding-left: 10px" >Your email: {{session['user_email']}}</span>
             <br>
-            <label>Issue title:</label><br>
+            <label style="padding-left: 10px">Issue title:</label><br>
             <input type="text" id="issue" name="issue" required/><br>
 
-            <label>Message:</label><br>
+            <label style="padding-left: 10px">Description:</label><br>
             <textarea type="text" id="message" name="message" required></textarea>
         </div>
-        <input type="submit" value="Send"/>
+        <input class="button" style="width:100%" type="submit" value="Send"/>
         
 
     </form>
+</div>
 {% endblock %}
