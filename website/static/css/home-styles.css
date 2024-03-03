@@ -1117,3 +1117,30 @@ a.edit-button:hover {
 }
 
 /* ------------------------------------------- end orders page ----------------------------------------- */
+
+/* ------------------------------------------- give admin priv page ----------------------------------------- */
+
+.admin-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.give-admin-container {
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 5px;
+}
+  
+/* ------------------------------------------- give admin priv page ----------------------------------------- */

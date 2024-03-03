@@ -27,7 +27,6 @@
                 form.action = '/give_admin_privileges';
             } else if (action === 'remove_admin') {
                 form.action = '/remove_admin_privileges';
-                
             }
             
             // Submit the form
@@ -35,21 +34,33 @@
         }
     </script>
     
+
+<div class="give-admin-container">
     <form id="admin_form" method="post" action="/give_admin_privileges">
         <input type="text" name="user_email" id="user_email" placeholder="User email" oninput="checkEmail()"/>
         <input type="button" id="give_admin" value="Give admin" onclick="submitForm('give_admin')">
         <input type="button" id="remove_admin" value="Remove admin" onclick="submitForm('remove_admin')"><br>
-        <span id="email_error" style="display: none">User email doesnt exist</span>
+        <span id="email_error" style="display: none">User email doesn't exist</span>
         <script> checkEmail(); </script>
     </form>
 
 
-    <ul>
-        {% for user in users %}
-            <li>{{ user[0] }} - Admin={{ user[1] }}</li>
-        {% endfor %}
-    </ul>
 
-
-    
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>User Email</th>
+                <th>Admin Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
