@@ -8,7 +8,9 @@ html body{
     font-family: "Amazon Ember", Arial;
 }
 
-
+.footer-container {
+    height: 50px;
+}
 
 
 /* || Main navigation bar */
@@ -33,7 +35,11 @@ html body{
         display: none; /* Set the width of the image */
     }
 }
-
+@media (max-width: 768px) {
+    .categories-container > * {
+        font-size: 0.8rem;
+    }
+}
 .navbar-container__logo-container {
     padding-right: 2%;
 }
@@ -127,7 +133,7 @@ html body{
 
 /* || product container */
 
-.main-container {
+.electronics-main-container {
     display: flex;
     padding-right: 1vw;
     align-items: stretch;
@@ -842,3 +848,56 @@ a.edit-button:hover {
 
 
 /* ------------------------------------------- end checkout basket page ----------------------------------------- */
+
+/* ------------------------------------------- form pages ----------------------------------------- */
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 48.5%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 80%;
+    margin: 1%;
+    padding: 1%;
+    border: #0000003f 1px solid;
+    border-radius: 5px;
+    background-color: #606f6f56;
+}
+
+.main-container__title {
+    padding: 1%;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+@media screen and (max-width: 400px) {
+    .main-container__title{
+        margin: 0 1%; 
+        font-size: 0.8rem;
+    }
+    
+}
+
+.solid-black-divider {
+    border-top: 1px solid #000;
+    width: 100%;
+    padding: 0;
+    margin: 5px;
+}
+
+@media screen and (max-width: 400px) {
+    .solid-black-divider{
+        margin: 0; 
+    }
+    
+}
+
+.main-container__form-container {
+    padding: 1%;
+}
+
+.main-container__form-container > * > * {
+    margin: 0.3%;
+}
+/* ------------------------------------------- end form pages ----------------------------------------- */

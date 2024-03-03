@@ -3,8 +3,12 @@
 {% block title %}Add Product{% endblock %}
 
 {% block main %}
-
-    <h1>Add Product </h1>
+<div class="add-product-main-container main-container">
+    <div class="main-container__title">
+        <span>Add Product</span>
+    </div>
+    <hr class="solid-black-divider">
+    <div class="main-container__form-container">
         <form method="POST" enctype="multipart/form-data" action="/add_product">
             <label for="image">Image:</label>
             <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }}); check_fields_filled();"><br>
@@ -50,7 +54,8 @@
             <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
 
         </form>
-            
+    </div>
+</div>
 {% endblock %}
 {% block js %}
     <script src=../static/js/product-management.js></script>
