@@ -1,5 +1,0 @@
-document.getElementById('search-result-text').innerHTML = 'All Products';
-if ({{ search_input }}) === ""{
-    alert({{ "search_input" }});
-
-}
