@@ -93,6 +93,8 @@ def search():
         cursor.execute('SELECT * FROM products')
         filtered_products = cursor.fetchall()
         conn.close()
+        if search_input == '':
+            search_input = 'none'
         return render_template('search_results.html', search_input=search_input, filtered_products=filtered_products)
     
     if request.method == 'POST':
@@ -120,6 +122,9 @@ def search():
         ''', ('%' + search_input + '%',))
 
         searched_products = cursor.fetchall()
+
+        if search_input == '':
+            search_input = 'none'
 
         if len(filter_list) == 0:
             cursor.execute('SELECT * FROM products')

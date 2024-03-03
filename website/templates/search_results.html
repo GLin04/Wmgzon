@@ -2,6 +2,7 @@
 {% block title %}Search {{search_input}}{% endblock %}
 
 {% block main %}
+
 <main class="main-container">
     <div class="main-containter__product-filter-container">
         <div class="main-containter__product-filter-container__form-container">
@@ -32,50 +33,61 @@
             </div>
         </div>
     </div>
-    <div class="main-container__product-info-container">
-        {% for product in filtered_products %}
-            <div class="main-container__product-info-container__product-container product-card">
-                <div class="product-card__image">
-                    <a href="/electronics/product/{{ product[0] }}">
-                        <img src="{{ url_for('static', filename='images/' + product[10]) }}" class="product_image"/>
-                    </a>
-                
-            </div>
-            <div class="product-card__text-info-container">
-                
-                <div class="product-card__name">
-                    <a href="/electronics/product/{{ product[0] }}">{{ product[1] }}</a> 
-                </div>
-
-
-
-                {% if session['admin'] %}<a href="/edit_product/{{ product[0] }}" class="edit-button">Edit</a>{% endif %}
-
-                <span class="product-card__stock-warning" id="stock_hidden_{{ product[0] }}" style=display:none></span>
-                <div class="product-card__text-info-container__horizontal-container">
-                    <div class="product-card__price">
+    <div class="main-container__search-info-container">
+        <div class="main-container__search-text">
+            <h1 id="search-result-text">Search results for: {{ search_input }}</h1>
+            <hr class="solid-divider">
+        </div>
+        <div class="main-container__product-info-container">
+            {% for product in filtered_products %}
+                <div class="main-container__product-info-container__product-container product-card">
+                    <div class="product-card__image">
                         <a href="/electronics/product/{{ product[0] }}">
-                            <span>£{{ product[4] }}</span>
+                            <img src="{{ url_for('static', filename='images/' + product[10]) }}" class="product_image"/>
                         </a>
+                    
+                </div>
+                <div class="product-card__text-info-container">
+                    
+                    <div class="product-card__name">
+                        <a href="/electronics/product/{{ product[0] }}">{{ product[1] }}</a> 
                     </div>
-                    <div class="product-card__rating">
-                        {% if product[11] %}
-                            <span>Rating: {{ product[11] }}/5</span>
-                        {% else %}
-                            <span>No rating</span>
-                        {% endif %} 
+
+
+
+                    {% if session['admin'] %}<a href="/edit_product/{{ product[0] }}" class="edit-button">Edit</a>{% endif %}
+
+                    <span class="product-card__stock-warning" id="stock_hidden_{{ product[0] }}" style=display:none></span>
+                    <div class="product-card__text-info-container__horizontal-container">
+                        <div class="product-card__price">
+                            <a href="/electronics/product/{{ product[0] }}">
+                                <span>£{{ product[4] }}</span>
+                            </a>
+                        </div>
+                        <div class="product-card__rating">
+                            {% if product[11] %}
+                                <span>Rating: {{ product[11] }}/5</span>
+                            {% else %}
+                                <span>No rating</span>
+                            {% endif %} 
+                        </div>
                     </div>
                 </div>
-            </div>
-            </div>
+                </div>
 
-            <script>
-                if ({{product[2]}} === 0){
-                    document.getElementById('stock_hidden_'+{{ product[0] }}).innerHTML = "Out of stock!";
-                    document.getElementById('stock_hidden_'+{{ product[0] }}).style.display = "block";
-                }
-            </script>
-        {% endfor %}
+                <script>
+                    if ({{product[2]}} === 0){
+                        document.getElementById('stock_hidden_'+{{ product[0] }}).innerHTML = "Out of stock!";
+                        document.getElementById('stock_hidden_'+{{ product[0] }}).style.display = "block";
+                    }
+                </script>
+            {% endfor %}
+        </div>
     </div>
 </main>
+<script>
+    if ("{{ search_input }}" === 'none') {
+        document.getElementById('search-result-text').innerHTML = 'All Products';
+    }
+</script>
 {% endblock %}
