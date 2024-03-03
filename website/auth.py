@@ -68,9 +68,9 @@ def login():
 
 @auth.route('/logout')
 def logout():
-    session.pop('user', None)
-    session.pop('user_email', None)
-    session.pop('user_name', None)
+    print(session['user_email'])
+    
+    session.clear()
     return redirect('/login')
 
 @auth.route('/change_password', methods=['GET', 'POST'])

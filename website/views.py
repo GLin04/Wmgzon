@@ -12,7 +12,7 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    return render_template("home.html")
+    return redirect('/electronics')
 
 @views.route('/account')
 def account():
@@ -226,6 +226,11 @@ def add_to_basket():
 
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
+
+    if 'user_email' not in session:
+        return redirect('/register')
+
+
 
     if request.method == 'POST':
         product_id = request.form.get('product_id')
