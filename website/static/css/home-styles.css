@@ -988,3 +988,53 @@ a.edit-button:hover {
   
 
 /* ------------------------------------------- end change password page ----------------------------------------- */
+
+/* ------------------------------------------- change delivery info page ----------------------------------------- */
+.change-delivery-info-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+  
+.change_delivery_info_form,
+.form-container {
+    max-width: 90%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #C3D2D5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.change_delivery_info_form input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+  
+  /* ------------------------------------------- end change delivery info page ----------------------------------------- */
+
+
+  /* ------------------------------------------- contact us page ----------------------------------------- */
+
+.contact-us-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.email-form {
+}
+
+.email-form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+  /* ------------------------------------------- end contact us page ----------------------------------------- */

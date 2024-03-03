@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Delivery Information{% endblock %}
 {% block main %}
-    <h1>Change delivery information</h1>
+        
         <div class="change_delivery_info_form" >
             <form method="POST">
-                
+
+                <div class="change-delivery-info-title">Change delivery information</div>
+
                 <label for="postcode">Postcode:</label>
                 <input type="text" name="postcode" placeholder="Postcode" value="{{delivery_info[1]}}"/><br>
 
@@ -17,7 +19,7 @@
                 <label for="phone_number">Phone number:</label>
                 <input type="text" name="phone_number" placeholder="Phone number" value="{{delivery_info[4]}}"/><br>
 
-                <input type="submit" value="Change"/>
+                <input class="button" style="width:100%" type="submit" value="Change"/>
             <form/>
         </div>
 {% endblock %}
