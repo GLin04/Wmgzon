@@ -21,6 +21,8 @@
         if ({{product[2]}} === 0){
             document.getElementById('add_to_basket_form').style.display = "none";
             document.getElementById('stock').innerHTML = "Out of stock!";
+            document.getElementById('stock').style.color = "red";
+            document.getElementById('stock').style.setProperty('font-weight', 'bold');
         }
     });
 </script>

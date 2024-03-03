@@ -7,61 +7,76 @@
 
         
 
-    <ul>
-        {% set i = namespace(value=0) %}
-        {% set product_index = namespace(value=0) %}
-        {% for product in products %}
-            <li class="product-item">
-                <div class="product-details">
-                    <a href="/electronics/product/{{ product[0] }}">
-                        {{ product[1] }}
-                    </a>
-                    <br>
-                    <div class="product-image">
-                        <img src="{{ url_for('static', filename='images/' + product[10]) }}" width="100" height="100"/>
-                    </div>
-                    <br>
+    <div class="basket-main-container">
+        <div class="basket-main-container__basket-title">
+            <span class='basket-main-container__basket-title__basket-text'>Basket</span>
+            <span class="basket-main-container__basket-title__deliver-text">Deliver to {{ postcode }}<span/>     
+        </div>
+        <hr class="solid-divider">
+        <div class="basket-main-container__product-list">
 
-                    <div class="product-quantity" id="original_quantity_{{ product[0] }}" >{{ product[14] }}</div>
+            {% set i = namespace(value=0) %}
+            {% set product_index = namespace(value=0) %}
+            {% for product in products %}
 
-                    <div class="product-price">
-                        £{{ product[4] }} x
-                        <span id="current_quantity_{{ product[0] }}" value="{{ product[14] }}">{{ product[14] }}</span>
-                        and installations =
-                        <span id="current_total_{{ product[0] }}"> £ {{ product[16] }}</span>
-                        P.installation =
-                        <label>{{ product[15] }}</label>
+                <div class="basket-main-container__product-list__product">
+                    <div class="basket-main-container__product-list__product__product-image">
+                        <a href="/electronics/product/{{ product[0] }}">
+                            <img src="{{ url_for('static', filename='images/' + product[10]) }}"/>
+                        </a>
                     </div>
 
-                    <div class="product-inputs">
-                        <input id="stock_hidden_{{ product[0] }}" type="hidden" value="{{ product[2]}}"/>
-                        <input type="number" id="quantity_{{ product[0] }}" name="quantity" value="{{ product[14] }}" oninput="updateQuantity({{ product[0] }}); check_stock({{ product[0] }});" min="1"/>
-                        <input id="price_hidden_{{ product[0] }}" type="hidden" value="{{ product[4] }}"/>
-                        <input id="id_hidden_{{ product[0] }}" type="hidden" value="{{ product[0] }}"/>
-                        <input id="prof_installation_hidden_{{ product[0] }}" type="hidden" value="{{ product[13] }}"/>
-                        <error id="error_{{ product[0] }}" hidden>Not enough stock</error>
+                    <div class="basket-main-container__product-list__product__product-name">
+                        <a href="/electronics/product/{{ product[0] }}">{{ product[1] }}</a>
                     </div>
+                    <div class="basket-main-container__product-list__product__product-details">
+                        <div class="product-quantity" id="original_quantity_{{ product[0] }}" style="display: none"></div>
+
+                        <div class="basket-main-container__product-list__product__product-details__product-price">
+                            <span class="basket-main-container__product-list__product__product-details__product-price__text">£{{ product[4] }}</span>
+                            <span id="product_installation">{{ professional_installation_list[i.value] }}  </span>
+                            <span>Total <span id="current_quantity_{{ product[0] }}" value="{{ product[14] }}">{{ product[14] }}</span> items(s) £<span id="current_total_{{ product[0] }}">{{ product[16] }}</span></span>
+                        </div>
+
+
+                        <div class="product-inputs">
+                            <input id="stock_hidden_{{ product[0] }}" type="hidden" value="{{ product[2]}}"/>
+                            <input type="number" id="quantity_{{ product[0] }}" name="quantity" value="{{ product[14] }}" oninput="updateQuantity({{ product[0] }}); check_stock({{ product[0] }});" min="1"/>
+                            <input id="price_hidden_{{ product[0] }}" type="hidden" value="{{ product[4] }}"/>
+                            <input id="id_hidden_{{ product[0] }}" type="hidden" value="{{ product[0] }}"/>
+                            <input id="prof_installation_hidden_{{ product[0] }}" type="hidden" value="{{ product[15] }}"/>
+
+                            
+                            <input id="update_button_{{ product[0] }}" type="button" value="Update" onclick="updateBasket({{ product[0] }})" />
+                            <input id="delete_button_{{ product[0] }}" type="button" value="Delete" onclick="deleteBasket({{ product[0] }})" />
+                            <error id="error_{{ product[0] }}" hidden>Not enough stock</error>
+                        </div>
+                    </div>
+                    
                 </div>
+                <hr class="solid-divider">
 
-                <div class="product-buttons">
-                    <input id="update_button_{{ product[0] }}" type="button" value="Update" onclick="updateBasket({{ product[0] }})" />
-                    <input id="delete_button_{{ product[0] }}" type="button" value="Delete" onclick="deleteBasket({{ product[0] }})" />
-                </div>
-            </li>
-            stock = {{ product[2]}}
-            
-            <script>
-                productId = {{ product[0] }};
-                document.getElementById('update_button_'+ productId).disabled = true;
-            </script>
-            {% set i.value = i.value + 1 %}
-        {% endfor %}
-        
-    </ul>
 
-    Basket total = £{{ total_basket_price }}
-    <input type="button" value="Checkout" onclick="window.location.href='/checkout'"/>
 
+
+
+                
+                <script>
+                    productId = {{ product[0] }};
+                    document.getElementById('update_button_'+ productId).disabled = true;
+                </script>
+                {% set i.value = i.value + 1 %}
+
+
+            {% endfor %}
+        </div>
+        <div class="basket-main-container__basket-total-container">
+            Basket total = £{{ total_basket_price }}
+            <input type="button" value="Checkout" onclick="window.location.href='/checkout'"/>
+        </div>
+    </div> 
+
+ 
     <script>
 
         if ("{{ total_basket_price }}") {

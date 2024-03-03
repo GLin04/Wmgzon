@@ -5,6 +5,7 @@ html body{
     margin: 0; /* Remove the default margin */
     padding: 0; /* Remove the default padding */
     overflow-x: hidden;
+    font-family: "Amazon Ember", Arial;
 }
 
 
@@ -438,7 +439,6 @@ a.edit-button:hover {
 
 .product-page-main-container__spec_description_container p {
     margin-bottom: 0px;
-    padding: 0px;
     flex-grow: 1;
 }
 
@@ -507,7 +507,6 @@ a.edit-button:hover {
     }
 }
 
-/*ldkjfoasljfas*/
 
 .product-page-main-container__basket-container{
     display: flex;
@@ -516,6 +515,7 @@ a.edit-button:hover {
     width: 100%;
     height: 100%;
 }
+
 .product-page-main-container__basket-container > * {
 
     width: 100%;
@@ -559,6 +559,7 @@ a.edit-button:hover {
     width: 100%;
     padding-bottom: 0px;
 }
+
 /* Styles for review form */
 .top-container__review-form label {
     margin-right: 5px;
@@ -597,12 +598,15 @@ a.edit-button:hover {
 .product-page-main-container__spec_description_container__specification-text {
     padding: 10px;
     border-right: #0000003f 1px solid;
+    width: 40%
 }
 
 .product-page-main-container__spec_description_container__description-text {
     padding: 10px;
     border-left: #0000003f 1px solid;
     margin-left: 0px;
+    width: 60%;
+    padding: 1%;
 }
 
 .quantity-div-container input[type="number"] {
@@ -610,6 +614,7 @@ a.edit-button:hover {
     border: 1px solid #ddd;
     border-radius: 3px;
     width: 60px;
+    padding: 1%;
 }
 .top-container__add-to-basket-form input[type="submit"] {
     padding: 5px 10px;
@@ -635,6 +640,126 @@ a.edit-button:hover {
     border: 1px solid #ddd;
     width: 200px;
     height: 3.4em;
+    padding-left: 5px;
+}
+@import url('https://m.media-amazon.com/images/G/01/AmazonEmberTTF/AmazonEmber_ttf_regular._CB459180530_.ttf');
+/* ------------------------------------------- end product page ----------------------------------------- */
+
+/* ------------------------------------------- basket page ----------------------------------------- */
+.basket-main-container {
+    display: flex;
+    flex-direction: column;
+    margin: 5%;
+    padding: 3%;
+    background-color: #f5ffff;
+    box-shadow: 0 0 3px #8baaaa;
 }
 
-/* ------------------------------------------- end product page ----------------------------------------- */
+.basket-main-container__product-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.basket-main-container__product-list__product {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    padding: 10px;
+    grid-gap: 5px;
+}
+
+.basket-main-container__product-list__product > * {
+    max-height:fit-content;
+}
+
+.basket-main-container__product-list__product__product-details,
+.basket-main-container__product-list__product__product-name {
+    padding: 5% 0 5% 5%;
+}
+
+.basket-main-container__product-list__product__product-name a,
+.basket-main-container__product-list__product__product-name:hover a {
+    text-decoration: none;
+    color: black;
+}
+.basket-main-container__product-list__product__product-image {
+    grid-row: span 2;
+    padding: 5%
+
+}
+
+.basket-main-container__product-list__product__product-image img{
+    width: 100%; 
+    height: 100%;   
+}
+
+.basket-main-container__basket-title {
+    display: flex;
+    
+}
+
+.basket-main-container__basket-title > * {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.basket-main-container__basket-title > :nth-child(1) {
+    width: 70%;
+}
+
+.basket-main-container__basket-title > :nth-child(2) {
+    width: 30%;
+}
+
+.basket-main-container__product-list__product__product-details {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.basket-main-container__product-list__product__product-details > *{
+    flex-grow: 1;
+}
+
+.product-inputs {
+    height: 50px;
+    padding: 10px 0;
+}
+
+.product-inputs input[type="number"] {
+    width: 50px;
+}
+
+.basket-main-container__product-list__product__product-name a {
+    font-weight: 550;
+    font-size: 18px;
+}
+
+.basket-main-container__product-list__product__product-details__product-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.basket-main-container__product-list__product__product-details__product-price__text {
+    font-weight: 550;
+    font-size: 16px;
+}
+/* ------------------------------------------- end basket page ----------------------------------------- */
+
+/* ------------------------------------------- checkout basket page ----------------------------------------- */
+.checkout-main-container{
+    display: flex;
+    flex-direction: column;
+    margin: 30px 10%;
+}
+
+.checkout-main-container__product-list__product {
+    padding: 10px 20px;
+}
+
+.checkout-main-container__product-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ------------------------------------------- end checkout basket page ----------------------------------------- */

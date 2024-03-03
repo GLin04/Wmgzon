@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, app, render_template, request,redirect, session, url_for
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import abort
 
 
@@ -26,7 +26,7 @@ def coming_soon():
 def basket():
     
     user_email = session['user_email']
-
+    user_postcode = session.get('postcode')[0]
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
@@ -44,12 +44,20 @@ def basket():
 
     cursor.execute('SELECT SUM(total_price) FROM basket WHERE user_email=?', (user_email,))
     total_basket_price = cursor.fetchone()[0]
+
+    professional_installation_list = [products[15] for products in products]
+
     
+    for i, product in enumerate(professional_installation_list):
+        if product == "true":
+            professional_installation_list[i] = "Professional Installtion included (£40 per item)"
+        else:
+            professional_installation_list[i] = ""  
     conn.close()
 
 
 
-    return render_template("basket.html", products=products, total_basket_price=total_basket_price, product_stock=product_stock)
+    return render_template("basket.html", products=products, total_basket_price=total_basket_price, product_stock=product_stock , postcode=user_postcode, professional_installation_list=professional_installation_list)
 
 @views.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -333,11 +341,26 @@ def checkout():
     cursor.execute('SELECT SUM(total_price) FROM basket where user_email=?', (user_email,))
 
     total_basket_price = cursor.fetchone()[0]
-    
-    conn.close()
 
+    cursor.execute('''SELECT products.deliveryTime
+        FROM products
+        JOIN basket ON products.product_id = basket.product_id
+        WHERE basket.user_email = ?''', (user_email,))
+    
+    delivery_time_tuple = cursor.fetchall()
+    delivery_time_list = [i[0] for i in delivery_time_tuple]
+
+    current_date = datetime.now()
+    current_date_str = current_date.strftime("%A, %d %B %Y")
+
+    
+    delivery_date_list = [current_date + timedelta(days=i) for i in delivery_time_list]
+    formatted_delivery_date_list = [i.strftime("%A, %d %B %Y") for i in delivery_date_list]
+
+    conn.close()
+    
     if request.method == 'GET':
-        return render_template("checkout.html", products=products, total_basket_price=total_basket_price)
+        return render_template("checkout.html", products=products, total_basket_price=total_basket_price, delivery_date=formatted_delivery_date_list, current_date=current_date_str)
 
 @views.route('/delivery_info', methods=['GET', 'POST'])
 def delivery_info():

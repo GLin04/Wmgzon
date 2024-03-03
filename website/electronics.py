@@ -57,7 +57,7 @@ def products():
 def product(product_id):
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
-    user_email = session['user_email']
+    user_email = session.get('user_email')
 
     cursor.execute("SELECT * FROM products WHERE product_id=?", (product_id,))
     product = cursor.fetchone()

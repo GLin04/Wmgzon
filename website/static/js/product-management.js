@@ -19,6 +19,7 @@ function updateQuantity(productId) {
     var price = document.getElementById('price_hidden_' + productId).value;
     var prof_installation = document.getElementById('prof_installation_hidden_' + productId).value;
     var update_button = document.getElementById('update_button_' + productId);
+
     
     prof_installation = (prof_installation === 'true');
 

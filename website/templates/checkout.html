@@ -2,63 +2,58 @@
 {% block title %}Checkout{% endblock %}
 {% block main %}
 
-    <ul>
-        {% for products in products %}
-            <li class="product-item">
-
-                <div class="product-details">
-                    <a href="/electronics/product/{{ products[0] }}">
-                        {{ products[1] }}
-                    </a>
-                    <br>
-                    <div class="product-image">
-                        <img src="{{ url_for('static', filename='images/' + products[10]) }}" width="100" height="100"/>
-                    </div>
-
-                    <div class="product-price">
-                        £{{ products[4] }} x
-                        <span id="current_quantity_{{ products[0] }}" value="{{ products[14] }}"> {{ products[14] }} </span>
-                        <span id="prof_installation_{{ products[0] }}" value="{{ products[15] }}"></span>
-
-                        <script>
-
-                            
-                            const prof_installation_check_{{products[0]}} = document.getElementById("prof_installation_{{ products[0] }}");
-
-                            if (prof_installation_check_{{products[0]}}.getAttribute("value") === "true") {
-                                console.log("yes you are installed");
-                                prof_installation_{{products[0]}}.textContent = " + Proffesional Installation (£40 x {{products[13]}}) = £{{products[15]}}";
-                            }
-                        </script>
-                        = £
-                        <span id="current_total_{{ products[0] }}">{{ products[16] }}</span>
-                    </div>
-
-                    <div class="product-description">
-                        Delivery time= {{ products[5] }} days
-                    </div>
-                </div>
-
-                <div class="product-inputs">
-                    <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
-                    <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
-                    <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
-                </div>
-            </li>
-            <br>
-        {% endfor %}
-        
-    </ul>
-
-    <p>total = £{{ total_basket_price }}</p>
-    <span>deliver to = {{ postcode }}</span> 
-    <input type="button" value="Change delivery information" onclick="window.location.href='/delivery_info'"/><br>
+<div class="checkout-main-container">
+    <div class="checkout-main-container__checkout-title">
+        <span>Checkout</span>
+    </div>
+    <div class="checkout-main-container__delivery-details">
+        <span>deliver to = {{ postcode }}</span> 
+        <input type="button" value="Change delivery information" onclick="window.location.href='/delivery_info'"/><br>
+    </div>
+    <div class="checkout-main-container__payment-details">
+        <p> (no payment data needed as this is a test site) </p>
+    </div>
     
-    <p> (no payment data needed as this is a test site) </p>
-    <form action="/order_confirmation" method="POST">
-        <input type="submit" value="pay"/>
-    </form>
+    <div class="checkout-main-container__product-list">
+        {% set i = namespace(value=0) %}
+        {% set product_index = namespace(value=0) %}
+        {% for products in products %}
 
+
+        <div class="checkout-main-container__product-list__product">
+
+
+            <a href="/electronics/product/{{ products[0] }}">
+                {{products[14]}} x {{ products[1] }}
+            </a>
+            <div class="product-price">
+                <span id="current_total_{{ products[0] }}">£{{ products[16] }}</span>
+            </div>
+
+            <div class="product-description">
+                Arrive on {{ delivery_date[i.value] }}
+                <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
+                <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
+                <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+            </div>
+
+
+
+        </div>
+        <hr class="solid-divider"/>
+        {% set i.value = i.value + 1 %}
+        {% endfor %}
+    </div>
+
+    <div class="checkout-main-container__checkout-info">       
+        <p>total = £{{ total_basket_price }}</p>
+
+        <form action="/order_confirmation" method="POST">
+            <input type="submit" value="pay"/>
+        </form>
+    </div>
+
+</div>
     
 
 {% endblock %}
