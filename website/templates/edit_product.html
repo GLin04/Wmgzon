@@ -2,72 +2,75 @@
 {% block title %}Edit Product{% endblock %}
 {% block main %}
 
-    <h1>Edit Product</h1>
-    <form method="POST" enctype="multipart/form-data" action="/edit_product/{{ product[0] }}">
-
-        <h1>Product ID: = {{ product[0] }}</h1>
-
-        <label for="image">Image:</label>
-        <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }});"><br>
-        <img id="preview"  width="200" height="150" src="{{ url_for('static', filename='images/' + product[10]) }}"/><br>
-
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="{{ product[1] }}" oninput="check_fields_filled()"><br>
-
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" value="{{ product[2] }}" min="0"><br>
-
-        <label for="productType">Product Type:</label>
-        <select name="productType" id="productType">
-
-            <option value="accessories">Accessories</option>
-            <option value="data_storage">Data Storage</option>
-            <option value="desktops">Desktops</option>
-            <option value="laptops">Laptops</option>
-            <option value="monitors">Monitors</option>
-            <option value="phones">Phones</option>
-            <option value="printers">Printers</option>
-            <option value="tvs">TVs</option>
-
-        </select><br>
+<div class="add-product-main-container main-container">
+    <div class="main-container__title">
+        <span>Edit Product</span><br>
+    </div>
+    <hr class="solid-black-divider">
+    <div class="main-container__form-container">
+        <form method="POST" enctype="multipart/form-data" action="/edit_product/{{ product[0] }}">
+            <span style="font-size: 1.3rem">Product ID: {{ product[0] }}</span><br>
+            <div class="image-container">
+                <label for="image">Image:</label>
+                <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }});"><br>
+                <img id="preview"  width="200" height="150" src="{{ url_for('static', filename='images/' + product[10]) }}"/><br>
+            </div>
 
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            <span>Name: <input type="text" id="name" name="name" value="{{ product[1] }}" oninput="check_fields_filled()"></span><br>
 
-                const selectElement = document.getElementById('productType');
-                const selectedOption = "{{ product[3] }}";
-                selectElement.value = selectedOption;
-            });
-          </script>
+            <span>Stock: <input type="number" id="stock" name="stock" value="{{ product[2] }}" min="0"></span><br>
 
-        <label for="price">Price:</label>
-        <input type="float" id="price" name="price" value="{{ product[4] }}" oninput="check_fields_filled()"><br>
+            <span>Product Type: <select name="productType" id="productType"></span><br>
 
-        <label for="deliveryTime">Delivery Time:</label>
-        <input type="number" id="deliveryTime" name="deliveryTime" value="{{ product[5] }}" oninput="check_fields_filled()"><br>
+                <option value="accessories">Accessories</option>
+                <option value="data_storage">Data Storage</option>
+                <option value="desktops">Desktops</option>
+                <option value="laptops">Laptops</option>
+                <option value="monitors">Monitors</option>
+                <option value="phones">Phones</option>
+                <option value="printers">Printers</option>
+                <option value="tvs">TVs</option>
 
-        <label for="brand">Brand:</label>
-        <input type="text" id="brand" name="brand" value="{{ product[6] }}" oninput="check_fields_filled()"><br>
+            </select><br>
 
-        <label for="specifications">Specifications:</label>
-        <textarea id="specifications" name="specifications">{{ product[7] }}</textarea><br>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description">{{ product[8] }}</textarea><br>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
 
-        <input id="submit" type="submit" value="Save Product" >
+                    const selectElement = document.getElementById('productType');
+                    const selectedOption = "{{ product[3] }}";
+                    selectElement.value = selectedOption;
+                });
+            </script>
 
-        <button  id="deleteProductButton" type="button" onclick="deleteProduct({{ product[0] }})">Delete Product</button>
-        <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
-        
-        
-        <script>
-            var productId = {{ product[0] }};
-            var product_image = {{ product|safe }};
-        </script>
 
-    </form>
+            <span>Price: <input type="float" id="price" name="price" value="{{ product[4] }}" oninput="check_fields_filled()"></span><br>
+
+            <span>Delivery (days): <input type="number" id="deliveryTime" name="deliveryTime" value="{{ product[5] }}" oninput="check_fields_filled()"></span><br>
+
+            <span>Brand: <input type="text" id="brand" name="brand" value="{{ product[6] }}" oninput="check_fields_filled()"></span><br>
+
+            <label for="specifications">Specifications:</label>
+            <textarea class="text-area" id="specifications" name="specifications">{{ product[7] }}</textarea><br>
+
+            <label for="description">Description:</label>
+            <textarea class="text-area" id="description" name="description">{{ product[8] }}</textarea><br>
+
+            <input id="submit" type="submit" value="Save Product" >
+
+            <button  id="deleteProductButton" type="button" onclick="deleteProduct({{ product[0] }})">Delete Product</button>
+            <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
+            
+            
+            <script>
+                var productId = {{ product[0] }};
+                var product_image = {{ product|safe }};
+            </script>
+
+        </form>
+    </div>
+</div>
 {% endblock %}
 {% block script %}
     <script src=../static/js/product-management.js></script>
