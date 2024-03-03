@@ -71,8 +71,9 @@
             {% endfor %}
         </div>
         <div class="basket-main-container__basket-total-container">
-            Basket total = £{{ total_basket_price }}
-            <input type="button" value="Checkout" onclick="window.location.href='/checkout'"/>
+            <span>Basket Total</span><br>
+            <p>£{{ total_basket_price }}</p>
+            <input class="button" type="button" value="Checkout" onclick="window.location.href='/checkout'"/>
         </div>
     </div> 
 

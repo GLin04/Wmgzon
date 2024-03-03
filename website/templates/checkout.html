@@ -5,14 +5,26 @@
 <div class="checkout-main-container">
     <div class="checkout-main-container__checkout-title">
         <span>Checkout</span>
+
     </div>
+    <hr class="solid-divider">
     <div class="checkout-main-container__delivery-details">
-        <span>deliver to = {{ postcode }}</span> 
+        <span class="checkout-main-container__delivery-details__title">Delivery Address:</span><br>
+        <span>{{ delivery_info[2] }}</span><br>
+        <span>{{ delivery_info[4] }}</span><br>
+        <span>{{ delivery_info[1] }}</span><br>
+        <span>{{ delivery_info[3] }}</span><br>
+        
         <input type="button" value="Change delivery information" onclick="window.location.href='/delivery_info'"/><br>
+
     </div>
+    <hr class="solid-divider">
     <div class="checkout-main-container__payment-details">
+        <span class="checkout-main-container__payment-details__title">Payment:</span><br>
         <p> (no payment data needed as this is a test site) </p>
+
     </div>
+    <hr class="solid-divider">
     
     <div class="checkout-main-container__product-list">
         {% set i = namespace(value=0) %}
@@ -45,11 +57,12 @@
         {% endfor %}
     </div>
 
-    <div class="checkout-main-container__checkout-info">       
-        <p>total = £{{ total_basket_price }}</p>
+    <div class="checkout-main-container__checkout-info">
+        <span>Total</span><br>
+        <span>£{{ total_basket_price }}</span>
 
         <form action="/order_confirmation" method="POST">
-            <input type="submit" value="pay"/>
+            <input class="button" type="submit" value="Buy Now"/>
         </form>
     </div>
 

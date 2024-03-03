@@ -662,8 +662,8 @@ a.edit-button:hover {
 
 .basket-main-container__product-list__product {
     display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 0.2fr 0.1fr;
+    grid-template-columns: 0.3fr 1fr;
     padding: 10px;
     grid-gap: 5px;
 }
@@ -674,8 +674,9 @@ a.edit-button:hover {
 
 .basket-main-container__product-list__product__product-details,
 .basket-main-container__product-list__product__product-name {
-    padding: 5% 0 5% 5%;
+    padding: 1% 0 5% 5%;
 }
+
 
 .basket-main-container__product-list__product__product-name a,
 .basket-main-container__product-list__product__product-name:hover a {
@@ -744,6 +745,14 @@ a.edit-button:hover {
     font-weight: 550;
     font-size: 16px;
 }
+
+.basket-main-container__basket-total-container span {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.basket-main-container__basket-total-container {
+    text-align: center;
+}
 /* ------------------------------------------- end basket page ----------------------------------------- */
 
 /* ------------------------------------------- checkout basket page ----------------------------------------- */
@@ -761,5 +770,61 @@ a.edit-button:hover {
     display: flex;
     flex-direction: column;
 }
+
+.checkout-main-container__checkout-title {
+    padding: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.checkout-main-container__payment-details,
+.checkout-main-container__delivery-details {
+    padding: 10px;
+}
+
+.checkout-main-container__payment-details p{
+    margin-bottom: 0px;
+}
+
+.checkout-main-container__delivery-details__title,
+.checkout-main-container__payment-details__title {
+    font-size: 1.5rem;
+
+}
+
+.checkout-main-container__checkout-info {
+    text-align: center;
+    padding: 10px;
+}
+
+.button {
+    background-color: #2d0a79;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    width: 50%;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #4e2ca1;
+}
+
+.checkout-main-container__checkout-info span:nth-child(1) {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.checkout-main-container__product-list__product a,
+.checkout-main-container__product-list__product a:hover {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color:#000;
+}
+
 
 /* ------------------------------------------- end checkout basket page ----------------------------------------- */

@@ -2,34 +2,47 @@
 {% block title %}Order Conformation{% endblock %}
 {% block main %}
 
-    <ul> CONFIMREDDD
-    <span>delivering to = {{ postcode }}</span> 
-        {% for purchased_products in purchased_products %}
-            <li class="product-item">
+<div class="checkout-main-container">
+    <div class="checkout-main-container__checkout-title">
+        <span>Order Confirmation</span>
+    </div>
+    <div class="checkout-main-container__delivery-details">
+        <span class="checkout-main-container__delivery-details__title">Delivering to:</span><br>
+        <span>{{ delivery_info[2] }}</span><br>
+        <span>{{ delivery_info[4] }}</span><br>
+        <span>{{ delivery_info[1] }}</span><br>
+    </div>
+    <div class="checkout-main-container__product-list">
+        {% set i = namespace(value=0) %}
+        {% set product_index = namespace(value=0) %}
+        {% for products in purchased_products %}
 
-                <div class="product-details">
-                    <a href="/electronics/product/{{ purchased_products[0] }}">
-                        {{ purchased_products[1] }}
-                    </a>
-                    <br>
-                    <div class="product-image">
-                        <img src="{{ url_for('static', filename='images/' + purchased_products[10]) }}" width="100" height="100"/>
-                    </div>
-                    <div class="product-description">
-                        Delivery time= {{ purchased_products[5] }} days
-                    </div>
-                </div>
+        <div class="checkout-main-container__product-list__product">
+            <a href="/electronics/product/{{ products[0] }}">
+                {{products[14]}} x {{ products[1] }}
+            </a>
 
-                <div class="product-inputs">
-                    <input id="price_hidden_{{ purchased_products[0] }}" type="hidden" value="{{ purchased_products[4] }}"/>
-                    <input id="id_hidden_{{ purchased_products[0] }}" type="hidden" value="{{ purchased_products[0] }}"/>
-                    <input id="prof_installation_hidden_{{ purchased_products[0] }}" type="hidden" value="{{ purchased_products[13] }}"/>
-                </div>
-            </li>
-            <br>
+            <div class="product-description">
+                Arrive on {{ delivery_date[i.value] }}
+                <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
+                <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
+                <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+            </div>
+
+
+
+        </div>
+        <hr class="solid-divider"/>
+        {% set i.value = i.value + 1 %}
         {% endfor %}
-        
-    </ul>
+    </div>
+
+    <div class="checkout-main-container__checkout-info">
+        <form action="/orders" method="GET">
+            <input class="button" type="submit" value="Go to orders"/>
+        </form>
+    </div>
+<div class="checkout-main-container">
 
 
     

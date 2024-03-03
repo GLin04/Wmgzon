@@ -357,10 +357,13 @@ def checkout():
     delivery_date_list = [current_date + timedelta(days=i) for i in delivery_time_list]
     formatted_delivery_date_list = [i.strftime("%A, %d %B %Y") for i in delivery_date_list]
 
+    cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,))
+    delivery_info = cursor.fetchall()[0]
+
     conn.close()
     
     if request.method == 'GET':
-        return render_template("checkout.html", products=products, total_basket_price=total_basket_price, delivery_date=formatted_delivery_date_list, current_date=current_date_str)
+        return render_template("checkout.html", products=products, total_basket_price=total_basket_price, delivery_date=formatted_delivery_date_list, current_date=current_date_str, delivery_info=delivery_info)
 
 @views.route('/delivery_info', methods=['GET', 'POST'])
 def delivery_info():
@@ -411,6 +414,7 @@ def delivery_info():
 
     return render_template("delivery_info.html")    
     
+
 @views.route('/order_confirmation', methods=['POST'])
 def order_confirmation():
     if request.method == 'POST':
@@ -453,6 +457,30 @@ def order_confirmation():
                        order_date=? AND order_total=? AND order_postcode=? AND order_address=? AND order_phone_number=? AND order_city=? AND user_email=?)''', (current_date_time, total_basket_price, session['postcode'][0], delivery_info[2], delivery_info[3], delivery_info[4], user_email))
         order_id = cursor.fetchone()[0]
 
+        
+        cursor.execute('SELECT SUM(total_price) FROM basket where user_email=?', (user_email,))
+
+        total_basket_price = cursor.fetchone()[0]
+
+        cursor.execute('''SELECT products.deliveryTime
+            FROM products
+            JOIN basket ON products.product_id = basket.product_id
+            WHERE basket.user_email = ?''', (user_email,))
+        
+        delivery_time_tuple = cursor.fetchall()
+        delivery_time_list = [i[0] for i in delivery_time_tuple]
+
+        current_date = datetime.now()
+        current_date_str = current_date.strftime("%A, %d %B %Y")
+
+        
+        delivery_date_list = [current_date + timedelta(days=i) for i in delivery_time_list]
+        formatted_delivery_date_list = [i.strftime("%A, %d %B %Y") for i in delivery_date_list]
+
+        cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,))
+        delivery_info = cursor.fetchall()[0]
+
+
         for product in purchased_products:
    
             product_id = product[0]
@@ -475,7 +503,7 @@ def order_confirmation():
         conn.commit()
         conn.close()
 
-        return render_template("order_confirmation.html", purchased_products=purchased_products)
+        return render_template("order_confirmation.html", purchased_products=purchased_products, current_date_str=current_date_str, delivery_date=formatted_delivery_date_list, delivery_info=delivery_info, total_basket_price=total_basket_price)
     
 @views.route('/orders')
 def orders():
