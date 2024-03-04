@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block main %}
+<div class="add-product-main-container main-container">
+    <div class="main-container__title">
+        <span>Add Product</span>
+    </div>
+    <hr class="solid-black-divider">
+    <div class="main-container__form-container">
+        <form method="POST" enctype="multipart/form-data" action="/add_product">
+
+            <div class="image-container">
+                <label for="image">Image:</label>
+                <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }}); check_fields_filled();"><br>
+                <img id="preview"  width="200" height="150" ><br>
+            </div>
+
+
+            <span>Name: <input type="text" id="name" name="name" onchange="check_fields_filled()"></span><br>
+
+            <span>Stock: <input type="number" id="stock" name="stock" onchange="check_fields_filled()"></span><br>
+
+            <span>Product Type: <select name="productType" id="productType">
+
+                    <option value="accessories">Accessories</option>
+                    <option value="data_storage">Data Storage</option>
+                    <option value="desktops">Desktops</option>
+                    <option value="laptops">Laptops</option>
+                    <option value="monitors">Monitors</option>
+                    <option value="phones">Phones</option>
+                    <option value="printers">Printers</option>
+                    <option value="tvs">TVs</option>
+
+                </select></span><br>
+
+            <span>Price: <input type="float" id="price" name="price" onchange="check_fields_filled()"></span><br>
+
+            <span>Delivery (days): <input type="number" id="deliveryTime" name="deliveryTime" onchange="check_fields_filled()"></span><br>
+
+            <span>Brand: <input type="text" id="brand" name="brand" onchange="check_fields_filled()"></span><br>
+
+            <label for="specifications">Specifications:</label>
+            <textarea class="text-area" id="specifications" name="specifications" onchange="check_fields_filled()"></textarea><br>
+
+            <label for="description">Description:</label>
+            <textarea class="text-area" id="description" name="description" onchange="check_fields_filled()"></textarea><br>
+
+            <input id="submit" type="submit" value="Add Product" disabled>
+            <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    <script src=../static/js/product-management.js></script>
+{% endblock %}

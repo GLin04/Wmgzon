@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Edit Product{% endblock %}
+{% block main %}
+
+<div class="add-product-main-container main-container">
+    <div class="main-container__title">
+        <span>Edit Product</span><br>
+    </div>
+    <hr class="solid-black-divider">
+    <div class="main-container__form-container">
+        <form method="POST" enctype="multipart/form-data" action="/edit_product/{{ product[0] }}">
+            <span style="font-size: 1.3rem">Product ID: {{ product[0] }}</span><br>
+            <div class="image-container">
+                <label for="image">Image:</label>
+                <input type="file" id="inputFile" name="inputFile" onchange="preview_image(this); check_image_exists({{ product_image_array|safe }});"><br>
+                <img id="preview"  width="200" height="150" src="{{ url_for('static', filename='images/' + product[10]) }}"/><br>
+            </div>
+
+
+            <span>Name: <input type="text" id="name" name="name" value="{{ product[1] }}" oninput="check_fields_filled()"></span><br>
+
+            <span>Stock: <input type="number" id="stock" name="stock" value="{{ product[2] }}" min="0"></span><br>
+
+            <span>Product Type: <select name="productType" id="productType"></span><br>
+
+                <option value="accessories">Accessories</option>
+                <option value="data_storage">Data Storage</option>
+                <option value="desktops">Desktops</option>
+                <option value="laptops">Laptops</option>
+                <option value="monitors">Monitors</option>
+                <option value="phones">Phones</option>
+                <option value="printers">Printers</option>
+                <option value="tvs">TVs</option>
+
+            </select><br>
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+
+                    const selectElement = document.getElementById('productType');
+                    const selectedOption = "{{ product[3] }}";
+                    selectElement.value = selectedOption;
+                });
+            </script>
+
+
+            <span>Price: <input type="float" id="price" name="price" value="{{ product[4] }}" oninput="check_fields_filled()"></span><br>
+
+            <span>Delivery (days): <input type="number" id="deliveryTime" name="deliveryTime" value="{{ product[5] }}" oninput="check_fields_filled()"></span><br>
+
+            <span>Brand: <input type="text" id="brand" name="brand" value="{{ product[6] }}" oninput="check_fields_filled()"></span><br>
+
+            <label for="specifications">Specifications:</label>
+            <textarea class="text-area" id="specifications" name="specifications">{{ product[7] }}</textarea><br>
+
+            <label for="description">Description:</label>
+            <textarea class="text-area" id="description" name="description">{{ product[8] }}</textarea><br>
+
+            <input id="submit" type="submit" value="Save Product" >
+
+            <button  id="deleteProductButton" type="button" onclick="deleteProduct({{ product[0] }})">Delete Product</button>
+            <button  id="cancelButton" type="button" onclick="redirectElectronics()" >Cancel</button>
+            
+            
+            <script>
+                var productId = {{ product[0] }};
+                var product_image = {{ product|safe }};
+            </script>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+    <script src=../static/js/product-management.js></script>
+{% endblock %}

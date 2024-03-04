@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block main %}
+
+<div class="checkout-main-container">
+    <div class="checkout-main-container__checkout-title">
+        <span>Checkout</span>
+
+    </div>
+    <hr class="solid-divider">
+    <div class="checkout-main-container__delivery-details">
+        <span class="checkout-main-container__delivery-details__title">Delivery Address:</span><br>
+        <span>{{ delivery_info[2] }}</span><br>
+        <span>{{ delivery_info[4] }}</span><br>
+        <span>{{ delivery_info[1] }}</span><br>
+        <span>{{ delivery_info[3] }}</span><br>
+        
+        <input type="button" value="Change delivery information" onclick="window.location.href='/delivery_info'"/><br>
+
+    </div>
+    <hr class="solid-divider">
+    <div class="checkout-main-container__payment-details">
+        <span class="checkout-main-container__payment-details__title">Payment:</span><br>
+        <p> (no payment data needed as this is a test site) </p>
+
+    </div>
+    <hr class="solid-divider">
+    
+    <div class="checkout-main-container__product-list">
+        {% set i = namespace(value=0) %}
+        {% set product_index = namespace(value=0) %}
+        {% for products in products %}
+
+
+        <div class="checkout-main-container__product-list__product">
+
+
+            <a href="/electronics/product/{{ products[0] }}">
+                {{products[14]}} x {{ products[1] }}
+            </a>
+            <div class="product-price">
+                <span id="current_total_{{ products[0] }}">£{{ products[16] }}</span>
+            </div>
+
+            <div class="product-description">
+                Arrive on {{ delivery_date[i.value] }}
+                <input id="price_hidden_{{ products[0] }}" type="hidden" value="{{ products[4] }}"/>
+                <input id="id_hidden_{{ products[0] }}" type="hidden" value="{{ products[0] }}"/>
+                <input id="prof_installation_hidden_{{ products[0] }}" type="hidden" value="{{ products[13] }}"/>
+            </div>
+
+
+
+        </div>
+        <hr class="solid-divider"/>
+        {% set i.value = i.value + 1 %}
+        {% endfor %}
+    </div>
+
+    <div class="checkout-main-container__checkout-info">
+        <span>Total</span><br>
+        <span>£{{ total_basket_price }}</span>
+
+        <form action="/order_confirmation" method="POST">
+            <input class="button" type="submit" value="Buy Now"/>
+        </form>
+    </div>
+
+</div>
+    
+
+{% endblock %}
+
+{% block js %}
+    <script src=../../static/js/product-management.js></script>   
+{% endblock %}

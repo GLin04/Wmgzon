@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Orders{% endblock %}
+{% block main %}
+  <h1>Orders</h1>
+  <table border="3">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Date ordered</th>
+        <th width="250px">Product</th>
+        <th>Professional Installation</th>
+        <th>Quantity</th>
+        <th>Item Price for 1</th>
+        <th>Delivering to</th>
+        <th>Order total (for ID)</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+      {% for order in orders %}
+      <tr>
+          <td>{{ order[0] }}</td>
+          <td>{{ order[1] }}</td>
+          <td>{{ order[14] }}</td>
+          <td>{{ order[12] }}</td>    
+          <td>{{ order[10] }}</td>
+          <td>£{{ order[11] }}</td>
+          <td>{{ order[3] }}</td>
+          <td>£{{ order[2] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
