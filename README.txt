@@ -1,7 +1,6 @@
 Make sure docker is installed
 
-Step 1:
-cd to directory /Wmgzon
+Step 1: open a terminal and change directory to /Wmgzon
 
 Step 2: Build the Docker image
 docker build -t wmgzon-app .
