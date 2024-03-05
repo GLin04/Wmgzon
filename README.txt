@@ -11,6 +11,8 @@ docker run -p 3000:3000 wmgzon-app
 
 
 -------------------------- Additional Info --------------------------
+Use main branch if cloning from git
+
 
 Default admin account:
 
