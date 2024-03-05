@@ -1,5 +1,7 @@
 import sqlite3
 
+# For initial creation of the databse
+
 # Connect to the database
 conn = sqlite3.connect('wmgzon.db')
 cursor = conn.cursor()

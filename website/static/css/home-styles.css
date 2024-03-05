@@ -13,7 +13,7 @@ html body{
 }
 
 
-/* || Main navigation bar */
+/* ------------------------------------------- main nav bar style ----------------------------------------- */
 
 .navbar-container {
     background-color: #0cc7ca;
@@ -90,8 +90,10 @@ html body{
 }
 
 
-/* || Categories container */
+/* ------------------------------------------- end main nav bar style ----------------------------------------- */
 
+
+/* ------------------------------------------- catagory container style ----------------------------------------- */
 .categories-container {
     display: flex;
     background-color: #cdf9fa;
@@ -130,8 +132,10 @@ html body{
 }
 
 
+/* ------------------------------------------- end catagory container style ----------------------------------------- */
 
-/* || product container */
+
+/* ------------------------------------------- products container style ----------------------------------------- */
 
 .electronics-main-container {
     display: flex;
@@ -142,8 +146,10 @@ html body{
     width: 100%;
     height: 100%;
 }
+/* ------------------------------------------- end products container style ----------------------------------------- */
 
-/*filter*/
+
+/* ------------------------------------------- product filter container style ----------------------------------------- */
 
 .main-containter__product-filter-container__form-container {
     background-color: #f9f9f9;
@@ -232,11 +238,6 @@ html body{
     width: 100%;
 }
 
-/*end filter*/
-
-
-
-
 .main-containter__product-filter-container {
     position: sticky;
     top: 0;
@@ -248,13 +249,15 @@ html body{
     height: 90%;
 }
 
+/* ------------------------------------------- end product filter container style ----------------------------------------- */
 
+/* ------------------------------------------- product info style ----------------------------------------- */
 .main-container__product-info-container {
     width: 100%;
     padding-top: 10px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Use repeat() and auto-fill to create a responsive grid layout */
-    grid-gap: 100px 20px; /* Set the gap between grid items */
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-gap: 100px 20px; 
     justify-content: center; /* Center the grid items horizontally */
     align-items: center; /* Center the grid items vertically */
     position: relative;
@@ -386,7 +389,7 @@ a.edit-button:hover {
     background-color: #ffffff; /* Change background color on hover */
     border: 1px solid #000;
 }
-  /* product container || */
+/* ------------------------------------------- end product info style ----------------------------------------- */
 
 
 
@@ -1026,7 +1029,9 @@ a.edit-button:hover {
     margin-bottom: 15px;
 }
 
-.email-form {
+.email-form label {
+    margin-bottom: 0px;
+    margin-top: 15px;
 }
 
 .email-form textarea {
@@ -1038,3 +1043,240 @@ a.edit-button:hover {
 }
 
   /* ------------------------------------------- end contact us page ----------------------------------------- */
+
+
+  /* ------------------------------------------- contact it support page ----------------------------------------- */
+
+  .contact-it-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.email-form label {
+    margin-bottom: 0px;
+    margin-top: 15px;
+}
+
+.email-form input {
+    width: 50%;
+    height: 30px;
+    padding: 10px;
+    margin: 5px 0 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.email-form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* ------------------------------------------- end contact it support page ----------------------------------------- */
+
+
+/* ------------------------------------------- orders page ----------------------------------------- */
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 10px;
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+
+.orders-table th {
+  background-color: #f2f2f2;
+}
+
+.orders-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.orders-table tr:hover {
+  background-color: #f2f2f2;
+}
+
+.orders-container {
+
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+/* ------------------------------------------- end orders page ----------------------------------------- */
+
+/* ------------------------------------------- give admin priv page ----------------------------------------- */
+
+.admin-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.give-admin-container {
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 5px;
+}
+  
+/* ------------------------------------------- give admin priv page ----------------------------------------- */
+
+
+/* ------------------------------------------- login page ----------------------------------------- */
+.login-form {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+.login-form__label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.login-form__input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form__submit, .login-form__register, .login-form__back {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.login-form__submit:hover, .login-form__register:hover, .login-form__back:hover {
+  background-color: #0056b3;
+}
+
+.login-form__register, .login-form__back {
+  margin-left: 10px;
+}
+
+.login-form__error {
+  color: red;
+  text-align: center;
+}
+
+.login-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.login-buttons > * {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.other-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.other-buttons > * {
+    width: 48%;
+    padding: 10px 0;
+    margin: 10px 0;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    
+}
+.navbar-container__logo-page {
+    margin: 30px 0 0 0;
+    width: 200px; /* Set the width of the image */
+    height: auto; /* Maintain the aspect ratio of the image */
+    
+}
+
+.user-buttons {
+    background-color: #D49D52;
+    color: black;
+    font-size: large;
+    font-weight: 560;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s ease-in-out;
+}
+
+.user-buttons:hover {
+    background-color: #5d4422;
+    color: white;
+}
+/* ------------------------------------------- end login page ----------------------------------------- */
+
+/* ------------------------------------------- register page ----------------------------------------- */
+
+.register-form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+}
+  
+.solid-divider {
+    margin-bottom: 10px;
+}
+  
+.register-form__label {
+    display: block;
+    margin-bottom: 8px;
+}
+  
+.register-form__input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
+.register-form__error {
+    color: red;
+  
+}
+
+/* ------------------------------------------- end register page ----------------------------------------- */

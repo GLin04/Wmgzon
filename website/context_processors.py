@@ -2,6 +2,7 @@ import json
 from flask import session
 import sqlite3
 
+# Context processors to run before templates are rendered
 def product_info_context_processor():
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
@@ -14,6 +15,7 @@ def product_info_context_processor():
     
     return {'products_json': products_json}
 
+# Sets the postcode to be displayed in the navbar
 def delivery_info_context_processor():
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()

@@ -17,6 +17,7 @@ def products():
         return render_template("electronics.html", products=products)
     
     elif request.method == 'POST':
+        # get the filter list
         filter_list = []
         filter_list += request.form.getlist('accessories_filter')
         filter_list += request.form.getlist('data_storage_filter')
@@ -28,10 +29,12 @@ def products():
         filter_list += request.form.getlist('tv_filter')
         max_price = request.form['max_price']
 
+        # if the filter list is empty, get all the products
         if len(filter_list) == 0:
             cursor.execute('SELECT * FROM products')
             filter_only_products = cursor.fetchall()
         else:
+            # get the products that match the filter list
             get_filter_products = '''
                 SELECT * FROM products
                 WHERE productType IN ({})
@@ -40,23 +43,27 @@ def products():
             cursor.execute(get_filter_products, filter_list)
             filter_only_products = cursor.fetchall()
         
+        # get the products that are less than or equal to the max price
         cursor.execute('''SELECT * FROM products
                     WHERE price <= ?''', (max_price,))
 
         max_price_products = cursor.fetchall()
 
+        # get the products that are in both the filter list and the max price list
         filtered_products = [product for product in max_price_products if product in filter_only_products]
 
-
-
         conn.close()
+        
+        #  render the template with the filtered products
         return render_template("electronics.html", products=filtered_products , filter_list=filter_list)
     
+
 
 @electronics.route('/product/<int:product_id>')
 def product(product_id):
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
+
     user_email = session.get('user_email')
 
     cursor.execute("SELECT * FROM products WHERE product_id=?", (product_id,))
@@ -80,6 +87,7 @@ def search():
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
+    # Sees if the user has searched for something
     try:
         session['search_input'] = request.form['search_input']
         search_input = session['search_input']
@@ -87,19 +95,19 @@ def search():
         session['search_input'] = ''
         search_input = session['search_input']
 
-
     if request.method == 'GET':
         
         cursor.execute('SELECT * FROM products')
         filtered_products = cursor.fetchall()
         conn.close()
+        
+        # If the user hasnt searched for something, the search input is set to none
         if search_input == '':
             search_input = 'none'
         return render_template('search_results.html', search_input=search_input, filtered_products=filtered_products)
     
+    # If the user has searched for something through post gather the filter list and the max price data and display the products that match the search input
     if request.method == 'POST':
-
-
 
         filter_list = []
         filter_list += request.form.getlist('accessories_filter')
@@ -153,6 +161,7 @@ def search():
         conn.close()
         return render_template('search_results.html', filtered_products=filtered_products, search_input=search_input, filter_list=filter_list)
     
+# Add a review to a product and calculate the average rating    
 @electronics.route('/add_review', methods=['POST'])
 def add_review():
     conn = sqlite3.connect('wmgzon.db')
