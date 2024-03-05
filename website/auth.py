@@ -1,6 +1,12 @@
 from flask import Blueprint, abort, render_template, request,redirect, session
 import sqlite3
-from utils import hash_and_salt_password, generate_salt
+
+#try blocks are used as tests cannot access the right directory
+try:
+    from utils import hash_and_salt_password, generate_salt
+except ModuleNotFoundError:
+    from website.utils import hash_and_salt_password, generate_salt
+
 
 auth = Blueprint('auth', __name__)
 

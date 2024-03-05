@@ -81,6 +81,7 @@ def add_product():
     
     elif request.method=='POST':
 
+
         # Get the data from the HTML form
         name = str(request.form['name'])
         stock = int(request.form['stock'])
@@ -91,6 +92,7 @@ def add_product():
         specifications = str(request.form['specifications'])
         description = str(request.form['description'])
         image = request.files['inputFile']
+
 
         UPLOAD_PATH = 'website/static/images'
         
