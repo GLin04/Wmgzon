@@ -302,6 +302,121 @@ def test_checkout_route(client):
         sess['user_email'] = 'test@example.com'
         sess['postcode'] = ['12345']
 
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    # Insert delivery info into the database
+    cursor.execute("INSERT INTO delivery_info (user_email, user_postcode, user_address, user_phone_number, user_city) VALUES (?, ?, ?, ?, ?)",
+                (sess['user_email'], 'Test', 'Test', '12345', '12345'))
+    conn.commit()
+
+    # Test if the checkout route is accessible
     response = client.get('/checkout')
     assert response.status_code == 200
-    assert b'checkout.html' in response.data
+    assert b'<div class="checkout-main-container">' in response.data
+
+    # Delete the inserted data from the database
+    cursor.execute("DELETE FROM delivery_info WHERE user_email = ?", (sess['user_email'],))
+    conn.commit()
+    conn.close()
+
+
+# Check if the delivery info page is accessible
+def test_delivery_info_route(client):
+    with client.session_transaction() as sess:
+        sess['user_email'] = 'test@example.com'
+
+    response = client.get('/delivery_info')
+    assert response.status_code == 200
+    assert b'<div class="change_delivery_info_form" >' in response.data
+
+# Check if the orders route is accessible
+def test_orders_route(client):
+    with client.session_transaction() as sess:
+        sess['user_email'] = 'test@example.com'
+
+    response = client.get('/orders')
+    assert response.status_code == 200
+    assert b'<div class="orders-container">' in response.data
+
+# Check if the contact route is accessible
+def test_contact_route(client):
+    response = client.get('/contact')
+    assert response.status_code == 200
+    assert b'<div class="contact-us-form form-container" >' in response.data
+
+# Check if the email sent route is accessible
+def test_email_sent_route(client):
+    response = client.get('/email_sent')
+    assert response.status_code == 200
+    assert b'    <p>Thank you for contacting us!</p>' in response.data
+
+# Check if the contact it route is accessible
+def test_contact_it_route(client):
+    response = client.get('/contact_it')
+    assert response.status_code == 200
+    assert b'<div class="contact-it-form form-container">' in response.data
+
+# Check if the electronics route is accessible
+def test_electronics_route(client):
+    response = client.get('/electronics', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<main class="electronics-main-container">' in response.data
+
+# Check if the product route is accessible with a test product
+def test_product_route(client):
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    # Insert a product into the database to view
+    cursor.execute("INSERT INTO products (product_id, name, stock, productType, price, deliveryTime, brand, specifications, description) VALUES ( '1', 'Test Product', 10, 'accessories', 99.99, 3, 'Test Brand', 'Test Specifications', 'Test Description')")
+    conn.commit()
+
+    response = client.get('/electronics/product/1')
+    assert response.status_code == 200
+    assert b'<div class="product-page-main-container">' in response.data
+
+    # Delete the inserted data from the database
+    cursor.execute("DELETE FROM products WHERE product_id = '1'")
+    conn.commit()
+    conn.close()
+
+
+# Check if the search route is accessible with a test search
+def test_search_route(client):
+    response = client.post('/electronics/search', data={'search_input': 'Test'})
+    assert response.status_code == 200
+    assert b'<div class="main-container__search-info-container">' in response.data
+
+    response = client.get('/electronics/search')
+    assert response.status_code == 200
+    assert b'<div class="main-container__search-info-container">' in response.data
+
+
+def test_add_review_route(client):
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    # Insert a product into the database to review
+    cursor.execute("INSERT INTO products (product_id, name, stock, productType, price, deliveryTime, brand, specifications, description) VALUES ( '1', 'Test Product', 10, 'accessories', 99.99, 3, 'Test Brand', 'Test Specifications', 'Test Description')")
+    conn.commit()
+    response = client.post('/electronics/add_review', data={'product_id': 1, 'rating': 5})
+
+    cursor.execute("SELECT * FROM product_reviews WHERE product_id = '1'")
+    review = cursor.fetchone()[1]
+    print(review)
+
+
+    # Check if the review of 5 was added to the database
+    assert review == 5
+    # Check if the response is a redirect
+    assert response.status_code == 302
+    assert response.headers['Location'] == '/electronics/product/1'
+
+    # Delete the inserted data from the database
+    cursor.execute("DELETE FROM product_reviews WHERE product_id = '1'")
+    conn.commit()
+    cursor.execute("DELETE FROM products WHERE product_id = '1'")
+    conn.commit()
+    conn.close()
+
