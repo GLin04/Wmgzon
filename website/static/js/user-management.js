@@ -1,16 +1,3 @@
-// function checkPassEqual() {
-//     var password = document.getElementById("password").value;
-//     var confirmPassword = document.getElementById("passwordConfirm").value;
-
-//     if (password !== confirmPassword) {
-//         error = "Passwords do not match";
-//         return false;
-//     }
-//     return true;
-// }
-
-
-
 function check_fields_filled() {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;

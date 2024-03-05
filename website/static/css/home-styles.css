@@ -13,7 +13,7 @@ html body{
 }
 
 
-/* || Main navigation bar */
+/* ------------------------------------------- main nav bar style ----------------------------------------- */
 
 .navbar-container {
     background-color: #0cc7ca;
@@ -90,8 +90,10 @@ html body{
 }
 
 
-/* || Categories container */
+/* ------------------------------------------- end main nav bar style ----------------------------------------- */
 
+
+/* ------------------------------------------- catagory container style ----------------------------------------- */
 .categories-container {
     display: flex;
     background-color: #cdf9fa;
@@ -130,8 +132,10 @@ html body{
 }
 
 
+/* ------------------------------------------- end catagory container style ----------------------------------------- */
 
-/* || product container */
+
+/* ------------------------------------------- products container style ----------------------------------------- */
 
 .electronics-main-container {
     display: flex;
@@ -142,8 +146,10 @@ html body{
     width: 100%;
     height: 100%;
 }
+/* ------------------------------------------- end products container style ----------------------------------------- */
 
-/*filter*/
+
+/* ------------------------------------------- product filter container style ----------------------------------------- */
 
 .main-containter__product-filter-container__form-container {
     background-color: #f9f9f9;
@@ -232,11 +238,6 @@ html body{
     width: 100%;
 }
 
-/*end filter*/
-
-
-
-
 .main-containter__product-filter-container {
     position: sticky;
     top: 0;
@@ -248,13 +249,15 @@ html body{
     height: 90%;
 }
 
+/* ------------------------------------------- end product filter container style ----------------------------------------- */
 
+/* ------------------------------------------- product info style ----------------------------------------- */
 .main-container__product-info-container {
     width: 100%;
     padding-top: 10px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Use repeat() and auto-fill to create a responsive grid layout */
-    grid-gap: 100px 20px; /* Set the gap between grid items */
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-gap: 100px 20px; 
     justify-content: center; /* Center the grid items horizontally */
     align-items: center; /* Center the grid items vertically */
     position: relative;
@@ -386,7 +389,7 @@ a.edit-button:hover {
     background-color: #ffffff; /* Change background color on hover */
     border: 1px solid #000;
 }
-  /* product container || */
+/* ------------------------------------------- end product info style ----------------------------------------- */
 
 
 
@@ -1075,14 +1078,6 @@ a.edit-button:hover {
 /* ------------------------------------------- end contact it support page ----------------------------------------- */
 
 
-/* ------------------------------------------- home page ----------------------------------------- */
-
-
-
-/* ------------------------------------------- end home page ----------------------------------------- */
-
-
-
 /* ------------------------------------------- orders page ----------------------------------------- */
 
 .orders-table {
@@ -1145,6 +1140,8 @@ a.edit-button:hover {
   
 /* ------------------------------------------- give admin priv page ----------------------------------------- */
 
+
+/* ------------------------------------------- login page ----------------------------------------- */
 .login-form {
   background-color: #fff;
   border-radius: 8px;
