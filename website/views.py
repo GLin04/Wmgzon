@@ -30,9 +30,14 @@ def basket():
     
     #fetch data from sessions
     user_email = session['user_email']
-    user_postcode = session.get('postcode')[0]
+    
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
+    
+    try:
+        user_postcode = session.get('postcode')[0]
+    except:
+        return redirect('/delivery_info')
 
     #fetch data from the database
     cursor.execute(
@@ -242,6 +247,11 @@ def delete_product(product_id):
 @views.route('/add_to_basket', methods=['POST'])
 def add_to_basket():
 
+    try:
+        user_postcode = session.get('postcode')[0]
+    except:
+        return redirect('/delivery_info')
+    
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
