@@ -1184,6 +1184,7 @@ a.edit-button:hover {
 
 .login-form__error {
   color: red;
+  text-align: center;
 }
 
 .login-buttons {

@@ -55,6 +55,8 @@ def login():
         cursor.execute("SELECT * FROM login_details WHERE user_email=?", (email,))
         user = cursor.fetchone()
 
+        if user is None:
+            return render_template('login.html', error='Invalid email or password')
         # Get the user's salt and password
         user_salt = user[4]
         user_password = user[2]

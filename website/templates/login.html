@@ -26,12 +26,13 @@
             <button type="button" class="login-form__register" onclick="window.location.href='/register'">Register</button>
             <button type="button" class="login-form__back" onclick="window.location.href='/'">Back</button>
         </div>
+        {% if error %}
+        <p class="login-form__error">{{ error }}</p>
+        {% endif %}
     </form>
 
 
 
-  {% if error %}
-    <p class="login-form__error">{{ error }}</p>
-  {% endif %}
+
 </body>
 </html>

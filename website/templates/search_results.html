@@ -7,7 +7,7 @@
     <div class="main-containter__product-filter-container">
         <div class="main-containter__product-filter-container__form-container">
             <h2>Filter</h2>
-            <form id="filter_form" method="POST" action="/electronics" class="main-containter__product-filter-container__filter-form">
+            <form id="filter_form" method="POST" action="/electronics/search" class="main-containter__product-filter-container__filter-form">
                 <input type="checkbox" name="accessories_filter" id="accessories_filter" value="accessories" {% if 'accessories' in filter_list %} checked {% endif %}> Accessories<br>
                 <input type="checkbox" name="data_storage_filter" id="data_storage_filter" value="data_storage" {% if 'data_storage' in filter_list %} checked {% endif %}> Data Storage<br>
                 <input type="checkbox" name="desktop_filter" id="desktop_filter" value="desktops" {% if 'desktops' in filter_list %} checked {% endif %}> Desktops<br>
