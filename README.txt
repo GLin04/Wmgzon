@@ -1,13 +1,15 @@
-Make sure docker is downloaded
+Make sure docker is installed
 
+Step 1:
+cd to directory /Wmgzon
 
-Step 1: Build the Docker image
+Step 2: Build the Docker image
 docker build -t wmgzon-app .
 
-# Step 2: Run the Docker container
+# Step 3: Run the Docker container
 docker run -p 3000:3000 wmgzon-app
 
-# Step 3: Go to http://127.0.0.1:3000 on your web browser
+# Step 4: Go to http://127.0.0.1:3000 on your web browser
 
 
 -------------------------- Additional Info --------------------------
