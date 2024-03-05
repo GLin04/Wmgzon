@@ -216,8 +216,8 @@ def delete_product(product_id):
         cursor.execute('DELETE FROM products WHERE product_id=?', (product_id,))
         conn.commit()
 
-
-        os.remove(f"{UPLOAD_PATH}/{product_image[0]}")
+        if str(product_image[0]) != 'default.jpg':
+            os.remove(f"{UPLOAD_PATH}/{product_image[0]}")
 
         conn.close()
 
@@ -318,6 +318,7 @@ def delete_from_basket():
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
         
+        print(productId, user_email)
         cursor.execute('''
             DELETE FROM basket
             WHERE user_email=? AND product_id=?

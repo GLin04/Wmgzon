@@ -1,3 +1,5 @@
+import os
+import shutil
 import sqlite3
 import pytest
 import tempfile
@@ -7,10 +9,20 @@ from website.auth import auth
 from website.electronics import electronics
 from website.__init__ import create_app
 
+
+@pytest.fixture(autouse=True)
+def setup_before_each_test():
+    
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM products WHERE product_id = '1'")
+
+
 @pytest.fixture
 def client():
     app = create_app()
     app.config['TESTING'] = True
+
 
     with app.test_client() as client:
         yield client
@@ -127,7 +139,7 @@ def test_edit_product_route_post(client):
     # Insert a product into the database to edit
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO products (product_id, name, stock, productType, price, deliveryTime, brand, specifications, description) VALUES ( '1', 'Test Product', 10, 'accessories', 99.99, 3, 'Test Brand', 'Test Specifications', 'Test Description')")
+    cursor.execute("INSERT INTO products (product_id, name, stock, productType, price, deliveryTime, brand, specifications, description, product_image) VALUES ( '1', 'Test Product', 10, 'accessories', 99.99, 3, 'Test Brand', 'Test Specifications', 'Test Description', 'test_image.jpg')")
     conn.commit()
 
     existing_product_id = 1
@@ -177,3 +189,119 @@ def test_delete_product_route(client):
     assert response.headers['Location'] == '/electronics'
 
 
+#test if the add to basket post request functions with test data
+def test_add_to_basket_route(client):
+    with client.session_transaction() as sess:
+        sess['user_email'] = 'test@example.com'
+
+    # Insert a product into the database to add to the basket
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO products (product_id, name, stock, productType, price, deliveryTime, brand, specifications, description) VALUES ( '1', 'Test Product', 10, 'accessories', 99.99, 3, 'Test Brand', 'Test Specifications', 'Test Description')")
+    conn.commit()
+
+    data = {
+        'product_id': 1,
+        'quantity': 2,
+        'prof_installation_hidden': False,
+        'total_hidden': 199.98
+    }
+
+    # Test if post request is processed correctly
+    response = client.post('/add_to_basket', data=data)
+    assert response.status_code == 302
+    assert response.headers['Location'] == '/basket'
+
+    # Delete the inserted data from the database
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM basket WHERE user_email = 'test@example.com'")
+    conn.commit()
+
+    # Delete the inserted data from the database
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM products WHERE product_id = '1'")
+    conn.commit()
+
+    conn.close()
+
+
+
+def test_update_basket_route(client):
+    with client.session_transaction() as sess:
+        sess['user_email'] = 'test@example.com'
+
+    # Insert a product into the database to add to the basket
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO products (product_id, name, stock, productType, price, deliveryTime, brand, specifications, description) VALUES ( '1', 'Test Product', 10, 'accessories', 99.99, 3, 'Test Brand', 'Test Specifications', 'Test Description')")
+    conn.commit()
+    cursor.execute("INSERT INTO basket (user_email, product_id, product_quantity, total_price) VALUES (?, ?, ?, ?)",
+               (sess['user_email'], 1, 1, 99.99))
+    conn.commit()
+
+    # Inputs data to update the basket
+    data = {
+        'productId': 1,
+        'quantity': 3,
+        'total': 299.97
+    }
+    response = client.put('/update_basket', query_string=data)
+
+    cursor.execute("SELECT * FROM basket WHERE user_email = ?", (sess['user_email'],))
+    updated_quantity = cursor.fetchone()[2]
+
+    # Checks if the product quantity was updated to 3
+    assert updated_quantity == 3
+    assert response.status_code == 302
+    assert response.headers['Location'] == '/basket'
+
+    # Delete the inserted data from the database
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM basket WHERE user_email = ?", (sess['user_email'],))
+    conn.commit()
+    cursor.execute("DELETE FROM products WHERE product_id = '1'")
+    conn.commit()
+    conn.close()
+
+
+# Check if the delete request is processed correctly
+def test_delete_from_basket_delete(client):
+    with client.session_transaction() as sess:
+        sess['user_email'] = 'test@example.com'
+
+    conn = sqlite3.connect('wmgzon.db')
+    cursor = conn.cursor()
+
+    # Add the product to the basket
+    cursor.execute("INSERT INTO basket (user_email, product_id, product_quantity, total_price) VALUES (?, ?, ?, ?)",
+                (sess['user_email'], 1, 1, 99.99))
+    conn.commit()
+
+    # Test if delete request is processed correctly
+    data = {
+        'productId': 1
+    }
+    response = client.delete('/delete_basket', query_string=data)
+
+    cursor.execute("SELECT * FROM basket WHERE user_email = ?", (sess['user_email'],))
+    basket_product = cursor.fetchone()
+
+    # Checks if the product was deleted from the basket
+    assert basket_product is None
+    assert response.status_code == 302
+    assert response.headers['Location'] == '/basket'
+    conn.close()
+
+
+
+def test_checkout_route(client):
+    with client.session_transaction() as sess:
+        sess['user_email'] = 'test@example.com'
+        sess['postcode'] = ['12345']
+
+    response = client.get('/checkout')
+    assert response.status_code == 200
+    assert b'checkout.html' in response.data
