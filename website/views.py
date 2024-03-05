@@ -14,23 +14,27 @@ views = Blueprint('views', __name__)
 def home():
     return redirect('/electronics')
 
+
 @views.route('/account')
 def account():
     return render_template("account.html")
+
 
 @views.route('/coming_soon')
 def coming_soon():
     return render_template("coming_soon.html")
 
+
 @views.route('/basket', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def basket():
     
+    #fetch data from sessions
     user_email = session['user_email']
     user_postcode = session.get('postcode')[0]
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
-
+    #fetch data from the database
     cursor.execute(
         "SELECT products.*, basket.* "
         "FROM basket "
@@ -40,14 +44,16 @@ def basket():
     )
     products = cursor.fetchall()
     
+    #fetch the stock of the products
     product_stock = [product[2] for product in products]
 
+    #fetch the total price of the basket
     cursor.execute('SELECT SUM(total_price) FROM basket WHERE user_email=?', (user_email,))
     total_basket_price = cursor.fetchone()[0]
 
     professional_installation_list = [products[15] for products in products]
 
-    
+    #convert the professional_installation_list to a list of strings
     for i, product in enumerate(professional_installation_list):
         if product == "true":
             professional_installation_list[i] = "Professional Installtion included (£40 per item)"
@@ -55,9 +61,8 @@ def basket():
             professional_installation_list[i] = ""  
     conn.close()
 
-
-
     return render_template("basket.html", products=products, total_basket_price=total_basket_price, product_stock=product_stock , postcode=user_postcode, professional_installation_list=professional_installation_list)
+
 
 @views.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -66,10 +71,12 @@ def add_product():
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
+    # Check if the user is an admin
     if not session['admin']:
         conn.close()
         abort(403, description="You are not authorised to access this page")
 
+    # If the request is a GET request, return the add_product.html page
     if request.method == 'GET':
         cursor.execute('SELECT product_image FROM products')
         product_image_tuple = cursor.fetchall()
@@ -78,7 +85,7 @@ def add_product():
         product_image_array = [item[0] for item in product_image_tuple]
         return render_template("add_product.html", product_image_array=product_image_array)
 
-    
+    # If the request is a POST request, insert the data into the database
     elif request.method=='POST':
 
 
@@ -137,10 +144,12 @@ def edit_product(product_id):
     cursor.execute('SELECT * FROM products WHERE product_id=?', (product_id,))
     product = cursor.fetchone()
     
+    # Check if the user is an admin
     if not session['admin']:
         conn.close()
         abort(403, description="You are not authorised to access this page")
 
+    # If the request is a GET request, return the edit_product.html page
     if request.method == 'GET':
         cursor.execute('SELECT product_image FROM products')
         product_image_tuple = cursor.fetchall()
@@ -149,6 +158,7 @@ def edit_product(product_id):
         product_image_array = [item[0] for item in product_image_tuple] 
         return render_template("edit_product.html", product_image_array=product_image_array, product=product)
     
+    # If the request is a POST request, update the data in the database
     if request.method == 'POST':
         # Get the data from the HTML form
         name = str(request.form['name'])
@@ -162,15 +172,18 @@ def edit_product(product_id):
         image = request.files['inputFile']
         UPLOAD_PATH = 'website/static/images'
 
+        # If the image already exists in the folder, print a message to the console
         if os.path.exists(f'{UPLOAD_PATH}/{image.filename}'):
             print(f'{UPLOAD_PATH}/{image.filename} already exists in the folder.')
         else:
             print(f'{image.filename} uploaded successfully')
             image.save(f"{UPLOAD_PATH}/{image.filename}")
 
+        # Update the data in the database
         cursor.execute('SELECT product_image FROM products WHERE product_id=?', (product_id,))
         product_image = cursor.fetchone()
 
+        # If the image is the default image or the user has not uploaded a new image, keep the old image
         if product_image[0] == 'default.jpg' or image.filename == '':
             image.filename = product_image[0]
         else:
@@ -200,8 +213,10 @@ def edit_product(product_id):
 
     return render_template("edit_product.html", product=product)
 
+
 @views.route('/delete_product/<int:product_id>' , methods=['DELETE'])
 def delete_product(product_id):
+    # If the request is a DELETE request, delete the product from the database
     if request.method == 'DELETE':
         UPLOAD_PATH = 'website/static/images'
         # Delete the product from the database
@@ -223,17 +238,19 @@ def delete_product(product_id):
 
         return redirect('/electronics')
 
+
 @views.route('/add_to_basket', methods=['POST'])
 def add_to_basket():
 
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
+    # Check if the user is logged in and if not, redirect them to the register page
     if 'user_email' not in session:
         return redirect('/register')
 
 
-
+    # If the request is a POST request, add the product to the basket
     if request.method == 'POST':
         product_id = request.form.get('product_id')
         quantity = request.form.get('quantity')
@@ -251,7 +268,7 @@ def add_to_basket():
         product_ids = cursor.fetchall()
         product_ids = [i[0] for i in product_ids]
         
-
+        # Check if the there is enough stock available
         if int(quantity) > int(product_stock):
             error = "Not enough stock available. Please try again."
             return render_template("product.html", product=product, product_ids=product_ids, error=error)
@@ -265,11 +282,13 @@ def add_to_basket():
 
         return redirect(url_for('views.basket'))
     
+    
 @views.route('/update_basket', methods=['PUT'])
 def update_basket():
     conn = sqlite3.connect('wmgzon.db')
     cursor = conn.cursor()
 
+    # Check if the user is logged in and if not, redirect them to the register page
     if request.method == 'PUT':
         product_id = request.args.get('productId')
         quantity = request.args.get('quantity')
@@ -291,13 +310,14 @@ def update_basket():
         cursor.execute('SELECT stock FROM products WHERE product_id=?', (product_id,))
         product_stock = cursor.fetchone()[0]
 
-
+        # Check if the there is enough stock available
         if int(quantity) > int(product_stock):
 
             error = "Not enough stock available. Please try again."
 
             return render_template("basket.html", products=products, total_basket_price=total_basket_price, product_stock=product_stock, error=error)
         
+        # Update the data in the database
         cursor.execute('''
             UPDATE basket
             SET product_quantity=?, total_price=?
@@ -310,6 +330,8 @@ def update_basket():
     
 @views.route('/delete_basket', methods=['DELETE'])
 def delete_from_basket():
+    
+    # If the request is a DELETE request, delete the product from the basket
     if request.method == 'DELETE':
         productId = request.args.get('productId')
         user_email = session['user_email']
@@ -327,6 +349,7 @@ def delete_from_basket():
         conn.close()
 
         return redirect(url_for('views.basket'))
+    
     
 @views.route('/checkout' , methods=['GET', 'POST'])
 def checkout():
@@ -358,10 +381,11 @@ def checkout():
     delivery_time_tuple = cursor.fetchall()
     delivery_time_list = [i[0] for i in delivery_time_tuple]
 
+    #fetch the delivery date and convert it to a string
     current_date = datetime.now()
     current_date_str = current_date.strftime("%A, %d %B %Y")
 
-    
+    # Add the delivery time to the current date
     delivery_date_list = [current_date + timedelta(days=i) for i in delivery_time_list]
     formatted_delivery_date_list = [i.strftime("%A, %d %B %Y") for i in delivery_date_list]
 
@@ -373,6 +397,7 @@ def checkout():
     if request.method == 'GET':
         return render_template("checkout.html", products=products, total_basket_price=total_basket_price, delivery_date=formatted_delivery_date_list, current_date=current_date_str, delivery_info=delivery_info)
 
+
 @views.route('/delivery_info', methods=['GET', 'POST'])
 def delivery_info():
     
@@ -380,6 +405,7 @@ def delivery_info():
     cursor = conn.cursor()
     email = session['user_email']
 
+    # If the request is a GET request, return the delivery_info.html page
     if request.method == 'GET':
 
         cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (email,))
@@ -388,6 +414,7 @@ def delivery_info():
         conn.close()
         return render_template("delivery_info.html", delivery_info=delivery_info)
 
+    # If the request is a POST request, insert the data into the database
     if request.method == 'POST':
         postcode = request.form['postcode']
         address = request.form['address']
@@ -425,6 +452,8 @@ def delivery_info():
 
 @views.route('/order_confirmation', methods=['POST'])
 def order_confirmation():
+    
+    # If the request is a POST request, insert the data into the database
     if request.method == 'POST':
         user_email = session['user_email']
         current_date_time = datetime.now().strftime("%Y-%m-%d")
@@ -461,11 +490,11 @@ def order_confirmation():
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (current_date_time, total_basket_price, session['postcode'][0], delivery_info[2], delivery_info[3], delivery_info[4], user_email))
 
+        # Get the order_id of the order that was just inserted
         cursor.execute('''SELECT order_id FROM Orders WHERE(
                        order_date=? AND order_total=? AND order_postcode=? AND order_address=? AND order_phone_number=? AND order_city=? AND user_email=?)''', (current_date_time, total_basket_price, session['postcode'][0], delivery_info[2], delivery_info[3], delivery_info[4], user_email))
         order_id = cursor.fetchone()[0]
 
-        
         cursor.execute('SELECT SUM(total_price) FROM basket where user_email=?', (user_email,))
 
         total_basket_price = cursor.fetchone()[0]
@@ -481,14 +510,14 @@ def order_confirmation():
         current_date = datetime.now()
         current_date_str = current_date.strftime("%A, %d %B %Y")
 
-        
+        # Add the delivery time to the current date
         delivery_date_list = [current_date + timedelta(days=i) for i in delivery_time_list]
         formatted_delivery_date_list = [i.strftime("%A, %d %B %Y") for i in delivery_date_list]
 
         cursor.execute('SELECT * FROM delivery_info WHERE user_email=?', (user_email,))
         delivery_info = cursor.fetchall()[0]
 
-
+        # Update the stock of the products in the database
         for product in purchased_products:
    
             product_id = product[0]
@@ -505,13 +534,14 @@ def order_confirmation():
                 VALUES (?, ?, ?, ?, ?)
             ''', (order_id, product_id, product_quantity_purchased, product[4], product[15]))
 
-        
+        # Delete the products from the user basket
         cursor.execute('DELETE FROM basket WHERE user_email=?', (user_email,))
 
         conn.commit()
         conn.close()
 
         return render_template("order_confirmation.html", purchased_products=purchased_products, current_date_str=current_date_str, delivery_date=formatted_delivery_date_list, delivery_info=delivery_info, total_basket_price=total_basket_price)
+    
     
 @views.route('/orders')
 def orders():
@@ -532,6 +562,7 @@ def orders():
     orders = cursor.fetchall()
     conn.close()
 
+    # renders the orders.html page with the orders data
     return render_template("orders.html", orders=orders)
 
 

@@ -55,11 +55,14 @@ def login():
         cursor.execute("SELECT * FROM login_details WHERE user_email=?", (email,))
         user = cursor.fetchone()
 
+        # Get the user's salt and password
         user_salt = user[4]
         user_password = user[2]
 
+        # Hash and salt the password input
         hashed_and_salted_password = hash_and_salt_password(password, user_salt)
 
+        # If the user exists and the hashed password is correct, log the user in
         if user and user_password == hashed_and_salted_password:
             session['user'] = user
             session['user_email'] = user[0]
@@ -76,8 +79,10 @@ def login():
 def logout():
     print(session['user_email'])
     
+    # Clear the session data
     session.clear()
     return redirect('/login')
+
 
 @auth.route('/change_password', methods=['GET', 'POST'])
 def change_password():
@@ -85,6 +90,7 @@ def change_password():
         conn = sqlite3.connect('wmgzon.db')
         cursor = conn.cursor()
 
+        # Get the user's input
         old_password_input = request.form['old_password']
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
@@ -92,6 +98,7 @@ def change_password():
 
         user_salt = cursor.execute('SELECT salt FROM login_details WHERE user_email=?', (user_email,)).fetchone()[0]
 
+        #salts and hashes the old password input
         hashed_and_salted_old_password_input = hash_and_salt_password(old_password_input, user_salt)
 
 
@@ -99,6 +106,7 @@ def change_password():
         cursor.execute('SELECT hashed_and_salted_password FROM login_details WHERE user_email=?', (user_email,))
         hashed_and_salted_existing_password = cursor.fetchone()[0]
 
+        #checks if the old password is correct and if the new password and confirm password match
         if hashed_and_salted_old_password_input == hashed_and_salted_existing_password and new_password == confirm_password:
             hashed_and_salted_new_password = hash_and_salt_password(new_password, user_salt)
             cursor.execute('UPDATE login_details SET hashed_and_salted_password=? WHERE user_email=?', (hashed_and_salted_new_password, user_email))
@@ -111,10 +119,13 @@ def change_password():
 
     return render_template("change_password.html")
 
+
 @auth.route('/give_admin_privileges_page', methods=['GET'])
 def give_admin_privileges_page():
 
+    # Check if the user is an admin
     if not session['admin']:
+        # If the user is not an admin, show an error message
         abort(403, description="You are not authorised to access this page")
 
     if request.method == 'GET':
@@ -128,8 +139,9 @@ def give_admin_privileges_page():
 
         conn.close()
 
-
+    # renders the page with the users and their admin status
     return render_template("give_admin_privileges.html", users=users, email_list=email_list)
+
 
 @auth.route('/give_admin_privileges', methods=['POST'])
 def give_admin_privileges():
@@ -138,12 +150,14 @@ def give_admin_privileges():
         cursor = conn.cursor()
 
         user_email = request.form['user_email']
-
+        
+        # sets the user to be an admin 
         cursor.execute('UPDATE login_details SET admin=TRUE WHERE user_email=?', (user_email,))
         conn.commit()
         conn.close()
 
     return redirect('/give_admin_privileges_page')
+
 
 @auth.route('/remove_admin_privileges', methods=['POST'])
 def remove_admin_privileges():
@@ -153,6 +167,7 @@ def remove_admin_privileges():
 
         user_email = request.form['user_email']
 
+        # sets the user to not be an admin
         cursor.execute('UPDATE login_details SET admin=FALSE WHERE user_email=?', (user_email,))
         conn.commit()
         conn.close()

@@ -24,6 +24,7 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secrets'
     
+    # Register the blueprints
     app.register_blueprint(electronics, url_prefix='/electronics')
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')

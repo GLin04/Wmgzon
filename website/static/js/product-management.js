@@ -1,4 +1,5 @@
- function deleteProduct(productId) {
+  function deleteProduct(productId) {
+    // Send a DELETE request to the server
     fetch(`/delete_product/${productId}`, {
         method: 'DELETE',
     })
@@ -14,39 +15,47 @@ function redirectElectronics() {
 
 
 function updateQuantity(productId) {
+    // Get the quantity and price of the product
     var quantity = document.getElementById('quantity_' + productId).value;
     var original_quantity = document.getElementById('original_quantity_' + productId).textContent;
     var price = document.getElementById('price_hidden_' + productId).value;
     var prof_installation = document.getElementById('prof_installation_hidden_' + productId).value;
     var update_button = document.getElementById('update_button_' + productId);
 
-    
+    // Convert the quantity and price to integers
     prof_installation = (prof_installation === 'true');
 
+    // Check if the quantity has changed
     if (quantity != original_quantity) {
         update_button.disabled = false;
     } else {
         update_button.disabled = true;
     }
 
+    // adds £40 if professional installation is selected
     if (prof_installation) {
         prof_installation = 40;
     } else {
         prof_installation = 0; 
     }
 
+    // Calculate the total price
     var total = ((parseInt(prof_installation) + parseFloat(price)) * parseInt(quantity)).toFixed(2);
 
+    // Update the total price and quantity in the HTML
     document.getElementById('current_total_' + productId).innerHTML = total;
     document.getElementById('current_quantity_' + productId).innerHTML = quantity;
 }
 
+
 function updateBasket(productId) {
+    // Get the quantity and price of the product
     var quantity = document.getElementById('quantity_' + productId).value;
     var prof_installation = document.getElementById('prof_installation_hidden_' + productId).value;
     var total = document.getElementById('current_total_' + productId).innerHTML;
     
 
+    // Send a PUT request to the server
     fetch(`/update_basket?productId=${productId}&quantity=${quantity}&total=${total}`, {
         method: 'PUT',
     })
@@ -56,7 +65,9 @@ function updateBasket(productId) {
     
 }
 
+
 function deleteBasket(productId) {
+    // Send a DELETE request to the server
     fetch(`/delete_basket?productId=${productId}`, {
         method: 'DELETE',
     })
@@ -66,7 +77,7 @@ function deleteBasket(productId) {
 }
 
 
-
+// function to preview image in the form when a file is selected
 function preview_image(input) {
     if (input.files && input.files[0]) {
       const reader = new FileReader();
@@ -97,6 +108,8 @@ function preview_image(input) {
     }
   }
 
+
+// function to check if the image already exists and return an alert if it does
 function check_image_exists(product_image_array) {
 
     var image = document.getElementById('inputFile').files[0].name;
@@ -147,7 +160,7 @@ function check_fields_filled() {
 
 
 
-
+// function to check if the quantity is greater than the stock and return an error message if it is
 function check_stock(productId) {
     var quantity = parseInt(document.getElementById('quantity_' + productId).value);
     var stock = parseInt(document.getElementById('stock_hidden_' + productId).value);
@@ -167,6 +180,8 @@ function check_stock(productId) {
     }
 }
 
+
+// function to calculate the total price of the product and display it in the HTML
 function calculateTotal() {
     var quantity = document.getElementById('quantity').value;
     var profInstallationHidden = document.getElementById('prof_installation_hidden');
